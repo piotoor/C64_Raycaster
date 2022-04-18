@@ -6,6 +6,11 @@ B_16=$fd
 B_16_L=$fd
 B_16_H=$fe
 
+TMP_16=$02
+TMP_16_L=$02
+TMP_16_H=$03
+
+
 ;zero page locations safe to use:
 ;$02-$06
 ;$fb-$fe
@@ -32,18 +37,18 @@ defm mxOverCos
         asl
         tax
         lda mxOverCosVect,x
-        sta B_16_L
+        sta TMP_16_L
         inx
         lda mxOverCosVect,x
-        sta B_16_H
+        sta TMP_16_H
         
         lda /2
         asl
         tay
-        lda (B_16),y
+        lda (TMP_16),y
         sta A_16_L
         iny
-        lda (B_16),y
+        lda (TMP_16),y
         sta A_16_H
         endm
 
