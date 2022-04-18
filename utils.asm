@@ -6,7 +6,14 @@ B_16=$fd
 B_16_L=$fd
 B_16_H=$fe
 
-defm add_a16_b16
+;zero page locations safe to use:
+;$02-$06
+;$fb-$fe
+
+;;---------------------------------------------
+;; Adds B_16 to A_16
+;;--------------------------------------------- 
+defm adc_a16_b16
         clc
         lda A_16_L
         adc B_16_L
@@ -16,3 +23,28 @@ defm add_a16_b16
         sta A_16_H
 
         endm
+
+;;---------------------------------------------
+;; mxOverCos x,theta into A_16
+;;--------------------------------------------- 
+defm mxOverCos 
+        lda /1
+        asl
+        tax
+        lda mxOverCosVect,x
+        sta B_16_L
+        inx
+        lda mxOverCosVect,x
+        sta B_16_H
+        
+        lda /2
+        asl
+        tay
+        lda (B_16),y
+        sta A_16_L
+        iny
+        lda (B_16),y
+        sta A_16_H
+        endm
+
+incasm          lookuptables.asm
