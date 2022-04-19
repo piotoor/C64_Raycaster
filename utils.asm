@@ -6,10 +6,23 @@ B_16=$fd
 B_16_L=$fd
 B_16_H=$fe
 
-TMP_16=$61
-TMP_16_L=$61
-TMP_16_H=$62
+C_16=$61
+C_16_L=$61
+C_16_H=$62
 
+D_16=$63
+D_16_L=$63
+D_16_H=$64
+
+E_16=$65
+E_16_L=$65
+E_16_H=$66
+
+b_8=$67
+
+F_16=$68
+F_16_L=$68
+F_16_H=$69
 
 ;zero page locations safe to use:
 ;$02-$06
@@ -30,26 +43,26 @@ defm adc_a16_b16
         endm
 
 ;;---------------------------------------------
-;; mxOverCos x,theta into A_16
+;; mxOverCos target_L,target_H 
+;; x in a
+;; theta in y
 ;;--------------------------------------------- 
 defm mxOverCos 
-        lda /1
         asl
         tax
         lda mxOverCosVect,x
-        sta TMP_16_L
+        sta E_16_L
         inx
         lda mxOverCosVect,x
-        sta TMP_16_H
+        sta E_16_H
         
-        lda /2
+        tya
         asl
         tay
-        lda (TMP_16),y
-        sta A_16_L
+        lda (E_16),y
+        sta /1
         iny
-        lda (TMP_16),y
-        sta A_16_H
+        lda (E_16),y
+        sta /2
         endm
 
-incasm  lookuptables.asm

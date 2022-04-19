@@ -1,20 +1,17 @@
 *=$1000
 
-ray_start=$C000
-ray_end=$C040
+
 
 screen_width=#40
 screen_height=#25
-fov=#80
+half_fov=#20
 
 ;;---------------------------------------------
 ;; main
 ;;---------------------------------------------
 main           
-                ;mxOverCos #16,#24
-                lda square_size
                 jsr setup
-                ;jsr game_loop
+                jsr game_loop
                 rts
    
 ;;---------------------------------------------
@@ -22,10 +19,22 @@ main
 ;;---------------------------------------------             
 setup
                 lda #$d8
-                sta A_16_H
+                sta F_16_H
                 lda #$00
-                sta A_16_L
+                sta F_16_L
+                jsr player_setup
                 jsr init_screen
+                rts
+
+;;---------------------------------------------
+;; player_setup
+;;---------------------------------------------             
+player_setup
+                lda #18
+                sta posX
+                sta posY
+                lda #0
+                sta theta
                 rts
 
 ;;---------------------------------------------
@@ -49,21 +58,41 @@ loop                    lda #$A0
 ;; compute_frame
 ;;---------------------------------------------
 compute_frame
-                ldx #0 ;{
-@h                      lda screen_height  
-                        sec
-                        sbc heights,x
-                        lsr a
-                        sta ray_start,x
-                        clc
-                        adc heights,x
-                        sta ray_end,x
-                        clc
-                        inx
-                        cpx screen_width
-                        bne @h
-                ;}
-                ldx #0 ;{
+;                ldx #0 ;{
+;@h                      lda screen_height  
+;                        sec
+;                        sbc heights,x
+;                        lsr a
+;                        sta ray_start,x
+;                        clc
+;                        adc heights,x
+;                        sta ray_end,x
+;                        clc
+;                        inx
+;                        cpx screen_width
+;                        bne @h
+;                ;}
+                
+                ldx #0
+@loop           txa
+                pha
+
+                sta ray_id
+                lda theta
+                sec
+                sbc half_fov
+                adc ray_id
+
+                jsr init_ray_params
+                jsr cast_ray
+                jsr compute_line
+
+                pla
+                tax
+                inx
+                cpx screen_width
+                bne @loop
+                
                 rts
 
 
@@ -71,6 +100,7 @@ compute_frame
 ;; draw_frame
 ;;---------------------------------------------
 draw_frame      
+                ldx #0 ;{
 @rows
                         ldy #0 ;{
 @cols
@@ -86,20 +116,20 @@ draw_frame
                                 bcc @draw
                                 lda #0
                         
-@draw                           sta (A_16),y
+@draw                           sta (F_16),y
 
                                 iny
                                 cpy screen_width
                                 bne @cols
                         ;}
 
-                        lda A_16_L
+                        lda F_16_L
                         clc
                         adc #$28
-                        sta A_16_L
-                        lda A_16_H
+                        sta F_16_L
+                        lda F_16_H
                         adc #0
-                        sta A_16_H
+                        sta F_16_H
 
                         inx
                         cpx screen_height
@@ -122,5 +152,7 @@ heights         byte 10,10,10,10,12,13,14,16,17,19,20,21,20,19,19,19,19,19,19,18
 color           byte 8,8,8,9,9,9,9,9,9,9,9,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,8
 
 incasm  utils.asm
+incasm  lookuptables.asm
 incasm  gameMap.asm
 incasm  player.asm
+incasm  ray.asm
