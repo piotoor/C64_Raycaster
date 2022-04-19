@@ -6,9 +6,9 @@ B_16=$fd
 B_16_L=$fd
 B_16_H=$fe
 
-TMP_16=$02
-TMP_16_L=$02
-TMP_16_H=$03
+TMP_16=$61
+TMP_16_L=$61
+TMP_16_H=$62
 
 
 ;zero page locations safe to use:
@@ -52,4 +52,4 @@ defm mxOverCos
         sta A_16_H
         endm
 
-incasm          lookuptables.asm
+incasm  lookuptables.asm
