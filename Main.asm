@@ -1,7 +1,5 @@
 *=$1000
 
-
-
 screen_width=#40
 screen_height=#25
 half_fov=#20
@@ -58,22 +56,7 @@ loop                    lda #$A0
 ;;---------------------------------------------
 ;; compute_frame
 ;;---------------------------------------------
-compute_frame
-;                ldx #0 ;{
-;@h                      lda screen_height  
-;                        sec
-;                        sbc heights,x
-;                        lsr a
-;                        sta ray_start,x
-;                        clc
-;                        adc heights,x
-;                        sta ray_end,x
-;                        clc
-;                        inx
-;                        cpx screen_width
-;                        bne @h
-;                ;}
-                
+compute_frame   
                 ldx #0
 @loop           txa
                 pha
@@ -156,9 +139,6 @@ game_loop
 
                 rts
 
-
-;heights         byte 10,10,10,10,12,13,14,16,17,19,20,21,20,19,19,19,19,19,19,18,18,17,17,17,16,16,16,15,15,9,9,9,10,10,10,11,11,11,12,11
-;color           byte 8,8,8,9,9,9,9,9,9,9,9,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,8
 
 incasm  utils.asm
 incasm  lookuptables.asm
