@@ -196,14 +196,9 @@ compute_line
                 dex
                 bne @loop
 
-                lda E_16_L
-                beq @lineHeight1
                 ldx E_16_L
                 lda halfLineHeight,x
-                jmp @lineHeightDone
-@lineHeight1    adc #1               
-
-@lineHeightDone clc
+                clc
                 adc #12
                 ldx ray_id
                 sta ray_end,x
