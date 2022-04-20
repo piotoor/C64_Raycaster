@@ -30,8 +30,9 @@ setup
 ;; player_setup
 ;;---------------------------------------------             
 player_setup
-                lda #18
+                lda #$6a
                 sta posX
+                lda #$85
                 sta posY
                 lda #0
                 sta theta
@@ -82,6 +83,7 @@ compute_frame
                 sec
                 sbc half_fov
                 adc ray_id
+                sta rayTheta
 
                 jsr init_ray_params
                 jsr cast_ray
@@ -100,6 +102,10 @@ compute_frame
 ;; draw_frame
 ;;---------------------------------------------
 draw_frame      
+                lda #$00
+                sta F_16_L
+                lda #$d8
+                sta F_16_H
                 ldx #0 ;{
 @rows
                         ldy #0 ;{
@@ -112,7 +118,7 @@ draw_frame
                                 jmp @draw
 @x_ge_ray_start                 clc
                                 cmp ray_end,y
-                                lda color,y
+                                lda ray_color,y
                                 bcc @draw
                                 lda #0
                         
@@ -141,6 +147,9 @@ draw_frame
 ;; game_loop
 ;;---------------------------------------------
 game_loop
+                lda theta
+                adc #4
+                sta theta
                 jsr compute_frame
                 jsr draw_frame
                 jmp game_loop
@@ -148,8 +157,8 @@ game_loop
                 rts
 
 
-heights         byte 10,10,10,10,12,13,14,16,17,19,20,21,20,19,19,19,19,19,19,18,18,17,17,17,16,16,16,15,15,9,9,9,10,10,10,11,11,11,12,11
-color           byte 8,8,8,9,9,9,9,9,9,9,9,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,8
+;heights         byte 10,10,10,10,12,13,14,16,17,19,20,21,20,19,19,19,19,19,19,18,18,17,17,17,16,16,16,15,15,9,9,9,10,10,10,11,11,11,12,11
+;color           byte 8,8,8,9,9,9,9,9,9,9,9,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,8
 
 incasm  utils.asm
 incasm  lookuptables.asm

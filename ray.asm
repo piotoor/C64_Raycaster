@@ -39,7 +39,7 @@ init_ray_params
                 asl
                 asl
                 sec
-                sbc mapX
+                sbc posX
                 jmp @x_end
 @x_minus        dec stepX
                 dec stepX
@@ -48,11 +48,11 @@ init_ray_params
                 asl
                 asl
                 sta b_8
-                lda mapX
+                lda posX
                 sec
                 sbc b_8
-@x_end          ldy rayTheta
-                ldx reducedTheta,y
+@x_end          ldx rayTheta
+                ldy reducedTheta,x
                 mxOverCos A_16_L,A_16_H
 
                 lda posY
@@ -71,7 +71,7 @@ init_ray_params
                 asl
                 asl
                 sec
-                sbc mapY
+                sbc posY
                 jmp @y_end
 @y_minus        dec stepY
                 dec stepY
@@ -80,28 +80,28 @@ init_ray_params
                 asl
                 asl
                 sta b_8
-                lda mapY
+                lda posY
                 sec
                 sbc b_8
                 
-@y_end          ldy rayTheta
-                ldx mirrorReducedTheta,y
+@y_end          ldx rayTheta
+                ldy mirrorReducedTheta,x
                 mxOverCos B_16_L,B_16_H
 
                 lda square_size
-                ldy rayTheta
-                ldx reducedTheta,y 
+                ldx rayTheta
+                ldy reducedTheta,x 
                 mxOverCos C_16_L,C_16_H 
                 lda square_size
-                ldy rayTheta
-                ldx mirrorReducedTheta,y 
+                ldx rayTheta
+                ldy mirrorReducedTheta,x
                 mxOverCos D_16_L,D_16_H 
 
                 rts
 
 
 ;;---------------------------------------------
-;; init_ray_params
+;; cast_ray
 ;;
 ;; A_16 - currDistX
 ;; B_16 - currDistY
@@ -196,7 +196,7 @@ compute_line
                 dex
                 bne @loop
 
-                lda E_16_H
+                lda E_16_L
                 beq @lineHeight1
                 ldx E_16_L
                 lda halfLineHeight,x

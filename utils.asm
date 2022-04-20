@@ -51,18 +51,18 @@ defm mxOverCos
         asl
         tax
         lda mxOverCosVect,x
-        sta E_16_L
+        sta F_16_L
         inx
         lda mxOverCosVect,x
-        sta E_16_H
+        sta F_16_H
         
         tya
         asl
         tay
-        lda (E_16),y
+        lda (F_16),y
         sta /1
         iny
-        lda (E_16),y
+        lda (F_16),y
         sta /2
         endm
 
