@@ -8,7 +8,10 @@ horizontal=$70
 ray_start=$C000
 ray_end=$C028
 ray_color=$C050
-
+color1=#8
+color2=#9
+ceil_color=#0
+floor_color=#11
 
 ;;---------------------------------------------
 ;; init_ray_params
@@ -116,7 +119,7 @@ cast_ray
                                 lda B_16_L
                                 cmp A_16_L
                         bcs @y_ge_x
-@y_lt_x                         lda #8
+@y_lt_x                         lda color1
                                 sta horizontal
 
                                 lda B_16_H
@@ -137,7 +140,7 @@ cast_ray
                                 adc stepY
                                 sta mapY
                         jmp @end
-@y_ge_x                         lda #9
+@y_ge_x                         lda color2
                                 sta horizontal
 
                                 lda A_16_H

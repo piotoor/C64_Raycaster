@@ -47,13 +47,13 @@ draw_frame
                                 txa
                                 cmp ray_start,y
                                 bcs @x_ge_ray_start
-                                lda #0
+                                lda ceil_color
                                 jmp @draw
 @x_ge_ray_start                 clc
                                 cmp ray_end,y
                                 lda ray_color,y
                                 bcc @draw
-                                lda #0
+                                lda floor_color
 @draw                           sta (F_16),y
 
                         iny
