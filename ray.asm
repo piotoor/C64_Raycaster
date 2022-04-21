@@ -47,10 +47,10 @@ init_ray_params
                         asl
                         asl
                         asl
-                        sta b_8
-                        lda posX
                         sec
-                        sbc b_8
+                        sbc posX
+                        eor #$ff
+                        adc #1
 @x_end          ldx rayTheta
                 ldy reducedTheta,x
                 mxOverCos A_16_L,A_16_H
@@ -79,10 +79,10 @@ init_ray_params
                         asl
                         asl
                         asl
-                        sta b_8
-                        lda posY
                         sec
-                        sbc b_8        
+                        sbc posY
+                        eor #$ff
+                        adc #1
 @y_end          ldx rayTheta
                 ldy mirrorReducedTheta,x
                 mxOverCos B_16_L,B_16_H
