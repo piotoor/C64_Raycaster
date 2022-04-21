@@ -199,12 +199,13 @@ compute_line
                 ldx E_16_L
                 lda halfLineHeight,x
                 clc
-                adc #12
+                adc #13
                 ldx ray_id
                 sta ray_end,x
 
                 ldx E_16_L
                 sec
+                sbc #1
                 sbc halfLineHeight,x
                 sbc halfLineHeight,x
                 ldx ray_id
