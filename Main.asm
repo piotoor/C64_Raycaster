@@ -3,7 +3,6 @@
 screen_width=#40
 screen_height=#25
 half_fov=#20
-frame=$70
 pra=$dc00     ; CIA#1 (Port Register A)
 prb=$dc01     ; CIA#1 (Port Register B)
 ddra=$dc02     ; CIA#1 (Data Direction Register A)
@@ -14,38 +13,20 @@ ddrb=$dc03     ; CIA#1 (Data Direction Register B)
 ;;---------------------------------------------
 main           
                 jsr setup
-                sei
-
-                ldy #$7f
-                sty $dc0d   ; Turn off CIAs Timer interrupts ($7f = %01111111)
-                sty $dd0d   ; Turn off CIAs Timer interrupts ($7f = %01111111)
-                lda $dc0d   ; by reading $dc0d and $dd0d we cancel all CIA-IRQs in queue/unprocessed
-                lda $dd0d   ; by reading $dc0d and $dd0d we cancel all CIA-IRQs in queue/unprocessed
-
-                lda #$01    ; Set Interrupt Request Mask...
-                sta $d01a   ; ...we want IRQ by Rasterbeam (%00000001)
-
-                lda #<irq   ; point IRQ Vector to our custom irq routine
-                ldx #>irq 
-                sta $0314    ; store in $314/$315
-                stx $0315   
-
-                lda #$00    ; trigger interrupt at row zero
-                sta $d012
-
-                cli         ; clear interrupt disable flag
                 jmp *       ; infinite loop
                 
-
-irq             dec $d019          ; acknowledge IRQ / clear register for next interrupt
+;;---------------------------------------------
+;; irq
+;;---------------------------------------------
+irq             dec $d019               ; acknowledge IRQ / clear register for next interrupt
                 jsr check_keyboard 
                 jsr compute_frame
-                
                 jsr draw_frame
-                inc frame
-                jmp $ea31       ; kernel irq routine
+                jmp $ea31               ; kernel irq routine
 
-
+;;---------------------------------------------
+;; check_keyboard
+;;---------------------------------------------
 check_keyboard  lda #%11111111  ; CIA#1 Port A set to output 
                 sta ddra             
                 lda #%00000000  ; CIA#1 Port B set to input
@@ -76,17 +57,26 @@ s_pressed       lda #%11111101
                 beq move_back
                 rts
 
+;;---------------------------------------------
+;; rotate_right
+;;---------------------------------------------
 rotate_right    lda theta
                 adc #6
                 sta theta
                 rts
 
+;;---------------------------------------------
+;; rotate_left
+;;---------------------------------------------
 rotate_left     lda theta
                 sec
                 sbc #6
                 sta theta
                 rts
 
+;;---------------------------------------------
+;; move_forward
+;;---------------------------------------------
 move_forward    ldx theta
                 ldy reducedTheta,x
                 lda cosX16,y
@@ -154,7 +144,9 @@ move_forward    ldx theta
 @end
                 rts
 
-
+;;---------------------------------------------
+;; move_back
+;;---------------------------------------------
 move_back       ldx theta
                 ldy reducedTheta,x
                 lda cosX16,y
@@ -223,21 +215,44 @@ move_back       ldx theta
                 rts
 
 ;;---------------------------------------------
+;; irq_setup
+;;---------------------------------------------             
+irq_setup
+                sei
+
+                ldy #$7f
+                sty $dc0d   ; Turn off CIAs Timer interrupts ($7f = %01111111)
+                sty $dd0d   ; 
+                lda $dc0d   ; by reading $dc0d and $dd0d we cancel all CIA-IRQs in queue/unprocessed
+                lda $dd0d   ;
+
+                lda #$01    ; set interrupt request mask
+                sta $d01a   ; rasterbeam irq %00000001)
+
+                lda #<irq   ; set custom irq routine address
+                ldx #>irq 
+                sta $0314   
+                stx $0315   
+
+                lda #$00    ; trigger interrupt at row zero
+                sta $d012
+
+                cli
+                rts
+
+;;---------------------------------------------
 ;; setup
 ;;---------------------------------------------             
 setup
-                lda #0
-                sta frame
-                lda #$d8
-                sta F_16_H
-                lda #$00
-                sta F_16_L
                 jsr player_setup
-                jsr init_screen
+                jsr screen_setup
+                jsr irq_setup
                 rts
 
 ;;---------------------------------------------
 ;; player_setup
+;;
+;; Loads player's initial pos and theta
 ;;---------------------------------------------             
 player_setup
                 lda #$6a
@@ -249,63 +264,67 @@ player_setup
                 rts
 
 ;;---------------------------------------------
-;; init_screen
+;; screen_setup
+;;
+;; Fills the entire screen with A0 char
 ;;---------------------------------------------
-init_screen     
-                ldx #0 ;{
-loop                    lda #$A0
-
+screen_setup     
+                ldx #0 
+@loop                   lda #$A0
                         sta $0400,x
                         sta $0500,x
                         sta $0600,x
                         sta $06e8,x                        
-                       
-                        inx
-                        bne loop        ; x != 0
-                ;}
+                inx
+                bne @loop 
                 rts
 
 ;;---------------------------------------------
 ;; compute_frame
+;;
+;; Raycasting is done there, in three steps
 ;;---------------------------------------------
 compute_frame   
                 ldx #0
-@loop           txa
-                pha
+@loop                   txa
+                        pha
 
-                sta ray_id
-                lda theta
-                sec
-                sbc half_fov
-                adc ray_id
-                sta rayTheta
+                        sta ray_id
+                        lda theta
+                        sec
+                        sbc half_fov
+                        adc ray_id
+                        sta rayTheta
 
-                jsr init_ray_params
-                jsr cast_ray
-                jsr compute_line
+                        jsr init_ray_params
+                        jsr cast_ray
+                        jsr compute_line
 
-                pla
-                tax
+                        pla
+                        tax
                 inx
                 cpx screen_width
                 bne @loop
-                
                 rts
-
 
 ;;---------------------------------------------
 ;; draw_frame
+;;
+;; Renders frame row by row.
+;; Uses:
+;; - F_16
+;; - ray_start
+;; - ray_end
+;; - ray_color
 ;;---------------------------------------------
 draw_frame      
                 lda #$00
                 sta F_16_L
                 lda #$d8
                 sta F_16_H
-                ldx #0 ;{
-@rows
-                        ldy #0 ;{
-@cols
-                                clc
+                ldx #0
+@rows                   ldy #0
+@cols                           clc
                                 txa
                                 cmp ray_start,y
                                 bcs @x_ge_ray_start
@@ -316,14 +335,12 @@ draw_frame
                                 lda ray_color,y
                                 bcc @draw
                                 lda #0
-                        
 @draw                           sta (F_16),y
 
-                                iny
-                                cpy screen_width
-                                bne @cols
-                        ;}
-
+                        iny
+                        cpy screen_width
+                        bne @cols
+                        
                         lda F_16_L
                         clc
                         adc #$28
@@ -332,10 +349,9 @@ draw_frame
                         adc #0
                         sta F_16_H
 
-                        inx
-                        cpx screen_height
-                        bne @rows
-                ;}
+                inx
+                cpx screen_height
+                bne @rows
                 rts
 
 
