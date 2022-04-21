@@ -155,9 +155,73 @@ move_forward    ldx theta
                 rts
 
 
-move_back
+move_back       ldx theta
+                ldy reducedTheta,x
+                lda cosX16,y
+                lsr ; TODO add speed
+                sta stepX
 
+                ldy mirrorReducedTheta,x
+                lda cosX16,y
+                lsr ; TODO add speed
+                sta stepY
+
+                ldx theta
+                ldy xPlusTheta,x
+                beq @x_end
+@x_plus         lda stepX
+                eor #$ff
+                adc #1
+                sta stepX
+@x_end          ldy yPlusTheta,x
+                beq @y_end
+@y_plus         lda stepY
+                eor #$ff
+                adc #1
+                sta stepY
+
+@y_end          
+                lda posX
+                adc stepX
+                sta posX
+                
+                lda posY
+                adc stepY
+                sta posY
+
+                lsr
+                lsr
+                lsr
+                lsr
+                sta mapY
+                lda posX
+                lsr
+                lsr
+                lsr
+                lsr
+                sta mapX
+
+                lda mapY 
+                asl
+                asl
+                asl
+                asl
+                clc
+                adc mapX
+                tax
+                lda game_map,x
+                beq @end
+                lda posX
+                sec
+                sbc stepX
+                sta posX
+                lda posY
+                sec
+                sbc stepY
+                sta posY
+@end
                 rts
+
 ;;---------------------------------------------
 ;; setup
 ;;---------------------------------------------             
