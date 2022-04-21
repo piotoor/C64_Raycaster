@@ -77,23 +77,25 @@ s_pressed       lda #%11111101
                 rts
 
 rotate_right    lda theta
-                adc #4
+                adc #6
                 sta theta
                 rts
 
 rotate_left     lda theta
                 sec
-                sbc #4
+                sbc #6
                 sta theta
                 rts
 
 move_forward    ldx theta
                 ldy reducedTheta,x
                 lda cosX16,y
+                lsr ; TODO add speed
                 sta stepX
 
                 ldy mirrorReducedTheta,x
                 lda cosX16,y
+                lsr ; TODO add speed
                 sta stepY
 
                 ldx theta
@@ -144,9 +146,11 @@ move_forward    ldx theta
                 lda posX
                 sec
                 sbc stepX
+                sta posX
                 lda posY
                 sec
                 sbc stepY
+                sta posY
 @end
                 rts
 
