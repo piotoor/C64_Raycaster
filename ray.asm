@@ -109,8 +109,6 @@ init_ray_params
 ;; D_16 - dy
 ;;---------------------------------------------
 cast_ray
-                lda #8
-                sta horizontal
 @loop                   lda B_16_H
                         cmp A_16_H
                         bcc @y_lt_x
