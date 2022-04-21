@@ -41,8 +41,8 @@ init_ray_params
                         sec
                         sbc posX
                 jmp @x_end
-@x_minus                dec stepX
-                        dec stepX
+@x_minus                ldx #-1
+                        stx stepX
                         asl
                         asl
                         asl
@@ -73,8 +73,8 @@ init_ray_params
                         sec
                         sbc posY
                 jmp @y_end
-@y_minus                dec stepY
-                        dec stepY
+@y_minus                ldx #-1
+                        stx stepY
                         asl
                         asl
                         asl
