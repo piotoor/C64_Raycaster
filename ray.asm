@@ -32,25 +32,25 @@ init_ray_params
                 ldx rayTheta
                 ldy xPlusTheta,x
                 beq @x_minus
-@x_plus         clc
-                adc #1
-                asl
-                asl
-                asl
-                asl
-                sec
-                sbc posX
+@x_plus                 clc
+                        adc #1
+                        asl
+                        asl
+                        asl
+                        asl
+                        sec
+                        sbc posX
                 jmp @x_end
-@x_minus        dec stepX
-                dec stepX
-                asl
-                asl
-                asl
-                asl
-                sta b_8
-                lda posX
-                sec
-                sbc b_8
+@x_minus                dec stepX
+                        dec stepX
+                        asl
+                        asl
+                        asl
+                        asl
+                        sta b_8
+                        lda posX
+                        sec
+                        sbc b_8
 @x_end          ldx rayTheta
                 ldy reducedTheta,x
                 mxOverCos A_16_L,A_16_H
@@ -64,26 +64,25 @@ init_ray_params
                 ldx rayTheta
                 ldy yPlusTheta,x
                 beq @y_minus
-@y_plus         clc
-                adc #1
-                asl
-                asl
-                asl
-                asl
-                sec
-                sbc posY
+@y_plus                 clc
+                        adc #1
+                        asl
+                        asl
+                        asl
+                        asl
+                        sec
+                        sbc posY
                 jmp @y_end
-@y_minus        dec stepY
-                dec stepY
-                asl
-                asl
-                asl
-                asl
-                sta b_8
-                lda posY
-                sec
-                sbc b_8
-                
+@y_minus                dec stepY
+                        dec stepY
+                        asl
+                        asl
+                        asl
+                        asl
+                        sta b_8
+                        lda posY
+                        sec
+                        sbc b_8        
 @y_end          ldx rayTheta
                 ldy mirrorReducedTheta,x
                 mxOverCos B_16_L,B_16_H
@@ -112,64 +111,62 @@ init_ray_params
 cast_ray
                 lda #8
                 sta horizontal
-@loop           lda B_16_H
-                cmp A_16_H
-                bcc @y_lt_x
-                bne @y_ge_x
-                lda B_16_L
-                cmp A_16_L
-                bcs @y_ge_x
+@loop                   lda B_16_H
+                        cmp A_16_H
+                        bcc @y_lt_x
+                        bne @y_ge_x
+                                lda B_16_L
+                                cmp A_16_L
+                        bcs @y_ge_x
+@y_lt_x                         lda #8
+                                sta horizontal
 
-@y_lt_x         lda #8
-                sta horizontal
+                                lda B_16_H
+                                sta E_16_H
+                                lda B_16_L
+                                sta E_16_L
 
-                lda B_16_H
-                sta E_16_H
-                lda B_16_L
-                sta E_16_L
+                                clc
+                                lda B_16_L
+                                adc D_16_L
+                                sta B_16_L
+                                lda B_16_H
+                                adc D_16_H
+                                sta B_16_H
 
-                clc
-                lda B_16_L
-                adc D_16_L
-                sta B_16_L
-                lda B_16_H
-                adc D_16_H
-                sta B_16_H
+                                clc
+                                lda mapY
+                                adc stepY
+                                sta mapY
+                        jmp @end
+@y_ge_x                         lda #9
+                                sta horizontal
 
-                clc
-                lda mapY
-                adc stepY
-                sta mapY
+                                lda A_16_H
+                                sta E_16_H
+                                lda A_16_L
+                                sta E_16_L
 
-                jmp @end
-@y_ge_x         lda #9
-                sta horizontal
+                                clc
+                                lda A_16_L
+                                adc C_16_L
+                                sta A_16_L
+                                lda A_16_H
+                                adc C_16_H
+                                sta A_16_H
 
-                lda A_16_H
-                sta E_16_H
-                lda A_16_L
-                sta E_16_L
-
-                clc
-                lda A_16_L
-                adc C_16_L
-                sta A_16_L
-                lda A_16_H
-                adc C_16_H
-                sta A_16_H
-
-                clc
-                lda mapX
-                adc stepX
-                sta mapX
-               
-@end            lda mapY
-                asl
-                asl
-                asl
-                asl
-                clc
-                adc mapX
+                                clc
+                                lda mapX
+                                adc stepX
+                                sta mapX
+                       
+@end                    lda mapY
+                        asl
+                        asl
+                        asl
+                        asl
+                        clc
+                        adc mapX
                 tax
                 lda game_map,x
                 beq @loop
@@ -186,14 +183,14 @@ cast_ray
 ;;---------------------------------------------
 compute_line
                 ldx #7
-@loop           lda E_16_H
-                clc
-                lsr
-                sta E_16_H
-                lda E_16_L
-                ror
-                sta E_16_L
-                dex
+@loop                   lda E_16_H
+                        clc
+                        lsr
+                        sta E_16_H
+                        lda E_16_L
+                        ror
+                        sta E_16_L
+                        dex
                 bne @loop
 
                 ldx E_16_L

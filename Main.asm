@@ -3,22 +3,23 @@
 screen_width=#40
 screen_height=#25
 half_fov=#20
-pra=$dc00     ; CIA#1 (Port Register A)
-prb=$dc01     ; CIA#1 (Port Register B)
-ddra=$dc02     ; CIA#1 (Data Direction Register A)
-ddrb=$dc03     ; CIA#1 (Data Direction Register B)
+pra=$dc00       ; CIA#1 (Port Register A)
+prb=$dc01       ; CIA#1 (Port Register B)
+ddra=$dc02      ; CIA#1 (Data Direction Register A)
+ddrb=$dc03      ; CIA#1 (Data Direction Register B)
 
 ;;---------------------------------------------
 ;; main
 ;;---------------------------------------------
-main           
+main            
                 jsr setup
                 jmp *       ; infinite loop
                 
 ;;---------------------------------------------
 ;; irq
 ;;---------------------------------------------
-irq             dec $d019               ; acknowledge IRQ / clear register for next interrupt
+irq             
+                dec $d019               ; acknowledge IRQ / clear register for next interrupt
                 jsr check_keyboard 
                 jsr compute_frame
                 jsr draw_frame
@@ -27,7 +28,8 @@ irq             dec $d019               ; acknowledge IRQ / clear register for n
 ;;---------------------------------------------
 ;; check_keyboard
 ;;---------------------------------------------
-check_keyboard  lda #%11111111  ; CIA#1 Port A set to output 
+check_keyboard  
+                lda #%11111111  ; CIA#1 Port A set to output 
                 sta ddra             
                 lda #%00000000  ; CIA#1 Port B set to input
                 sta ddrb 
@@ -60,7 +62,8 @@ s_pressed       lda #%11111101
 ;;---------------------------------------------
 ;; rotate_right
 ;;---------------------------------------------
-rotate_right    lda theta
+rotate_right    
+                lda theta
                 adc #6
                 sta theta
                 rts
@@ -68,7 +71,8 @@ rotate_right    lda theta
 ;;---------------------------------------------
 ;; rotate_left
 ;;---------------------------------------------
-rotate_left     lda theta
+rotate_left     
+                lda theta
                 sec
                 sbc #6
                 sta theta
@@ -77,7 +81,8 @@ rotate_left     lda theta
 ;;---------------------------------------------
 ;; move_forward
 ;;---------------------------------------------
-move_forward    ldx theta
+move_forward    
+                ldx theta
                 ldy reducedTheta,x
                 lda cosX16,y
                 lsr ; TODO add speed
@@ -91,19 +96,17 @@ move_forward    ldx theta
                 ldx theta
                 ldy xPlusTheta,x
                 bne @x_end
-@x_minus        lda stepX
-                eor #$ff
-                adc #1
-                sta stepX
+@x_minus                lda stepX
+                        eor #$ff
+                        adc #1
+                        sta stepX
 @x_end          ldy yPlusTheta,x
                 bne @y_end
-@y_minus        lda stepY
-                eor #$ff
-                adc #1
-                sta stepY
-
-@y_end          
-                lda posX
+@y_minus                lda stepY
+                        eor #$ff
+                        adc #1
+                        sta stepY
+@y_end          lda posX
                 adc stepX
                 sta posX
                 
@@ -133,21 +136,21 @@ move_forward    ldx theta
                 tax
                 lda game_map,x
                 beq @end
-                lda posX
-                sec
-                sbc stepX
-                sta posX
-                lda posY
-                sec
-                sbc stepY
-                sta posY
-@end
-                rts
+                        lda posX
+                        sec
+                        sbc stepX
+                        sta posX
+                        lda posY
+                        sec
+                        sbc stepY
+                        sta posY
+@end            rts
 
 ;;---------------------------------------------
 ;; move_back
 ;;---------------------------------------------
-move_back       ldx theta
+move_back       
+                ldx theta
                 ldy reducedTheta,x
                 lda cosX16,y
                 lsr ; TODO add speed
@@ -161,19 +164,17 @@ move_back       ldx theta
                 ldx theta
                 ldy xPlusTheta,x
                 beq @x_end
-@x_plus         lda stepX
-                eor #$ff
-                adc #1
-                sta stepX
+@x_plus                 lda stepX
+                        eor #$ff
+                        adc #1
+                        sta stepX
 @x_end          ldy yPlusTheta,x
                 beq @y_end
-@y_plus         lda stepY
-                eor #$ff
-                adc #1
-                sta stepY
-
-@y_end          
-                lda posX
+@y_plus                 lda stepY
+                        eor #$ff
+                        adc #1
+                        sta stepY
+@y_end          lda posX
                 adc stepX
                 sta posX
                 
@@ -203,16 +204,15 @@ move_back       ldx theta
                 tax
                 lda game_map,x
                 beq @end
-                lda posX
-                sec
-                sbc stepX
-                sta posX
-                lda posY
-                sec
-                sbc stepY
-                sta posY
-@end
-                rts
+                        lda posX
+                        sec
+                        sbc stepX
+                        sta posX
+                        lda posY
+                        sec
+                        sbc stepY
+                        sta posY
+@end            rts
 
 ;;---------------------------------------------
 ;; irq_setup
