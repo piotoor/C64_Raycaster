@@ -58,12 +58,12 @@ move_forward
                 ldx theta
                 ldy reducedTheta,x
                 lda cosX16,y
-                lsr ; TODO add speed
+                ;lsr ; TODO add speed
                 sta stepX
 
                 ldy mirrorReducedTheta,x
                 lda cosX16,y
-                lsr ; TODO add speed
+                ;lsr ; TODO add speed
                 sta stepY
 
                 ldx theta
@@ -126,12 +126,12 @@ move_back
                 ldx theta
                 ldy reducedTheta,x
                 lda cosX16,y
-                lsr ; TODO add speed
+                ;lsr ; TODO add speed
                 sta stepX
 
                 ldy mirrorReducedTheta,x
                 lda cosX16,y
-                lsr ; TODO add speed
+                ;lsr ; TODO add speed
                 sta stepY
 
                 ldx theta
