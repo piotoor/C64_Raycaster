@@ -26,11 +26,8 @@ init_ray_params
                 sta stepX
                 sta stepY
                 
-                lda posX
-                lsr
-                lsr
-                lsr
-                lsr
+                ldx posX
+                lda posToMapCoords,x
                 sta mapX   
                 ldx rayTheta
                 ldy xPlusTheta,x
@@ -58,11 +55,8 @@ init_ray_params
                 ldy reducedTheta,x
                 mxOverCos A_16_L,A_16_H
 
-                lda posY
-                lsr
-                lsr
-                lsr
-                lsr
+                ldx posY
+                lda posToMapCoords,x
                 sta mapY
                 ldx rayTheta
                 ldy yPlusTheta,x

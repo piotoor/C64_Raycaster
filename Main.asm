@@ -41,8 +41,8 @@ irq
                 
                 lda synch
                 beq frame_not_ready
-                jsr check_keyboard
                 jsr draw_frame
+                jsr check_keyboard
                 lda #0
                 sta synch
 frame_not_ready inc irq_ticks
