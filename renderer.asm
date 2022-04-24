@@ -4,7 +4,7 @@
 ;; Raycasting is done there, in three steps
 ;;---------------------------------------------
 compute_frame   
-                ldx #0
+                ldx #39; screen_width - 1
 @loop                   stx ray_id
                         lda theta
                         sec
@@ -17,9 +17,8 @@ compute_frame
                         jsr compute_line
 
                         ldx ray_id
-                inx
-                cpx screen_width
-                bne @loop
+                dex 
+                bpl @loop
                 rts
 
 ;;---------------------------------------------
