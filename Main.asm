@@ -13,22 +13,49 @@ pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
 ddra=$dc02      ; CIA#1 (Data Direction Register A)
 ddrb=$dc03      ; CIA#1 (Data Direction Register B)
+synch=$71
+main_ticks=$72
+irq_ticks=$73
 
 ;;---------------------------------------------
 ;; main
 ;;---------------------------------------------
 main            
                 jsr setup
-                jmp *       ; infinite loop
+                lda #0
+                sta synch
+@mainloop
+                lda synch
+                bne @continue
+                jsr compute_frame
+                inc main_ticks
+                lda #1
+                sta synch
+@continue       jmp @mainloop
                 
 ;;---------------------------------------------
 ;; irq
 ;;---------------------------------------------
 irq             
                 dec $d019               ; acknowledge IRQ / clear register for next interrupt
-                jsr check_keyboard 
-                jsr compute_frame
+                
+                lda synch
+                beq frame_not_ready
+                jsr check_keyboard
                 jsr draw_frame
+                lda #0
+                sta synch
+frame_not_ready inc irq_ticks
+                lda irq_ticks
+                cmp #50
+                bne @end
+@update_fps     lda main_ticks
+                sta $400
+                
+                lda #0
+                sta irq_ticks
+                sta main_ticks
+@end            
                 jmp $ea31               ; kernel irq routine
 
 ;;---------------------------------------------
@@ -61,6 +88,10 @@ irq_setup
 ;; setup
 ;;---------------------------------------------             
 setup
+                lda #0
+                sta main_ticks
+                sta irq_ticks
+
                 jsr player_setup
                 jsr screen_setup
                 jsr irq_setup
