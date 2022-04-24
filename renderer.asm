@@ -5,10 +5,7 @@
 ;;---------------------------------------------
 compute_frame   
                 ldx #0
-@loop                   txa
-                        pha
-
-                        sta ray_id
+@loop                   stx ray_id
                         lda theta
                         sec
                         sbc half_fov
@@ -19,8 +16,7 @@ compute_frame
                         jsr cast_ray
                         jsr compute_line
 
-                        pla
-                        tax
+                        ldx ray_id
                 inx
                 cpx screen_width
                 bne @loop
