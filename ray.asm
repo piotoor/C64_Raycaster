@@ -97,7 +97,6 @@ cast_ray
                                 sta E_16_L
 
                                 clc
-                                lda B_16_L
                                 adc D_16_L
                                 sta B_16_L
                                 lda B_16_H
@@ -118,7 +117,6 @@ cast_ray
                                 sta E_16_L
 
                                 clc
-                                lda A_16_L
                                 adc C_16_L
                                 sta A_16_L
                                 lda A_16_H
