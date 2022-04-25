@@ -45,7 +45,7 @@ draw_frame
                 sta G_16_H
                 
                 ldx #0
-@rows                   ldy #0
+@rows                   ldy #39 ; screen_width - 1
 @cols                           clc
                                 txa
                                 cmp ray_start,y
@@ -60,9 +60,8 @@ draw_frame
                                 sta (G_16),y
 @end                           
 
-                        iny
-                        cpy screen_width
-                        bne @cols
+                        dey
+                        bpl @cols
                         
                         ; update upper half pointer
                         lda F_16_L
