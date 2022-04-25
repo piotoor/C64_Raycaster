@@ -80,24 +80,22 @@ move_forward
                         adc #1
                         sta stepY
 @y_end          lda posX
+                sta tmp_posX
                 adc stepX
                 sta posX
                 
                 lda posY
+                sta tmp_posY
                 adc stepY
                 sta posY
 
-                lsr
-                lsr
-                lsr
-                lsr
+                ldx posY
+                lda posToMapCoords,x
                 sta mapY
-                lda posX
-                lsr
-                lsr
-                lsr
-                lsr
-                sta mapX
+
+                ldx posX
+                lda posToMapCoords,x
+                sta mapX 
 
                 lda mapY 
                 asl
@@ -109,13 +107,9 @@ move_forward
                 tax
                 lda game_map,x
                 beq @end
-                        lda posX
-                        sec
-                        sbc stepX
+                        lda tmp_posX
                         sta posX
-                        lda posY
-                        sec
-                        sbc stepY
+                        lda tmp_posY
                         sta posY
 @end            rts
 
@@ -148,23 +142,21 @@ move_back
                         adc #1
                         sta stepY
 @y_end          lda posX
+                sta tmp_posX
                 adc stepX
                 sta posX
                 
                 lda posY
+                sta tmp_posY
                 adc stepY
                 sta posY
 
-                lsr
-                lsr
-                lsr
-                lsr
+                ldx posY
+                lda posToMapCoords,x
                 sta mapY
-                lda posX
-                lsr
-                lsr
-                lsr
-                lsr
+
+                ldx posX
+                lda posToMapCoords,x
                 sta mapX
 
                 lda mapY 
@@ -177,12 +169,8 @@ move_back
                 tax
                 lda game_map,x
                 beq @end
-                        lda posX
-                        sec
-                        sbc stepX
+                        lda tmp_posX
                         sta posX
-                        lda posY
-                        sec
-                        sbc stepY
+                        lda tmp_posY
                         sta posY
 @end            rts
