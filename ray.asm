@@ -151,18 +151,19 @@ cast_ray
 ;; a - lineHeight
 ;;---------------------------------------------
 compute_line
-                ldx #7
-@loop                   lda E_16_H
-                        clc
-                        lsr
-                        sta E_16_H
-                        lda E_16_L
-                        ror
-                        sta E_16_L
-                        dex
-                bne @loop
+                lda E_16_L
+                lsr
+                lsr
+                lsr
+                lsr
+                lsr
+                lsr
+                lsr
 
-                ldx E_16_L
+                asl E_16_H
+                ora E_16_H
+                tax
+
                 lda #12
                 sec
                 sbc halfLineHeight,x
