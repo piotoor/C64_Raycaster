@@ -6,7 +6,6 @@ stepY=$6e
 ray_id=$6f
 horizontal=$70
 ray_start=$C000
-ray_end=$C028
 ray_color=$C050
 color1=#8
 color2=#9
@@ -148,7 +147,6 @@ cast_ray
 ;;
 ;; E_16 - finalDist
 ;; ray_start
-;; ray_end
 ;; ray_color
 ;; a - lineHeight
 ;;---------------------------------------------
@@ -165,20 +163,11 @@ compute_line
                 bne @loop
 
                 ldx E_16_L
-                lda halfLineHeight,x
-                clc
-                adc #13
-                ldx ray_id
-                sta ray_end,x
-
-                ldx E_16_L
+                lda #12
                 sec
-                sbc #1
-                sbc halfLineHeight,x
                 sbc halfLineHeight,x
                 ldx ray_id
                 sta ray_start,x
                 lda horizontal
-
                 sta ray_color,x
                 rts

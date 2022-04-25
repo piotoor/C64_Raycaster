@@ -8,6 +8,7 @@
 
 screen_width=#40
 screen_height=#25
+half_screen_height=#13
 half_fov=#20
 pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
@@ -91,7 +92,7 @@ setup
                 lda #0
                 sta main_ticks
                 sta irq_ticks
-
+                
                 jsr player_setup
                 jsr screen_setup
                 jsr irq_setup
