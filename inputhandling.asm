@@ -83,19 +83,19 @@ move_forward
                 sta tmp_posX
                 adc stepX
                 sta posX
-                
+
+                tax
+                lda posToMapCoords,x
+                sta mapX                
                 lda posY
+
                 sta tmp_posY
                 adc stepY
                 sta posY
 
-                ldx posY
+                tax
                 lda posToMapCoords,x
                 sta mapY
-
-                ldx posX
-                lda posToMapCoords,x
-                sta mapX 
 
                 lda mapY 
                 asl
@@ -145,19 +145,19 @@ move_back
                 sta tmp_posX
                 adc stepX
                 sta posX
+
+                tax
+                lda posToMapCoords,x
+                sta mapX
                 
                 lda posY
                 sta tmp_posY
                 adc stepY
                 sta posY
 
-                ldx posY
+                tax
                 lda posToMapCoords,x
                 sta mapY
-
-                ldx posX
-                lda posToMapCoords,x
-                sta mapX
 
                 lda mapY 
                 asl
