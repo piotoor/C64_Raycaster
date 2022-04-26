@@ -34,15 +34,21 @@ compute_frame
 ;; - ray_color
 ;;---------------------------------------------
 draw_frame      
-                lda #$e0
-                sta F_16_L
-                sta G_16_L
-                lda #$d9
-                sta F_16_H
-                sta G_16_H
                 
                 ldx #12
-@rows                   ldy #39 ; screen_width - 1
+@rows                   ; update lower half pointer
+                        lda colorRamLowerL,x
+                        sta G_16_L
+                        lda colorRamLowerH,x
+                        sta G_16_H
+
+                        ; update upper part pointer
+                        lda colorRamUpperL,x
+                        sta F_16_L
+                        lda colorRamUpperH,x
+                        sta F_16_H
+
+                        ldy #39 ; screen_width - 1
 @cols                           clc
                                 txa
                                 cmp ray_start,y
@@ -60,23 +66,7 @@ draw_frame
                         dey
                         bpl @cols
                         
-                        ; update lower half pointer
-                        lda G_16_L
-                        clc
-                        adc #$28
-                        sta G_16_L
-                        lda G_16_H
-                        adc #0
-                        sta G_16_H
 
-                        ; update upper part pointer
-                        lda F_16_L
-                        sec
-                        sbc #$28
-                        sta F_16_L
-                        lda F_16_H
-                        sbc #0
-                        sta F_16_H
 
                 dex
                 bpl @rows
