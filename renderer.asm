@@ -5,8 +5,8 @@
 ;;---------------------------------------------
 compute_frame   
                 ldx #39; screen_width - 1
-@loop                   stx ray_id
-                        lda theta
+                stx ray_id
+@loop                   lda theta
                         sec
                         sbc half_fov
                         adc ray_id
@@ -16,8 +16,7 @@ compute_frame
                         jsr cast_ray
                         jsr compute_line
 
-                        ldx ray_id
-                dex 
+                dec ray_id 
                 bpl @loop
                 rts
 
