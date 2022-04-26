@@ -158,8 +158,9 @@ compute_line
                 lsr
                 lsr
 
-                asl E_16_H
-                ora E_16_H
+                aso E_16_H
+                ;asl E_16_H
+                ;ora E_16_H
                 tax
 
                 lda #12
