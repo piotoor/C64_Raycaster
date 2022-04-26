@@ -163,9 +163,8 @@ compute_line
                 ;ora E_16_H
                 tax
 
-                lda #12
-                sec
-                sbc halfLineHeight,x
+                lda lineStartRow,x
+
                 ldx ray_id
                 sta ray_start,x
                 lda horizontal
