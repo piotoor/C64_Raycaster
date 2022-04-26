@@ -19,14 +19,14 @@ a_pressed       lda #%11111101
                 and #%00000100
                 beq rotate_left
 
-w_pressed       lda #%11111101
-                sta pra
+w_pressed       ;lda #%11111101
+                ;sta pra
                 lda prb
                 and #%00000010
                 beq move_forward
 
-s_pressed       lda #%11111101
-                sta pra
+s_pressed       ;lda #%11111101
+                ;sta pra
                 lda prb
                 and #%00100000
                 beq move_back
