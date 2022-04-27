@@ -165,13 +165,9 @@ cast_ray
 ;;---------------------------------------------
 compute_line
                 ;lda E_16_L
-                lsr
-                lsr
-                lsr
-                lsr
-                lsr
-                lsr
-                lsr
+                asl     ; bit 7 -> 0
+                lda #0  ;
+                adc #0  ;
                 
                 aso E_16_H
                 ;asl E_16_H
