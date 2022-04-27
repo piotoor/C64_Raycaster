@@ -94,12 +94,10 @@ cast_ray
                                 adc stepY
                                 sta mapY
                                 
-                                ;lda mapY
-                                asl
-                                asl
-                                asl
-                                asl
+                                tax
+                                lda mapCoordsToPos,x
                                 
+                                clc
                                 adc mapX
                                 tax
                                 lda game_map,x
@@ -121,12 +119,10 @@ cast_ray
                                 adc stepX
                                 sta mapX
                                 
-                                lda mapY
-                                asl
-                                asl
-                                asl
-                                asl
+                                ldx mapY
+                                lda mapCoordsToPos,x
                                 
+                                clc
                                 adc mapX
                                 tax
                                 lda game_map,x
