@@ -95,6 +95,7 @@ cast_ray
                                 sta E_16_H
                                 lda B_16_L
                                 sta E_16_L
+                                
 
                                 clc
                                 adc D_16_L
@@ -157,7 +158,7 @@ compute_line
                 lsr
                 lsr
                 lsr
-
+                
                 aso E_16_H
                 ;asl E_16_H
                 ;ora E_16_H
