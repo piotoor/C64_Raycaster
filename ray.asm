@@ -88,9 +88,7 @@ cast_ray
                                 lda B_16_L
                                 cmp A_16_L
                         bcs @y_ge_x
-@y_lt_x                                                       
-                                ldy #1
-
+@y_lt_x                        
                                 clc
                                 lda mapY
                                 adc stepY
@@ -101,11 +99,11 @@ cast_ray
                                 asl
                                 asl
                                 asl
-                                clc
+                                
                                 adc mapX
                                 tax
                                 lda game_map,x
-                                bne @endloop
+                                bne @final_res_b
 
                                 clc
                                 lda B_16_L
@@ -118,9 +116,6 @@ cast_ray
 
                         
 @y_ge_x                         
-
-                                ldy #0
-
                                 clc
                                 lda mapX
                                 adc stepX
@@ -131,11 +126,11 @@ cast_ray
                                 asl
                                 asl
                                 asl
-                                clc
+                                
                                 adc mapX
                                 tax
                                 lda game_map,x
-                                bne @endloop
+                                bne @final_res_a
 
                                 clc
                                 lda A_16_L
@@ -144,10 +139,8 @@ cast_ray
                                 lda A_16_H
                                 adc C_16_H
                                 sta A_16_H
-                                jmp @loop
-@endloop                    
-                dey
-                bpl @final_res_b
+                                jmp @loop                   
+
 @final_res_a    lda color2
                 sta horizontal
 
