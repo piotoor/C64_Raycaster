@@ -97,11 +97,9 @@ move_forward
                 lda posToMapCoords,x
                 sta mapY
 
-                lda mapY 
-                asl
-                asl
-                asl
-                asl
+                tax
+                lda mapCoordsToPos,x
+
                 clc
                 adc mapX
                 tax
@@ -159,11 +157,9 @@ move_back
                 lda posToMapCoords,x
                 sta mapY
 
-                lda mapY 
-                asl
-                asl
-                asl
-                asl
+                tax
+                lda mapCoordsToPos,x
+
                 clc
                 adc mapX
                 tax
