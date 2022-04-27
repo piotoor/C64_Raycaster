@@ -88,57 +88,82 @@ cast_ray
                                 lda B_16_L
                                 cmp A_16_L
                         bcs @y_ge_x
-@y_lt_x                         lda color1
-                                sta horizontal
-
-                                lda B_16_H
-                                sta E_16_H
-                                lda B_16_L
-                                sta E_16_L
-                                
-
-                                clc
-                                adc D_16_L
-                                sta B_16_L
-                                lda B_16_H
-                                adc D_16_H
-                                sta B_16_H
+@y_lt_x                                                       
+                                ldy #1
 
                                 clc
                                 lda mapY
                                 adc stepY
                                 sta mapY
-                        jmp @end
-@y_ge_x                         lda color2
-                                sta horizontal
-
-                                lda A_16_H
-                                sta E_16_H
-                                lda A_16_L
-                                sta E_16_L
+                                
+                                ;lda mapY
+                                asl
+                                asl
+                                asl
+                                asl
+                                clc
+                                adc mapX
+                                tax
+                                lda game_map,x
+                                bne @endloop
 
                                 clc
-                                adc C_16_L
-                                sta A_16_L
-                                lda A_16_H
-                                adc C_16_H
-                                sta A_16_H
+                                lda B_16_L
+                                adc D_16_L
+                                sta B_16_L
+                                lda B_16_H
+                                adc D_16_H
+                                sta B_16_H
+                                jmp @loop
+
+                        
+@y_ge_x                         
+
+                                ldy #0
 
                                 clc
                                 lda mapX
                                 adc stepX
                                 sta mapX
-                       
-@end                    lda mapY
-                        asl
-                        asl
-                        asl
-                        asl
-                        clc
-                        adc mapX
-                tax
-                lda game_map,x
-                beq @loop
+                                
+                                lda mapY
+                                asl
+                                asl
+                                asl
+                                asl
+                                clc
+                                adc mapX
+                                tax
+                                lda game_map,x
+                                bne @endloop
+
+                                clc
+                                lda A_16_L
+                                adc C_16_L
+                                sta A_16_L
+                                lda A_16_H
+                                adc C_16_H
+                                sta A_16_H
+                                jmp @loop
+@endloop                    
+                dey
+                bpl @final_res_b
+@final_res_a    lda color2
+                sta horizontal
+
+                lda A_16_H
+                sta E_16_H
+                lda A_16_L
+                sta E_16_L
+
+                rts
+@final_res_b    lda color1
+                sta horizontal
+
+                lda B_16_H
+                sta E_16_H
+                lda B_16_L
+                sta E_16_L
                 rts
 
 ;;---------------------------------------------
