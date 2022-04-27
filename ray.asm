@@ -168,7 +168,7 @@ cast_ray
 ;; a - lineHeight
 ;;---------------------------------------------
 compute_line
-                lda E_16_L
+                ;lda E_16_L
                 lsr
                 lsr
                 lsr
