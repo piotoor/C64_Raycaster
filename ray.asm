@@ -138,7 +138,8 @@ cast_ray
                                 jmp @loop                   
 
 @final_res_a    lda color2
-                sta horizontal
+                ldx ray_id
+                sta ray_color,x
 
                 lda A_16_H
                 sta E_16_H
@@ -147,7 +148,8 @@ cast_ray
 
                 rts
 @final_res_b    lda color1
-                sta horizontal
+                ldx ray_id
+                sta ray_color,x
 
                 lda B_16_H
                 sta E_16_H
@@ -178,6 +180,4 @@ compute_line
 
                 ldx ray_id
                 sta ray_start,x
-                lda horizontal
-                sta ray_color,x
                 rts
