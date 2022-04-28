@@ -66,7 +66,7 @@ move_forward
                 ;lsr ; TODO add speed
                 sta stepY
 
-                ldx theta
+                
                 ldy xPlusTheta,x
                 bne @x_end
 @x_minus                lda stepX
@@ -126,7 +126,7 @@ move_back
                 ;lsr ; TODO add speed
                 sta stepY
 
-                ldx theta
+                
                 ldy xPlusTheta,x
                 beq @x_end
 @x_plus                 lda stepX
