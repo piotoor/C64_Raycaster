@@ -174,10 +174,10 @@ compute_line
                 aso E_16_H
                 ;asl E_16_H
                 ;ora E_16_H
-                tax
 
-                lda lineStartRow,x
+                tay
+                lda lineStartRow,y
 
-                ldx ray_id
+                ;ldx ray_id     ; ray_id is already in x after cast_ray
                 sta ray_start,x
                 rts
