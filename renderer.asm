@@ -1,7 +1,7 @@
 ;;---------------------------------------------
 ;; compute_frame
 ;;
-;; Raycasting is done there, in three steps
+;; Raycasting is done there, in two steps
 ;;---------------------------------------------
 compute_frame   
                 ldx #39; screen_width - 1
@@ -14,8 +14,6 @@ compute_frame
 
                         jsr init_ray_params
                         jsr cast_ray
-                        jsr compute_line
-
                 dec ray_id 
                 bpl @loop
                 rts

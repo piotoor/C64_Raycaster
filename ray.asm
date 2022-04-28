@@ -110,9 +110,7 @@ cast_ray
                                 lda B_16_H
                                 adc D_16_H
                                 sta B_16_H
-                                jmp @loop
-
-                        
+                                jmp @loop    
 @y_ge_x                         
                                 clc
                                 lda mapX
@@ -137,47 +135,36 @@ cast_ray
                                 sta A_16_H
                                 jmp @loop                   
 
-@final_res_a    lda color2
-                ldx ray_id
-                sta ray_color,x
-
-                lda A_16_H
-                sta E_16_H
-                lda A_16_L
-                sta E_16_L
-
-                rts
-@final_res_b    lda color1
-                ldx ray_id
-                sta ray_color,x
-
-                lda B_16_H
-                sta E_16_H
-                lda B_16_L
-                sta E_16_L
-                rts
-
-;;---------------------------------------------
-;; compute_line
-;;
-;; E_16 - finalDist
-;; ray_start
-;; ray_color
-;; a - lineHeight
-;;---------------------------------------------
-compute_line
-                ;lda E_16_L ; E_16_L is already in a after cast_ray
-                asl     ; bit 7 -> 0
+@final_res_a    asl     ; bit 7 -> 0
                 lda #0  ;
                 adc #0  ;
                 
-                aso E_16_H
+                aso A_16_H
                 ;asl E_16_H
                 ;ora E_16_H
-
                 tay
                 lda lineStartRow,y
 
-                ;ldx ray_id     ; ray_id is already in x after cast_ray
+                ldx ray_id
                 sta ray_start,x
+
+                lda color2
+                sta ray_color,x
+                rts
+
+@final_res_b    asl     ; bit 7 -> 0
+                lda #0  ;
+                adc #0  ;
+                
+                aso B_16_H
+                ;asl E_16_H
+                ;ora E_16_H
+                tay
+                lda lineStartRow,y
+
+                ldx ray_id
+                sta ray_start,x
+
+                lda color1
+                sta ray_color,x
                 rts
