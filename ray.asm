@@ -166,7 +166,7 @@ cast_ray
 ;; a - lineHeight
 ;;---------------------------------------------
 compute_line
-                ;lda E_16_L
+                ;lda E_16_L ; E_16_L is already in a after cast_ray
                 asl     ; bit 7 -> 0
                 lda #0  ;
                 adc #0  ;
