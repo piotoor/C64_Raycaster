@@ -21,17 +21,15 @@ floor_color=#11
 ;; D_16 - dy
 ;;---------------------------------------------
 init_ray_params
-                lda #1
-                sta stepX
-                sta stepY
-                
                 ldx posX
                 lda posToMapCoords,x
                 sta mapX   
                 ldx rayTheta
                 ldy xPlusTheta,x
                 beq @x_minus
-@x_plus                 ldx posX
+@x_plus                 ldx #1
+                        stx stepX
+                        ldx posX
                         lda plusThetaInitCoord,x
                 jmp @x_end
 @x_minus                ldx #-1
@@ -48,7 +46,9 @@ init_ray_params
                 ldx rayTheta
                 ldy yPlusTheta,x
                 beq @y_minus
-@y_plus                 ldx posY
+@y_plus                 ldx #1
+                        stx stepY
+                        ldx posY
                         lda plusThetaInitCoord,x
                 jmp @y_end
 @y_minus                ldx #-1
