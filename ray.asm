@@ -28,16 +28,16 @@ init_ray_params
                 ldx rayTheta
                 ldy xPlusTheta,x
                 beq @x_minus
-@x_plus                 ldx #1
-                        stx stepX
-                        ldx posX
-                        lda plusThetaInitCoord,x
+@x_plus                 ldy #1
+                        sty stepX
+                        ldy posX
+                        lda plusThetaInitCoord,y
                 jmp @x_end
-@x_minus                ldx #-1
-                        stx stepX
-                        ldx posX
-                        lda minusThetaInitCoord,x
-@x_end          ldx rayTheta
+@x_minus                ldy #-1
+                        sty stepX
+                        ldy posX
+                        lda minusThetaInitCoord,y
+@x_end          
                 ldy reducedTheta,x
                 mxOverCos A_16_L,A_16_H
 
@@ -47,16 +47,16 @@ init_ray_params
                 ldx rayTheta
                 ldy yPlusTheta,x
                 beq @y_minus
-@y_plus                 ldx #1
-                        stx stepY
-                        ldx posY
-                        lda plusThetaInitCoord,x
+@y_plus                 ldy #1
+                        sty stepY
+                        ldy posY
+                        lda plusThetaInitCoord,y
                 jmp @y_end
-@y_minus                ldx #-1
-                        stx stepY
-                        ldx posY
-                        lda minusThetaInitCoord,x
-@y_end          ldx rayTheta
+@y_minus                ldy #-1
+                        sty stepY
+                        ldy posY
+                        lda minusThetaInitCoord,y
+@y_end          
                 ldy mirrorReducedTheta,x
                 mxOverCos B_16_L,B_16_H
 
