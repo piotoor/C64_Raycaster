@@ -136,10 +136,10 @@ cast_ray
                                 sta A_16_H
                                 jmp @loop                   
 
-@final_res_a    asl     ; bit 7 -> 0
-                lda #0  ;
-                adc #0  ;
-                
+@final_res_a    lda A_16_L
+                asl             ; bit 7 -> 0
+                lda #0          ;
+                adc #0          ;
                 aso A_16_H
                 ;asl E_16_H
                 ;ora E_16_H
@@ -153,9 +153,10 @@ cast_ray
                 sta ray_color,x
                 rts
 
-@final_res_b    asl     ; bit 7 -> 0
-                lda #0  ;
-                adc #0  ;
+@final_res_b    lda B_16_L
+                asl             ; bit 7 -> 0
+                lda #0          ;
+                adc #0          ;
                 
                 aso B_16_H
                 ;asl E_16_H
