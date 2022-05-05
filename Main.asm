@@ -29,6 +29,7 @@ main
                 lda synch
                 bne @continue
                 jsr compute_frame
+                jsr draw_back_buffer
                 inc main_ticks
                 lda #1
                 sta synch
@@ -42,7 +43,7 @@ irq
                 
                 lda synch
                 beq frame_not_ready
-                jsr draw_frame
+                jsr draw_front_buffer
                 jsr check_keyboard
                 lda #0
                 sta synch
@@ -79,7 +80,7 @@ irq_setup
                 sta $0314   
                 stx $0315   
 
-                lda #$00    ; trigger interrupt at row zero
+                lda #$00    
                 sta $d012
 
                 cli
