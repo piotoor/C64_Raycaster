@@ -23,17 +23,17 @@ irq_ticks=$73
 ;;---------------------------------------------
 main            
                 jsr setup
+                lda #0
+                sta synch
 @mainloop
-                
+                lda synch
+                bne @continue
                 jsr compute_frame
-                jsr draw_frame
-                
-                
-        
-                jsr check_keyboard
-
+                jsr draw_back_buffer
                 inc main_ticks
-                jmp @mainloop
+                lda #1
+                sta synch
+@continue       jmp @mainloop
                 
 ;;---------------------------------------------
 ;; irq
@@ -41,13 +41,17 @@ main
 irq             
                 dec $d019               ; acknowledge IRQ / clear register for next interrupt
                 
-
-                inc irq_ticks
+                lda synch
+                beq frame_not_ready
+                jsr draw_front_buffer
+                jsr check_keyboard
+                lda #0
+                sta synch
+frame_not_ready inc irq_ticks
                 lda irq_ticks
                 cmp #50
-                
                 bne @end
-                lda main_ticks
+@update_fps     lda main_ticks
                 sta $400
                 
                 lda #0
@@ -76,7 +80,7 @@ irq_setup
                 sta $0314   
                 stx $0315   
 
-                lda #$00    ; trigger interrupt at row zero
+                lda #$00    
                 sta $d012
 
                 cli

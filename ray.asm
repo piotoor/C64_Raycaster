@@ -6,7 +6,8 @@ stepY=$6e
 ray_id=$6f
 horizontal=$70
 ray_start=$C000
-ray_color=$C050
+ray_color=$C028
+back_buff=$C800
 color1=#8
 color2=#9
 ceil_color=#0
@@ -27,16 +28,16 @@ init_ray_params
                 ldx rayTheta
                 ldy xPlusTheta,x
                 beq @x_minus
-@x_plus                 ldx #1
-                        stx stepX
-                        ldx posX
-                        lda plusThetaInitCoord,x
+@x_plus                 ldy #1
+                        sty stepX
+                        ldy posX
+                        lda plusThetaInitCoord,y
                 jmp @x_end
-@x_minus                ldx #-1
-                        stx stepX
-                        ldx posX
-                        lda minusThetaInitCoord,x
-@x_end          ldx rayTheta
+@x_minus                ldy #-1
+                        sty stepX
+                        ldy posX
+                        lda minusThetaInitCoord,y
+@x_end          
                 ldy reducedTheta,x
                 mxOverCos A_16_L,A_16_H
 
@@ -46,16 +47,16 @@ init_ray_params
                 ldx rayTheta
                 ldy yPlusTheta,x
                 beq @y_minus
-@y_plus                 ldx #1
-                        stx stepY
-                        ldx posY
-                        lda plusThetaInitCoord,x
+@y_plus                 ldy #1
+                        sty stepY
+                        ldy posY
+                        lda plusThetaInitCoord,y
                 jmp @y_end
-@y_minus                ldx #-1
-                        stx stepY
-                        ldx posY
-                        lda minusThetaInitCoord,x
-@y_end          ldx rayTheta
+@y_minus                ldy #-1
+                        sty stepY
+                        ldy posY
+                        lda minusThetaInitCoord,y
+@y_end          
                 ldy mirrorReducedTheta,x
                 mxOverCos B_16_L,B_16_H
 
@@ -135,10 +136,10 @@ cast_ray
                                 sta A_16_H
                                 jmp @loop                   
 
-@final_res_a    asl     ; bit 7 -> 0
-                lda #0  ;
-                adc #0  ;
-                
+@final_res_a    lda A_16_L
+                asl             ; bit 7 -> 0
+                lda #0          ;
+                adc #0          ;
                 aso A_16_H
                 ;asl E_16_H
                 ;ora E_16_H
@@ -152,9 +153,10 @@ cast_ray
                 sta ray_color,x
                 rts
 
-@final_res_b    asl     ; bit 7 -> 0
-                lda #0  ;
-                adc #0  ;
+@final_res_b    lda B_16_L
+                asl             ; bit 7 -> 0
+                lda #0          ;
+                adc #0          ;
                 
                 aso B_16_H
                 ;asl E_16_H
