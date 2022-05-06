@@ -33,12 +33,7 @@ compute_frame
 draw_back_buffer     
                 
                 ldx #12
-@rows                   ; update lower half pointer
-                        lda backBuffLowerL,x
-                        sta G_16_L
-                        lda backBuffLowerH,x
-                        sta G_16_H
-
+@rows                   
                         ; update upper part pointer
                         lda backBuffUpperL,x
                         sta F_16_L
@@ -52,19 +47,14 @@ draw_back_buffer
                                 bcs @draw_walls
 @draw_ceil_and_floor            lda ceil_color
                                 sta (F_16),y
-                                lda floor_color
-                                sta (G_16),y
                                 jmp @end
 @draw_walls                     lda ray_color,y  
                                 sta (F_16),y
-                                sta (G_16),y
 @end                           
 
                         dey
                         bpl @cols
                         
-
-
                 dex
                 bpl @rows
                 rts
@@ -77,964 +67,1445 @@ draw_back_buffer
 draw_front_buffer 
                 lda $c800
                 sta $d800
+                sta $dbc0
                 lda $c801
                 sta $d801
+                sta $dbc1
                 lda $c802
                 sta $d802
+                sta $dbc2
                 lda $c803
                 sta $d803
+                sta $dbc3
                 lda $c804
                 sta $d804
+                sta $dbc4
                 lda $c805
                 sta $d805
+                sta $dbc5
                 lda $c806
                 sta $d806
+                sta $dbc6
                 lda $c807
                 sta $d807
+                sta $dbc7
                 lda $c808
                 sta $d808
+                sta $dbc8
                 lda $c809
                 sta $d809
+                sta $dbc9
                 lda $c80a
                 sta $d80a
+                sta $dbca
                 lda $c80b
                 sta $d80b
+                sta $dbcb
                 lda $c80c
                 sta $d80c
+                sta $dbcc
                 lda $c80d
                 sta $d80d
+                sta $dbcd
                 lda $c80e
                 sta $d80e
+                sta $dbce
                 lda $c80f
                 sta $d80f
+                sta $dbcf
                 lda $c810
                 sta $d810
+                sta $dbd0
                 lda $c811
                 sta $d811
+                sta $dbd1
                 lda $c812
                 sta $d812
+                sta $dbd2
                 lda $c813
                 sta $d813
+                sta $dbd3
                 lda $c814
                 sta $d814
+                sta $dbd4
                 lda $c815
                 sta $d815
+                sta $dbd5
                 lda $c816
                 sta $d816
+                sta $dbd6
                 lda $c817
                 sta $d817
+                sta $dbd7
                 lda $c818
                 sta $d818
+                sta $dbd8
                 lda $c819
                 sta $d819
+                sta $dbd9
                 lda $c81a
                 sta $d81a
+                sta $dbda
                 lda $c81b
                 sta $d81b
+                sta $dbdb
                 lda $c81c
                 sta $d81c
+                sta $dbdc
                 lda $c81d
                 sta $d81d
+                sta $dbdd
                 lda $c81e
                 sta $d81e
+                sta $dbde
                 lda $c81f
                 sta $d81f
+                sta $dbdf
                 lda $c820
                 sta $d820
+                sta $dbe0
                 lda $c821
                 sta $d821
+                sta $dbe1
                 lda $c822
                 sta $d822
+                sta $dbe2
                 lda $c823
                 sta $d823
+                sta $dbe3
                 lda $c824
                 sta $d824
+                sta $dbe4
                 lda $c825
                 sta $d825
+                sta $dbe5
                 lda $c826
                 sta $d826
+                sta $dbe6
                 lda $c827
                 sta $d827
+                sta $dbe7
                 lda $c828
                 sta $d828
+                sta $db98
                 lda $c829
                 sta $d829
+                sta $db99
                 lda $c82a
                 sta $d82a
+                sta $db9a
                 lda $c82b
                 sta $d82b
+                sta $db9b
                 lda $c82c
                 sta $d82c
+                sta $db9c
                 lda $c82d
                 sta $d82d
+                sta $db9d
                 lda $c82e
                 sta $d82e
+                sta $db9e
                 lda $c82f
                 sta $d82f
+                sta $db9f
                 lda $c830
                 sta $d830
+                sta $dba0
                 lda $c831
                 sta $d831
+                sta $dba1
                 lda $c832
                 sta $d832
+                sta $dba2
                 lda $c833
                 sta $d833
+                sta $dba3
                 lda $c834
                 sta $d834
+                sta $dba4
                 lda $c835
                 sta $d835
+                sta $dba5
                 lda $c836
                 sta $d836
+                sta $dba6
                 lda $c837
                 sta $d837
+                sta $dba7
                 lda $c838
                 sta $d838
+                sta $dba8
                 lda $c839
                 sta $d839
+                sta $dba9
                 lda $c83a
                 sta $d83a
+                sta $dbaa
                 lda $c83b
                 sta $d83b
+                sta $dbab
                 lda $c83c
                 sta $d83c
+                sta $dbac
                 lda $c83d
                 sta $d83d
+                sta $dbad
                 lda $c83e
                 sta $d83e
+                sta $dbae
                 lda $c83f
                 sta $d83f
+                sta $dbaf
                 lda $c840
                 sta $d840
+                sta $dbb0
                 lda $c841
                 sta $d841
+                sta $dbb1
                 lda $c842
                 sta $d842
+                sta $dbb2
                 lda $c843
                 sta $d843
+                sta $dbb3
                 lda $c844
                 sta $d844
+                sta $dbb4
                 lda $c845
                 sta $d845
+                sta $dbb5
                 lda $c846
                 sta $d846
+                sta $dbb6
                 lda $c847
                 sta $d847
+                sta $dbb7
                 lda $c848
                 sta $d848
+                sta $dbb8
                 lda $c849
                 sta $d849
+                sta $dbb9
                 lda $c84a
                 sta $d84a
+                sta $dbba
                 lda $c84b
                 sta $d84b
+                sta $dbbb
                 lda $c84c
                 sta $d84c
+                sta $dbbc
                 lda $c84d
                 sta $d84d
+                sta $dbbd
                 lda $c84e
                 sta $d84e
+                sta $dbbe
                 lda $c84f
                 sta $d84f
+                sta $dbbf
                 lda $c850
                 sta $d850
+                sta $db70
                 lda $c851
                 sta $d851
+                sta $db71
                 lda $c852
                 sta $d852
+                sta $db72
                 lda $c853
                 sta $d853
+                sta $db73
                 lda $c854
                 sta $d854
+                sta $db74
                 lda $c855
                 sta $d855
+                sta $db75
                 lda $c856
                 sta $d856
+                sta $db76
                 lda $c857
                 sta $d857
+                sta $db77
                 lda $c858
                 sta $d858
+                sta $db78
                 lda $c859
                 sta $d859
+                sta $db79
                 lda $c85a
                 sta $d85a
+                sta $db7a
                 lda $c85b
                 sta $d85b
+                sta $db7b
                 lda $c85c
                 sta $d85c
+                sta $db7c
                 lda $c85d
                 sta $d85d
+                sta $db7d
                 lda $c85e
                 sta $d85e
+                sta $db7e
                 lda $c85f
                 sta $d85f
+                sta $db7f
                 lda $c860
                 sta $d860
+                sta $db80
                 lda $c861
                 sta $d861
+                sta $db81
                 lda $c862
                 sta $d862
+                sta $db82
                 lda $c863
                 sta $d863
+                sta $db83
                 lda $c864
                 sta $d864
+                sta $db84
                 lda $c865
                 sta $d865
+                sta $db85
                 lda $c866
                 sta $d866
+                sta $db86
                 lda $c867
                 sta $d867
+                sta $db87
                 lda $c868
                 sta $d868
+                sta $db88
                 lda $c869
                 sta $d869
+                sta $db89
                 lda $c86a
                 sta $d86a
+                sta $db8a
                 lda $c86b
                 sta $d86b
+                sta $db8b
                 lda $c86c
                 sta $d86c
+                sta $db8c
                 lda $c86d
                 sta $d86d
+                sta $db8d
                 lda $c86e
                 sta $d86e
+                sta $db8e
                 lda $c86f
                 sta $d86f
+                sta $db8f
                 lda $c870
                 sta $d870
+                sta $db90
                 lda $c871
                 sta $d871
+                sta $db91
                 lda $c872
                 sta $d872
+                sta $db92
                 lda $c873
                 sta $d873
+                sta $db93
                 lda $c874
                 sta $d874
+                sta $db94
                 lda $c875
                 sta $d875
+                sta $db95
                 lda $c876
                 sta $d876
+                sta $db96
                 lda $c877
                 sta $d877
+                sta $db97
                 lda $c878
                 sta $d878
+                sta $db48
                 lda $c879
                 sta $d879
+                sta $db49
                 lda $c87a
                 sta $d87a
+                sta $db4a
                 lda $c87b
                 sta $d87b
+                sta $db4b
                 lda $c87c
                 sta $d87c
+                sta $db4c
                 lda $c87d
                 sta $d87d
+                sta $db4d
                 lda $c87e
                 sta $d87e
+                sta $db4e
                 lda $c87f
                 sta $d87f
+                sta $db4f
                 lda $c880
                 sta $d880
+                sta $db50
                 lda $c881
                 sta $d881
+                sta $db51
                 lda $c882
                 sta $d882
+                sta $db52
                 lda $c883
                 sta $d883
+                sta $db53
                 lda $c884
                 sta $d884
+                sta $db54
                 lda $c885
                 sta $d885
+                sta $db55
                 lda $c886
                 sta $d886
+                sta $db56
                 lda $c887
                 sta $d887
+                sta $db57
                 lda $c888
                 sta $d888
+                sta $db58
                 lda $c889
                 sta $d889
+                sta $db59
                 lda $c88a
                 sta $d88a
+                sta $db5a
                 lda $c88b
                 sta $d88b
+                sta $db5b
                 lda $c88c
                 sta $d88c
+                sta $db5c
                 lda $c88d
                 sta $d88d
+                sta $db5d
                 lda $c88e
                 sta $d88e
+                sta $db5e
                 lda $c88f
                 sta $d88f
+                sta $db5f
                 lda $c890
                 sta $d890
+                sta $db60
                 lda $c891
                 sta $d891
+                sta $db61
                 lda $c892
                 sta $d892
+                sta $db62
                 lda $c893
                 sta $d893
+                sta $db63
                 lda $c894
                 sta $d894
+                sta $db64
                 lda $c895
                 sta $d895
+                sta $db65
                 lda $c896
                 sta $d896
+                sta $db66
                 lda $c897
                 sta $d897
+                sta $db67
                 lda $c898
                 sta $d898
+                sta $db68
                 lda $c899
                 sta $d899
+                sta $db69
                 lda $c89a
                 sta $d89a
+                sta $db6a
                 lda $c89b
                 sta $d89b
+                sta $db6b
                 lda $c89c
                 sta $d89c
+                sta $db6c
                 lda $c89d
                 sta $d89d
+                sta $db6d
                 lda $c89e
                 sta $d89e
+                sta $db6e
                 lda $c89f
                 sta $d89f
+                sta $db6f
                 lda $c8a0
                 sta $d8a0
+                sta $db20
                 lda $c8a1
                 sta $d8a1
+                sta $db21
                 lda $c8a2
                 sta $d8a2
+                sta $db22
                 lda $c8a3
                 sta $d8a3
+                sta $db23
                 lda $c8a4
                 sta $d8a4
+                sta $db24
                 lda $c8a5
                 sta $d8a5
+                sta $db25
                 lda $c8a6
                 sta $d8a6
+                sta $db26
                 lda $c8a7
                 sta $d8a7
+                sta $db27
                 lda $c8a8
                 sta $d8a8
+                sta $db28
                 lda $c8a9
                 sta $d8a9
+                sta $db29
                 lda $c8aa
                 sta $d8aa
+                sta $db2a
                 lda $c8ab
                 sta $d8ab
+                sta $db2b
                 lda $c8ac
                 sta $d8ac
+                sta $db2c
                 lda $c8ad
                 sta $d8ad
+                sta $db2d
                 lda $c8ae
                 sta $d8ae
+                sta $db2e
                 lda $c8af
                 sta $d8af
+                sta $db2f
                 lda $c8b0
                 sta $d8b0
+                sta $db30
                 lda $c8b1
                 sta $d8b1
+                sta $db31
                 lda $c8b2
                 sta $d8b2
+                sta $db32
                 lda $c8b3
                 sta $d8b3
+                sta $db33
                 lda $c8b4
                 sta $d8b4
+                sta $db34
                 lda $c8b5
                 sta $d8b5
+                sta $db35
                 lda $c8b6
                 sta $d8b6
+                sta $db36
                 lda $c8b7
                 sta $d8b7
+                sta $db37
                 lda $c8b8
                 sta $d8b8
+                sta $db38
                 lda $c8b9
                 sta $d8b9
+                sta $db39
                 lda $c8ba
                 sta $d8ba
+                sta $db3a
                 lda $c8bb
                 sta $d8bb
+                sta $db3b
                 lda $c8bc
                 sta $d8bc
+                sta $db3c
                 lda $c8bd
                 sta $d8bd
+                sta $db3d
                 lda $c8be
                 sta $d8be
+                sta $db3e
                 lda $c8bf
                 sta $d8bf
+                sta $db3f
                 lda $c8c0
                 sta $d8c0
+                sta $db40
                 lda $c8c1
                 sta $d8c1
+                sta $db41
                 lda $c8c2
                 sta $d8c2
+                sta $db42
                 lda $c8c3
                 sta $d8c3
+                sta $db43
                 lda $c8c4
                 sta $d8c4
+                sta $db44
                 lda $c8c5
                 sta $d8c5
+                sta $db45
                 lda $c8c6
                 sta $d8c6
+                sta $db46
                 lda $c8c7
                 sta $d8c7
+                sta $db47
                 lda $c8c8
                 sta $d8c8
+                sta $daf8
                 lda $c8c9
                 sta $d8c9
+                sta $daf9
                 lda $c8ca
                 sta $d8ca
+                sta $dafa
                 lda $c8cb
                 sta $d8cb
+                sta $dafb
                 lda $c8cc
                 sta $d8cc
+                sta $dafc
                 lda $c8cd
                 sta $d8cd
+                sta $dafd
                 lda $c8ce
                 sta $d8ce
+                sta $dafe
                 lda $c8cf
                 sta $d8cf
+                sta $daff
                 lda $c8d0
                 sta $d8d0
+                sta $db00
                 lda $c8d1
                 sta $d8d1
+                sta $db01
                 lda $c8d2
                 sta $d8d2
+                sta $db02
                 lda $c8d3
                 sta $d8d3
+                sta $db03
                 lda $c8d4
                 sta $d8d4
+                sta $db04
                 lda $c8d5
                 sta $d8d5
+                sta $db05
                 lda $c8d6
                 sta $d8d6
+                sta $db06
                 lda $c8d7
                 sta $d8d7
+                sta $db07
                 lda $c8d8
                 sta $d8d8
+                sta $db08
                 lda $c8d9
                 sta $d8d9
+                sta $db09
                 lda $c8da
                 sta $d8da
+                sta $db0a
                 lda $c8db
                 sta $d8db
+                sta $db0b
                 lda $c8dc
                 sta $d8dc
+                sta $db0c
                 lda $c8dd
                 sta $d8dd
+                sta $db0d
                 lda $c8de
                 sta $d8de
+                sta $db0e
                 lda $c8df
                 sta $d8df
+                sta $db0f
                 lda $c8e0
                 sta $d8e0
+                sta $db10
                 lda $c8e1
                 sta $d8e1
+                sta $db11
                 lda $c8e2
                 sta $d8e2
+                sta $db12
                 lda $c8e3
                 sta $d8e3
+                sta $db13
                 lda $c8e4
                 sta $d8e4
+                sta $db14
                 lda $c8e5
                 sta $d8e5
+                sta $db15
                 lda $c8e6
                 sta $d8e6
+                sta $db16
                 lda $c8e7
                 sta $d8e7
+                sta $db17
                 lda $c8e8
                 sta $d8e8
+                sta $db18
                 lda $c8e9
                 sta $d8e9
+                sta $db19
                 lda $c8ea
                 sta $d8ea
+                sta $db1a
                 lda $c8eb
                 sta $d8eb
+                sta $db1b
                 lda $c8ec
                 sta $d8ec
+                sta $db1c
                 lda $c8ed
                 sta $d8ed
+                sta $db1d
                 lda $c8ee
                 sta $d8ee
+                sta $db1e
                 lda $c8ef
                 sta $d8ef
+                sta $db1f
                 lda $c8f0
                 sta $d8f0
+                sta $dad0
                 lda $c8f1
                 sta $d8f1
+                sta $dad1
                 lda $c8f2
                 sta $d8f2
+                sta $dad2
                 lda $c8f3
                 sta $d8f3
+                sta $dad3
                 lda $c8f4
                 sta $d8f4
+                sta $dad4
                 lda $c8f5
                 sta $d8f5
+                sta $dad5
                 lda $c8f6
                 sta $d8f6
+                sta $dad6
                 lda $c8f7
                 sta $d8f7
+                sta $dad7
                 lda $c8f8
                 sta $d8f8
+                sta $dad8
                 lda $c8f9
                 sta $d8f9
+                sta $dad9
                 lda $c8fa
                 sta $d8fa
+                sta $dada
                 lda $c8fb
                 sta $d8fb
+                sta $dadb
                 lda $c8fc
                 sta $d8fc
+                sta $dadc
                 lda $c8fd
                 sta $d8fd
+                sta $dadd
                 lda $c8fe
                 sta $d8fe
+                sta $dade
                 lda $c8ff
                 sta $d8ff
+                sta $dadf
                 lda $c900
                 sta $d900
+                sta $dae0
                 lda $c901
                 sta $d901
+                sta $dae1
                 lda $c902
                 sta $d902
+                sta $dae2
                 lda $c903
                 sta $d903
+                sta $dae3
                 lda $c904
                 sta $d904
+                sta $dae4
                 lda $c905
                 sta $d905
+                sta $dae5
                 lda $c906
                 sta $d906
+                sta $dae6
                 lda $c907
                 sta $d907
+                sta $dae7
                 lda $c908
                 sta $d908
+                sta $dae8
                 lda $c909
                 sta $d909
+                sta $dae9
                 lda $c90a
                 sta $d90a
+                sta $daea
                 lda $c90b
                 sta $d90b
+                sta $daeb
                 lda $c90c
                 sta $d90c
+                sta $daec
                 lda $c90d
                 sta $d90d
+                sta $daed
                 lda $c90e
                 sta $d90e
+                sta $daee
                 lda $c90f
                 sta $d90f
+                sta $daef
                 lda $c910
                 sta $d910
+                sta $daf0
                 lda $c911
                 sta $d911
+                sta $daf1
                 lda $c912
                 sta $d912
+                sta $daf2
                 lda $c913
                 sta $d913
+                sta $daf3
                 lda $c914
                 sta $d914
+                sta $daf4
                 lda $c915
                 sta $d915
+                sta $daf5
                 lda $c916
                 sta $d916
+                sta $daf6
                 lda $c917
                 sta $d917
+                sta $daf7
                 lda $c918
                 sta $d918
+                sta $daa8
                 lda $c919
                 sta $d919
+                sta $daa9
                 lda $c91a
                 sta $d91a
+                sta $daaa
                 lda $c91b
                 sta $d91b
+                sta $daab
                 lda $c91c
                 sta $d91c
+                sta $daac
                 lda $c91d
                 sta $d91d
+                sta $daad
                 lda $c91e
                 sta $d91e
+                sta $daae
                 lda $c91f
                 sta $d91f
+                sta $daaf
                 lda $c920
                 sta $d920
+                sta $dab0
                 lda $c921
                 sta $d921
+                sta $dab1
                 lda $c922
                 sta $d922
+                sta $dab2
                 lda $c923
                 sta $d923
+                sta $dab3
                 lda $c924
                 sta $d924
+                sta $dab4
                 lda $c925
                 sta $d925
+                sta $dab5
                 lda $c926
                 sta $d926
+                sta $dab6
                 lda $c927
                 sta $d927
+                sta $dab7
                 lda $c928
                 sta $d928
+                sta $dab8
                 lda $c929
                 sta $d929
+                sta $dab9
                 lda $c92a
                 sta $d92a
+                sta $daba
                 lda $c92b
                 sta $d92b
+                sta $dabb
                 lda $c92c
                 sta $d92c
+                sta $dabc
                 lda $c92d
                 sta $d92d
+                sta $dabd
                 lda $c92e
                 sta $d92e
+                sta $dabe
                 lda $c92f
                 sta $d92f
+                sta $dabf
                 lda $c930
                 sta $d930
+                sta $dac0
                 lda $c931
                 sta $d931
+                sta $dac1
                 lda $c932
                 sta $d932
+                sta $dac2
                 lda $c933
                 sta $d933
+                sta $dac3
                 lda $c934
                 sta $d934
+                sta $dac4
                 lda $c935
                 sta $d935
+                sta $dac5
                 lda $c936
                 sta $d936
+                sta $dac6
                 lda $c937
                 sta $d937
+                sta $dac7
                 lda $c938
                 sta $d938
+                sta $dac8
                 lda $c939
                 sta $d939
+                sta $dac9
                 lda $c93a
                 sta $d93a
+                sta $daca
                 lda $c93b
                 sta $d93b
+                sta $dacb
                 lda $c93c
                 sta $d93c
+                sta $dacc
                 lda $c93d
                 sta $d93d
+                sta $dacd
                 lda $c93e
                 sta $d93e
+                sta $dace
                 lda $c93f
                 sta $d93f
+                sta $dacf
                 lda $c940
                 sta $d940
+                sta $da80
                 lda $c941
                 sta $d941
+                sta $da81
                 lda $c942
                 sta $d942
+                sta $da82
                 lda $c943
                 sta $d943
+                sta $da83
                 lda $c944
                 sta $d944
+                sta $da84
                 lda $c945
                 sta $d945
+                sta $da85
                 lda $c946
                 sta $d946
+                sta $da86
                 lda $c947
                 sta $d947
+                sta $da87
                 lda $c948
                 sta $d948
+                sta $da88
                 lda $c949
                 sta $d949
+                sta $da89
                 lda $c94a
                 sta $d94a
+                sta $da8a
                 lda $c94b
                 sta $d94b
+                sta $da8b
                 lda $c94c
                 sta $d94c
+                sta $da8c
                 lda $c94d
                 sta $d94d
+                sta $da8d
                 lda $c94e
                 sta $d94e
+                sta $da8e
                 lda $c94f
                 sta $d94f
+                sta $da8f
                 lda $c950
                 sta $d950
+                sta $da90
                 lda $c951
                 sta $d951
+                sta $da91
                 lda $c952
                 sta $d952
+                sta $da92
                 lda $c953
                 sta $d953
+                sta $da93
                 lda $c954
                 sta $d954
+                sta $da94
                 lda $c955
                 sta $d955
+                sta $da95
                 lda $c956
                 sta $d956
+                sta $da96
                 lda $c957
                 sta $d957
+                sta $da97
                 lda $c958
                 sta $d958
+                sta $da98
                 lda $c959
                 sta $d959
+                sta $da99
                 lda $c95a
                 sta $d95a
+                sta $da9a
                 lda $c95b
                 sta $d95b
+                sta $da9b
                 lda $c95c
                 sta $d95c
+                sta $da9c
                 lda $c95d
                 sta $d95d
+                sta $da9d
                 lda $c95e
                 sta $d95e
+                sta $da9e
                 lda $c95f
                 sta $d95f
+                sta $da9f
                 lda $c960
                 sta $d960
+                sta $daa0
                 lda $c961
                 sta $d961
+                sta $daa1
                 lda $c962
                 sta $d962
+                sta $daa2
                 lda $c963
                 sta $d963
+                sta $daa3
                 lda $c964
                 sta $d964
+                sta $daa4
                 lda $c965
                 sta $d965
+                sta $daa5
                 lda $c966
                 sta $d966
+                sta $daa6
                 lda $c967
                 sta $d967
+                sta $daa7
                 lda $c968
                 sta $d968
+                sta $da58
                 lda $c969
                 sta $d969
+                sta $da59
                 lda $c96a
                 sta $d96a
+                sta $da5a
                 lda $c96b
                 sta $d96b
+                sta $da5b
                 lda $c96c
                 sta $d96c
+                sta $da5c
                 lda $c96d
                 sta $d96d
+                sta $da5d
                 lda $c96e
                 sta $d96e
+                sta $da5e
                 lda $c96f
                 sta $d96f
+                sta $da5f
                 lda $c970
                 sta $d970
+                sta $da60
                 lda $c971
                 sta $d971
+                sta $da61
                 lda $c972
                 sta $d972
+                sta $da62
                 lda $c973
                 sta $d973
+                sta $da63
                 lda $c974
                 sta $d974
+                sta $da64
                 lda $c975
                 sta $d975
+                sta $da65
                 lda $c976
                 sta $d976
+                sta $da66
                 lda $c977
                 sta $d977
+                sta $da67
                 lda $c978
                 sta $d978
+                sta $da68
                 lda $c979
                 sta $d979
+                sta $da69
                 lda $c97a
                 sta $d97a
+                sta $da6a
                 lda $c97b
                 sta $d97b
+                sta $da6b
                 lda $c97c
                 sta $d97c
+                sta $da6c
                 lda $c97d
                 sta $d97d
+                sta $da6d
                 lda $c97e
                 sta $d97e
+                sta $da6e
                 lda $c97f
                 sta $d97f
+                sta $da6f
                 lda $c980
                 sta $d980
+                sta $da70
                 lda $c981
                 sta $d981
+                sta $da71
                 lda $c982
                 sta $d982
+                sta $da72
                 lda $c983
                 sta $d983
+                sta $da73
                 lda $c984
                 sta $d984
+                sta $da74
                 lda $c985
                 sta $d985
+                sta $da75
                 lda $c986
                 sta $d986
+                sta $da76
                 lda $c987
                 sta $d987
+                sta $da77
                 lda $c988
                 sta $d988
+                sta $da78
                 lda $c989
                 sta $d989
+                sta $da79
                 lda $c98a
                 sta $d98a
+                sta $da7a
                 lda $c98b
                 sta $d98b
+                sta $da7b
                 lda $c98c
                 sta $d98c
+                sta $da7c
                 lda $c98d
                 sta $d98d
+                sta $da7d
                 lda $c98e
                 sta $d98e
+                sta $da7e
                 lda $c98f
                 sta $d98f
+                sta $da7f
                 lda $c990
                 sta $d990
+                sta $da30
                 lda $c991
                 sta $d991
+                sta $da31
                 lda $c992
                 sta $d992
+                sta $da32
                 lda $c993
                 sta $d993
+                sta $da33
                 lda $c994
                 sta $d994
+                sta $da34
                 lda $c995
                 sta $d995
+                sta $da35
                 lda $c996
                 sta $d996
+                sta $da36
                 lda $c997
                 sta $d997
+                sta $da37
                 lda $c998
                 sta $d998
+                sta $da38
                 lda $c999
                 sta $d999
+                sta $da39
                 lda $c99a
                 sta $d99a
+                sta $da3a
                 lda $c99b
                 sta $d99b
+                sta $da3b
                 lda $c99c
                 sta $d99c
+                sta $da3c
                 lda $c99d
                 sta $d99d
+                sta $da3d
                 lda $c99e
                 sta $d99e
+                sta $da3e
                 lda $c99f
                 sta $d99f
+                sta $da3f
                 lda $c9a0
                 sta $d9a0
+                sta $da40
                 lda $c9a1
                 sta $d9a1
+                sta $da41
                 lda $c9a2
                 sta $d9a2
+                sta $da42
                 lda $c9a3
                 sta $d9a3
+                sta $da43
                 lda $c9a4
                 sta $d9a4
+                sta $da44
                 lda $c9a5
                 sta $d9a5
+                sta $da45
                 lda $c9a6
                 sta $d9a6
+                sta $da46
                 lda $c9a7
                 sta $d9a7
+                sta $da47
                 lda $c9a8
                 sta $d9a8
+                sta $da48
                 lda $c9a9
                 sta $d9a9
+                sta $da49
                 lda $c9aa
                 sta $d9aa
+                sta $da4a
                 lda $c9ab
                 sta $d9ab
+                sta $da4b
                 lda $c9ac
                 sta $d9ac
+                sta $da4c
                 lda $c9ad
                 sta $d9ad
+                sta $da4d
                 lda $c9ae
                 sta $d9ae
+                sta $da4e
                 lda $c9af
                 sta $d9af
+                sta $da4f
                 lda $c9b0
                 sta $d9b0
+                sta $da50
                 lda $c9b1
                 sta $d9b1
+                sta $da51
                 lda $c9b2
                 sta $d9b2
+                sta $da52
                 lda $c9b3
                 sta $d9b3
+                sta $da53
                 lda $c9b4
                 sta $d9b4
+                sta $da54
                 lda $c9b5
                 sta $d9b5
+                sta $da55
                 lda $c9b6
                 sta $d9b6
+                sta $da56
                 lda $c9b7
                 sta $d9b7
+                sta $da57
                 lda $c9b8
                 sta $d9b8
+                sta $da08
                 lda $c9b9
                 sta $d9b9
+                sta $da09
                 lda $c9ba
                 sta $d9ba
+                sta $da0a
                 lda $c9bb
                 sta $d9bb
+                sta $da0b
                 lda $c9bc
                 sta $d9bc
+                sta $da0c
                 lda $c9bd
                 sta $d9bd
+                sta $da0d
                 lda $c9be
                 sta $d9be
+                sta $da0e
                 lda $c9bf
                 sta $d9bf
+                sta $da0f
                 lda $c9c0
                 sta $d9c0
+                sta $da10
                 lda $c9c1
                 sta $d9c1
+                sta $da11
                 lda $c9c2
                 sta $d9c2
+                sta $da12
                 lda $c9c3
                 sta $d9c3
+                sta $da13
                 lda $c9c4
                 sta $d9c4
+                sta $da14
                 lda $c9c5
                 sta $d9c5
+                sta $da15
                 lda $c9c6
                 sta $d9c6
+                sta $da16
                 lda $c9c7
                 sta $d9c7
+                sta $da17
                 lda $c9c8
                 sta $d9c8
+                sta $da18
                 lda $c9c9
                 sta $d9c9
+                sta $da19
                 lda $c9ca
                 sta $d9ca
+                sta $da1a
                 lda $c9cb
                 sta $d9cb
+                sta $da1b
                 lda $c9cc
                 sta $d9cc
+                sta $da1c
                 lda $c9cd
                 sta $d9cd
+                sta $da1d
                 lda $c9ce
                 sta $d9ce
+                sta $da1e
                 lda $c9cf
                 sta $d9cf
+                sta $da1f
                 lda $c9d0
                 sta $d9d0
+                sta $da20
                 lda $c9d1
                 sta $d9d1
+                sta $da21
                 lda $c9d2
                 sta $d9d2
+                sta $da22
                 lda $c9d3
                 sta $d9d3
+                sta $da23
                 lda $c9d4
                 sta $d9d4
+                sta $da24
                 lda $c9d5
                 sta $d9d5
+                sta $da25
                 lda $c9d6
                 sta $d9d6
+                sta $da26
                 lda $c9d7
                 sta $d9d7
+                sta $da27
                 lda $c9d8
                 sta $d9d8
+                sta $da28
                 lda $c9d9
                 sta $d9d9
+                sta $da29
                 lda $c9da
                 sta $d9da
+                sta $da2a
                 lda $c9db
                 sta $d9db
+                sta $da2b
                 lda $c9dc
                 sta $d9dc
+                sta $da2c
                 lda $c9dd
                 sta $d9dd
+                sta $da2d
                 lda $c9de
                 sta $d9de
+                sta $da2e
                 lda $c9df
                 sta $d9df
+                sta $da2f
+; middle line
                 lda $c9e0
                 sta $d9e0
                 lda $c9e1
@@ -1115,964 +1586,5 @@ draw_front_buffer
                 sta $da06
                 lda $ca07
                 sta $da07
-                lda $ca08
-                sta $da08
-                lda $ca09
-                sta $da09
-                lda $ca0a
-                sta $da0a
-                lda $ca0b
-                sta $da0b
-                lda $ca0c
-                sta $da0c
-                lda $ca0d
-                sta $da0d
-                lda $ca0e
-                sta $da0e
-                lda $ca0f
-                sta $da0f
-                lda $ca10
-                sta $da10
-                lda $ca11
-                sta $da11
-                lda $ca12
-                sta $da12
-                lda $ca13
-                sta $da13
-                lda $ca14
-                sta $da14
-                lda $ca15
-                sta $da15
-                lda $ca16
-                sta $da16
-                lda $ca17
-                sta $da17
-                lda $ca18
-                sta $da18
-                lda $ca19
-                sta $da19
-                lda $ca1a
-                sta $da1a
-                lda $ca1b
-                sta $da1b
-                lda $ca1c
-                sta $da1c
-                lda $ca1d
-                sta $da1d
-                lda $ca1e
-                sta $da1e
-                lda $ca1f
-                sta $da1f
-                lda $ca20
-                sta $da20
-                lda $ca21
-                sta $da21
-                lda $ca22
-                sta $da22
-                lda $ca23
-                sta $da23
-                lda $ca24
-                sta $da24
-                lda $ca25
-                sta $da25
-                lda $ca26
-                sta $da26
-                lda $ca27
-                sta $da27
-                lda $ca28
-                sta $da28
-                lda $ca29
-                sta $da29
-                lda $ca2a
-                sta $da2a
-                lda $ca2b
-                sta $da2b
-                lda $ca2c
-                sta $da2c
-                lda $ca2d
-                sta $da2d
-                lda $ca2e
-                sta $da2e
-                lda $ca2f
-                sta $da2f
-                lda $ca30
-                sta $da30
-                lda $ca31
-                sta $da31
-                lda $ca32
-                sta $da32
-                lda $ca33
-                sta $da33
-                lda $ca34
-                sta $da34
-                lda $ca35
-                sta $da35
-                lda $ca36
-                sta $da36
-                lda $ca37
-                sta $da37
-                lda $ca38
-                sta $da38
-                lda $ca39
-                sta $da39
-                lda $ca3a
-                sta $da3a
-                lda $ca3b
-                sta $da3b
-                lda $ca3c
-                sta $da3c
-                lda $ca3d
-                sta $da3d
-                lda $ca3e
-                sta $da3e
-                lda $ca3f
-                sta $da3f
-                lda $ca40
-                sta $da40
-                lda $ca41
-                sta $da41
-                lda $ca42
-                sta $da42
-                lda $ca43
-                sta $da43
-                lda $ca44
-                sta $da44
-                lda $ca45
-                sta $da45
-                lda $ca46
-                sta $da46
-                lda $ca47
-                sta $da47
-                lda $ca48
-                sta $da48
-                lda $ca49
-                sta $da49
-                lda $ca4a
-                sta $da4a
-                lda $ca4b
-                sta $da4b
-                lda $ca4c
-                sta $da4c
-                lda $ca4d
-                sta $da4d
-                lda $ca4e
-                sta $da4e
-                lda $ca4f
-                sta $da4f
-                lda $ca50
-                sta $da50
-                lda $ca51
-                sta $da51
-                lda $ca52
-                sta $da52
-                lda $ca53
-                sta $da53
-                lda $ca54
-                sta $da54
-                lda $ca55
-                sta $da55
-                lda $ca56
-                sta $da56
-                lda $ca57
-                sta $da57
-                lda $ca58
-                sta $da58
-                lda $ca59
-                sta $da59
-                lda $ca5a
-                sta $da5a
-                lda $ca5b
-                sta $da5b
-                lda $ca5c
-                sta $da5c
-                lda $ca5d
-                sta $da5d
-                lda $ca5e
-                sta $da5e
-                lda $ca5f
-                sta $da5f
-                lda $ca60
-                sta $da60
-                lda $ca61
-                sta $da61
-                lda $ca62
-                sta $da62
-                lda $ca63
-                sta $da63
-                lda $ca64
-                sta $da64
-                lda $ca65
-                sta $da65
-                lda $ca66
-                sta $da66
-                lda $ca67
-                sta $da67
-                lda $ca68
-                sta $da68
-                lda $ca69
-                sta $da69
-                lda $ca6a
-                sta $da6a
-                lda $ca6b
-                sta $da6b
-                lda $ca6c
-                sta $da6c
-                lda $ca6d
-                sta $da6d
-                lda $ca6e
-                sta $da6e
-                lda $ca6f
-                sta $da6f
-                lda $ca70
-                sta $da70
-                lda $ca71
-                sta $da71
-                lda $ca72
-                sta $da72
-                lda $ca73
-                sta $da73
-                lda $ca74
-                sta $da74
-                lda $ca75
-                sta $da75
-                lda $ca76
-                sta $da76
-                lda $ca77
-                sta $da77
-                lda $ca78
-                sta $da78
-                lda $ca79
-                sta $da79
-                lda $ca7a
-                sta $da7a
-                lda $ca7b
-                sta $da7b
-                lda $ca7c
-                sta $da7c
-                lda $ca7d
-                sta $da7d
-                lda $ca7e
-                sta $da7e
-                lda $ca7f
-                sta $da7f
-                lda $ca80
-                sta $da80
-                lda $ca81
-                sta $da81
-                lda $ca82
-                sta $da82
-                lda $ca83
-                sta $da83
-                lda $ca84
-                sta $da84
-                lda $ca85
-                sta $da85
-                lda $ca86
-                sta $da86
-                lda $ca87
-                sta $da87
-                lda $ca88
-                sta $da88
-                lda $ca89
-                sta $da89
-                lda $ca8a
-                sta $da8a
-                lda $ca8b
-                sta $da8b
-                lda $ca8c
-                sta $da8c
-                lda $ca8d
-                sta $da8d
-                lda $ca8e
-                sta $da8e
-                lda $ca8f
-                sta $da8f
-                lda $ca90
-                sta $da90
-                lda $ca91
-                sta $da91
-                lda $ca92
-                sta $da92
-                lda $ca93
-                sta $da93
-                lda $ca94
-                sta $da94
-                lda $ca95
-                sta $da95
-                lda $ca96
-                sta $da96
-                lda $ca97
-                sta $da97
-                lda $ca98
-                sta $da98
-                lda $ca99
-                sta $da99
-                lda $ca9a
-                sta $da9a
-                lda $ca9b
-                sta $da9b
-                lda $ca9c
-                sta $da9c
-                lda $ca9d
-                sta $da9d
-                lda $ca9e
-                sta $da9e
-                lda $ca9f
-                sta $da9f
-                lda $caa0
-                sta $daa0
-                lda $caa1
-                sta $daa1
-                lda $caa2
-                sta $daa2
-                lda $caa3
-                sta $daa3
-                lda $caa4
-                sta $daa4
-                lda $caa5
-                sta $daa5
-                lda $caa6
-                sta $daa6
-                lda $caa7
-                sta $daa7
-                lda $caa8
-                sta $daa8
-                lda $caa9
-                sta $daa9
-                lda $caaa
-                sta $daaa
-                lda $caab
-                sta $daab
-                lda $caac
-                sta $daac
-                lda $caad
-                sta $daad
-                lda $caae
-                sta $daae
-                lda $caaf
-                sta $daaf
-                lda $cab0
-                sta $dab0
-                lda $cab1
-                sta $dab1
-                lda $cab2
-                sta $dab2
-                lda $cab3
-                sta $dab3
-                lda $cab4
-                sta $dab4
-                lda $cab5
-                sta $dab5
-                lda $cab6
-                sta $dab6
-                lda $cab7
-                sta $dab7
-                lda $cab8
-                sta $dab8
-                lda $cab9
-                sta $dab9
-                lda $caba
-                sta $daba
-                lda $cabb
-                sta $dabb
-                lda $cabc
-                sta $dabc
-                lda $cabd
-                sta $dabd
-                lda $cabe
-                sta $dabe
-                lda $cabf
-                sta $dabf
-                lda $cac0
-                sta $dac0
-                lda $cac1
-                sta $dac1
-                lda $cac2
-                sta $dac2
-                lda $cac3
-                sta $dac3
-                lda $cac4
-                sta $dac4
-                lda $cac5
-                sta $dac5
-                lda $cac6
-                sta $dac6
-                lda $cac7
-                sta $dac7
-                lda $cac8
-                sta $dac8
-                lda $cac9
-                sta $dac9
-                lda $caca
-                sta $daca
-                lda $cacb
-                sta $dacb
-                lda $cacc
-                sta $dacc
-                lda $cacd
-                sta $dacd
-                lda $cace
-                sta $dace
-                lda $cacf
-                sta $dacf
-                lda $cad0
-                sta $dad0
-                lda $cad1
-                sta $dad1
-                lda $cad2
-                sta $dad2
-                lda $cad3
-                sta $dad3
-                lda $cad4
-                sta $dad4
-                lda $cad5
-                sta $dad5
-                lda $cad6
-                sta $dad6
-                lda $cad7
-                sta $dad7
-                lda $cad8
-                sta $dad8
-                lda $cad9
-                sta $dad9
-                lda $cada
-                sta $dada
-                lda $cadb
-                sta $dadb
-                lda $cadc
-                sta $dadc
-                lda $cadd
-                sta $dadd
-                lda $cade
-                sta $dade
-                lda $cadf
-                sta $dadf
-                lda $cae0
-                sta $dae0
-                lda $cae1
-                sta $dae1
-                lda $cae2
-                sta $dae2
-                lda $cae3
-                sta $dae3
-                lda $cae4
-                sta $dae4
-                lda $cae5
-                sta $dae5
-                lda $cae6
-                sta $dae6
-                lda $cae7
-                sta $dae7
-                lda $cae8
-                sta $dae8
-                lda $cae9
-                sta $dae9
-                lda $caea
-                sta $daea
-                lda $caeb
-                sta $daeb
-                lda $caec
-                sta $daec
-                lda $caed
-                sta $daed
-                lda $caee
-                sta $daee
-                lda $caef
-                sta $daef
-                lda $caf0
-                sta $daf0
-                lda $caf1
-                sta $daf1
-                lda $caf2
-                sta $daf2
-                lda $caf3
-                sta $daf3
-                lda $caf4
-                sta $daf4
-                lda $caf5
-                sta $daf5
-                lda $caf6
-                sta $daf6
-                lda $caf7
-                sta $daf7
-                lda $caf8
-                sta $daf8
-                lda $caf9
-                sta $daf9
-                lda $cafa
-                sta $dafa
-                lda $cafb
-                sta $dafb
-                lda $cafc
-                sta $dafc
-                lda $cafd
-                sta $dafd
-                lda $cafe
-                sta $dafe
-                lda $caff
-                sta $daff
-                lda $cb00
-                sta $db00
-                lda $cb01
-                sta $db01
-                lda $cb02
-                sta $db02
-                lda $cb03
-                sta $db03
-                lda $cb04
-                sta $db04
-                lda $cb05
-                sta $db05
-                lda $cb06
-                sta $db06
-                lda $cb07
-                sta $db07
-                lda $cb08
-                sta $db08
-                lda $cb09
-                sta $db09
-                lda $cb0a
-                sta $db0a
-                lda $cb0b
-                sta $db0b
-                lda $cb0c
-                sta $db0c
-                lda $cb0d
-                sta $db0d
-                lda $cb0e
-                sta $db0e
-                lda $cb0f
-                sta $db0f
-                lda $cb10
-                sta $db10
-                lda $cb11
-                sta $db11
-                lda $cb12
-                sta $db12
-                lda $cb13
-                sta $db13
-                lda $cb14
-                sta $db14
-                lda $cb15
-                sta $db15
-                lda $cb16
-                sta $db16
-                lda $cb17
-                sta $db17
-                lda $cb18
-                sta $db18
-                lda $cb19
-                sta $db19
-                lda $cb1a
-                sta $db1a
-                lda $cb1b
-                sta $db1b
-                lda $cb1c
-                sta $db1c
-                lda $cb1d
-                sta $db1d
-                lda $cb1e
-                sta $db1e
-                lda $cb1f
-                sta $db1f
-                lda $cb20
-                sta $db20
-                lda $cb21
-                sta $db21
-                lda $cb22
-                sta $db22
-                lda $cb23
-                sta $db23
-                lda $cb24
-                sta $db24
-                lda $cb25
-                sta $db25
-                lda $cb26
-                sta $db26
-                lda $cb27
-                sta $db27
-                lda $cb28
-                sta $db28
-                lda $cb29
-                sta $db29
-                lda $cb2a
-                sta $db2a
-                lda $cb2b
-                sta $db2b
-                lda $cb2c
-                sta $db2c
-                lda $cb2d
-                sta $db2d
-                lda $cb2e
-                sta $db2e
-                lda $cb2f
-                sta $db2f
-                lda $cb30
-                sta $db30
-                lda $cb31
-                sta $db31
-                lda $cb32
-                sta $db32
-                lda $cb33
-                sta $db33
-                lda $cb34
-                sta $db34
-                lda $cb35
-                sta $db35
-                lda $cb36
-                sta $db36
-                lda $cb37
-                sta $db37
-                lda $cb38
-                sta $db38
-                lda $cb39
-                sta $db39
-                lda $cb3a
-                sta $db3a
-                lda $cb3b
-                sta $db3b
-                lda $cb3c
-                sta $db3c
-                lda $cb3d
-                sta $db3d
-                lda $cb3e
-                sta $db3e
-                lda $cb3f
-                sta $db3f
-                lda $cb40
-                sta $db40
-                lda $cb41
-                sta $db41
-                lda $cb42
-                sta $db42
-                lda $cb43
-                sta $db43
-                lda $cb44
-                sta $db44
-                lda $cb45
-                sta $db45
-                lda $cb46
-                sta $db46
-                lda $cb47
-                sta $db47
-                lda $cb48
-                sta $db48
-                lda $cb49
-                sta $db49
-                lda $cb4a
-                sta $db4a
-                lda $cb4b
-                sta $db4b
-                lda $cb4c
-                sta $db4c
-                lda $cb4d
-                sta $db4d
-                lda $cb4e
-                sta $db4e
-                lda $cb4f
-                sta $db4f
-                lda $cb50
-                sta $db50
-                lda $cb51
-                sta $db51
-                lda $cb52
-                sta $db52
-                lda $cb53
-                sta $db53
-                lda $cb54
-                sta $db54
-                lda $cb55
-                sta $db55
-                lda $cb56
-                sta $db56
-                lda $cb57
-                sta $db57
-                lda $cb58
-                sta $db58
-                lda $cb59
-                sta $db59
-                lda $cb5a
-                sta $db5a
-                lda $cb5b
-                sta $db5b
-                lda $cb5c
-                sta $db5c
-                lda $cb5d
-                sta $db5d
-                lda $cb5e
-                sta $db5e
-                lda $cb5f
-                sta $db5f
-                lda $cb60
-                sta $db60
-                lda $cb61
-                sta $db61
-                lda $cb62
-                sta $db62
-                lda $cb63
-                sta $db63
-                lda $cb64
-                sta $db64
-                lda $cb65
-                sta $db65
-                lda $cb66
-                sta $db66
-                lda $cb67
-                sta $db67
-                lda $cb68
-                sta $db68
-                lda $cb69
-                sta $db69
-                lda $cb6a
-                sta $db6a
-                lda $cb6b
-                sta $db6b
-                lda $cb6c
-                sta $db6c
-                lda $cb6d
-                sta $db6d
-                lda $cb6e
-                sta $db6e
-                lda $cb6f
-                sta $db6f
-                lda $cb70
-                sta $db70
-                lda $cb71
-                sta $db71
-                lda $cb72
-                sta $db72
-                lda $cb73
-                sta $db73
-                lda $cb74
-                sta $db74
-                lda $cb75
-                sta $db75
-                lda $cb76
-                sta $db76
-                lda $cb77
-                sta $db77
-                lda $cb78
-                sta $db78
-                lda $cb79
-                sta $db79
-                lda $cb7a
-                sta $db7a
-                lda $cb7b
-                sta $db7b
-                lda $cb7c
-                sta $db7c
-                lda $cb7d
-                sta $db7d
-                lda $cb7e
-                sta $db7e
-                lda $cb7f
-                sta $db7f
-                lda $cb80
-                sta $db80
-                lda $cb81
-                sta $db81
-                lda $cb82
-                sta $db82
-                lda $cb83
-                sta $db83
-                lda $cb84
-                sta $db84
-                lda $cb85
-                sta $db85
-                lda $cb86
-                sta $db86
-                lda $cb87
-                sta $db87
-                lda $cb88
-                sta $db88
-                lda $cb89
-                sta $db89
-                lda $cb8a
-                sta $db8a
-                lda $cb8b
-                sta $db8b
-                lda $cb8c
-                sta $db8c
-                lda $cb8d
-                sta $db8d
-                lda $cb8e
-                sta $db8e
-                lda $cb8f
-                sta $db8f
-                lda $cb90
-                sta $db90
-                lda $cb91
-                sta $db91
-                lda $cb92
-                sta $db92
-                lda $cb93
-                sta $db93
-                lda $cb94
-                sta $db94
-                lda $cb95
-                sta $db95
-                lda $cb96
-                sta $db96
-                lda $cb97
-                sta $db97
-                lda $cb98
-                sta $db98
-                lda $cb99
-                sta $db99
-                lda $cb9a
-                sta $db9a
-                lda $cb9b
-                sta $db9b
-                lda $cb9c
-                sta $db9c
-                lda $cb9d
-                sta $db9d
-                lda $cb9e
-                sta $db9e
-                lda $cb9f
-                sta $db9f
-                lda $cba0
-                sta $dba0
-                lda $cba1
-                sta $dba1
-                lda $cba2
-                sta $dba2
-                lda $cba3
-                sta $dba3
-                lda $cba4
-                sta $dba4
-                lda $cba5
-                sta $dba5
-                lda $cba6
-                sta $dba6
-                lda $cba7
-                sta $dba7
-                lda $cba8
-                sta $dba8
-                lda $cba9
-                sta $dba9
-                lda $cbaa
-                sta $dbaa
-                lda $cbab
-                sta $dbab
-                lda $cbac
-                sta $dbac
-                lda $cbad
-                sta $dbad
-                lda $cbae
-                sta $dbae
-                lda $cbaf
-                sta $dbaf
-                lda $cbb0
-                sta $dbb0
-                lda $cbb1
-                sta $dbb1
-                lda $cbb2
-                sta $dbb2
-                lda $cbb3
-                sta $dbb3
-                lda $cbb4
-                sta $dbb4
-                lda $cbb5
-                sta $dbb5
-                lda $cbb6
-                sta $dbb6
-                lda $cbb7
-                sta $dbb7
-                lda $cbb8
-                sta $dbb8
-                lda $cbb9
-                sta $dbb9
-                lda $cbba
-                sta $dbba
-                lda $cbbb
-                sta $dbbb
-                lda $cbbc
-                sta $dbbc
-                lda $cbbd
-                sta $dbbd
-                lda $cbbe
-                sta $dbbe
-                lda $cbbf
-                sta $dbbf
-                lda $cbc0
-                sta $dbc0
-                lda $cbc1
-                sta $dbc1
-                lda $cbc2
-                sta $dbc2
-                lda $cbc3
-                sta $dbc3
-                lda $cbc4
-                sta $dbc4
-                lda $cbc5
-                sta $dbc5
-                lda $cbc6
-                sta $dbc6
-                lda $cbc7
-                sta $dbc7
-                lda $cbc8
-                sta $dbc8
-                lda $cbc9
-                sta $dbc9
-                lda $cbca
-                sta $dbca
-                lda $cbcb
-                sta $dbcb
-                lda $cbcc
-                sta $dbcc
-                lda $cbcd
-                sta $dbcd
-                lda $cbce
-                sta $dbce
-                lda $cbcf
-                sta $dbcf
-                lda $cbd0
-                sta $dbd0
-                lda $cbd1
-                sta $dbd1
-                lda $cbd2
-                sta $dbd2
-                lda $cbd3
-                sta $dbd3
-                lda $cbd4
-                sta $dbd4
-                lda $cbd5
-                sta $dbd5
-                lda $cbd6
-                sta $dbd6
-                lda $cbd7
-                sta $dbd7
-                lda $cbd8
-                sta $dbd8
-                lda $cbd9
-                sta $dbd9
-                lda $cbda
-                sta $dbda
-                lda $cbdb
-                sta $dbdb
-                lda $cbdc
-                sta $dbdc
-                lda $cbdd
-                sta $dbdd
-                lda $cbde
-                sta $dbde
-                lda $cbdf
-                sta $dbdf
-                lda $cbe0
-                sta $dbe0
-                lda $cbe1
-                sta $dbe1
-                lda $cbe2
-                sta $dbe2
-                lda $cbe3
-                sta $dbe3
-                lda $cbe4
-                sta $dbe4
-                lda $cbe5
-                sta $dbe5
-                lda $cbe6
-                sta $dbe6
-                lda $cbe7
-                sta $dbe7
+                
                 rts
