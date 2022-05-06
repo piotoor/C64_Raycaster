@@ -1,7 +1,7 @@
 ;;---------------------------------------------
 ;; compute_frame
 ;;
-;; Raycasting is done there, in three steps
+;; Raycasting is done there, in two steps
 ;;---------------------------------------------
 compute_frame   
                 ldx #39; screen_width - 1
@@ -26,7 +26,6 @@ compute_frame
 ;; Lower part is just a mirror.
 ;; Uses:
 ;; - F_16 - pointer to "upper-part" of the color_buffer
-;; - G_16 - pointer to "lower-part" of the color_buffer
 ;; - ray_start
 ;; - ray_color
 ;;---------------------------------------------
