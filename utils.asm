@@ -42,9 +42,6 @@ defm mxOverCos
         lda mxOverCosVect,x
         sta F_16_H
         
-        tya
-        asl
-        tay
         lda (F_16),y
         sta /1
         iny

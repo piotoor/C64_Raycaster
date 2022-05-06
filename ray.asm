@@ -38,7 +38,7 @@ init_ray_params
                         ldy posX
                         lda minusThetaInitCoord,y
 @x_end          
-                ldy reducedTheta,x
+                ldy reducedTheta_x2,x
                 mxOverCos A_16_L,A_16_H
 
                 ldx posY
@@ -57,16 +57,16 @@ init_ray_params
                         ldy posY
                         lda minusThetaInitCoord,y
 @y_end          
-                ldy mirrorReducedTheta,x
+                ldy mirrorReducedTheta_x2,x
                 mxOverCos B_16_L,B_16_H
 
                 lda square_size_x2
                 ldx rayTheta
-                ldy reducedTheta,x 
+                ldy reducedTheta_x2,x 
                 mxOverCos C_16_L,C_16_H 
                 lda square_size_x2
                 ldx rayTheta
-                ldy mirrorReducedTheta,x
+                ldy mirrorReducedTheta_x2,x
                 mxOverCos D_16_L,D_16_H 
 
                 rts
