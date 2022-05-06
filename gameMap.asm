@@ -1,4 +1,4 @@
-square_size=#16
+square_size_x2=#32
 map_width=#16
 map_height=#16
 

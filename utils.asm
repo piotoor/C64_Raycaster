@@ -35,7 +35,6 @@ G_16_H=$75
 ;; theta in y
 ;;--------------------------------------------- 
 defm mxOverCos 
-        asl
         tax
         lda mxOverCosVect,x
         sta F_16_L
