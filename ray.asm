@@ -22,40 +22,40 @@ floor_color=#11
 ;; D_16 - dy
 ;;---------------------------------------------
 init_ray_params
-                ldx posX
-                lda posToMapCoords,x
+                ldy posX
+                lda posToMapCoords,y
                 sta mapX   
                 ldx rayTheta
-                ldy xPlusTheta,x
+                lda xPlusTheta,x
                 beq @x_minus
-@x_plus                 ldy #1
-                        sty stepX
-                        ldy posX
+@x_plus                 
                         lda plusThetaInitCoord,y
-                jmp @x_end
-@x_minus                ldy #-1
+                        ldy #1
                         sty stepX
-                        ldy posX
+                jmp @x_end
+@x_minus                
                         lda minusThetaInitCoord,y
+                        ldy #-1
+                        sty stepX
 @x_end          
                 ldy reducedTheta_x2,x
                 mxOverCos A_16_L,A_16_H
 
-                ldx posY
-                lda posToMapCoords,x
+                ldy posY
+                lda posToMapCoords,y
                 sta mapY
                 ldx rayTheta
-                ldy yPlusTheta,x
+                lda yPlusTheta,x
                 beq @y_minus
-@y_plus                 ldy #1
-                        sty stepY
-                        ldy posY
+@y_plus                 
                         lda plusThetaInitCoord,y
-                jmp @y_end
-@y_minus                ldy #-1
+                        ldy #1
                         sty stepY
-                        ldy posY
+                jmp @y_end
+@y_minus                
                         lda minusThetaInitCoord,y
+                        ldy #-1
+                        sty stepY
 @y_end          
                 ldy mirrorReducedTheta_x2,x
                 mxOverCos B_16_L,B_16_H
