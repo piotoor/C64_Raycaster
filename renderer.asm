@@ -4,11 +4,14 @@
 ;; Raycasting is done there, in two steps
 ;;---------------------------------------------
 compute_frame   
+                lda theta
+                sec
+                sbc half_fov
+                sta theta_ray_zero
+
                 ldx #39; screen_width - 1
                 stx ray_id
-@loop                   lda theta
-                        sec
-                        sbc half_fov
+@loop                   lda theta_ray_zero
                         adc ray_id
                         sta rayTheta
 
