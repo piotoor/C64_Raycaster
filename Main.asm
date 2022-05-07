@@ -14,7 +14,7 @@ pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
 ddra=$dc02      ; CIA#1 (Data Direction Register A)
 ddrb=$dc03      ; CIA#1 (Data Direction Register B)
-synch=$71
+synch=$71       
 main_ticks=$72
 irq_ticks=$73
 
@@ -82,6 +82,10 @@ irq_setup
 
                 lda #$00    
                 sta $d012
+
+                lda $d011
+                and #$7f
+                sta $d011
 
                 cli
                 rts
