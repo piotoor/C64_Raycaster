@@ -117,11 +117,10 @@ cast_ray
                                 adc stepX
                                 sta mapX
                                 
-                                ldx mapY
-                                lda mapCoordsToPos,x
-                                
                                 clc
-                                adc mapX
+                                ldx mapY
+                                adc mapCoordsToPos,x
+                                
                                 tax
                                 lda game_map,x
                                 bne @final_res_a
