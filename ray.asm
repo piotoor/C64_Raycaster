@@ -65,7 +65,6 @@ init_ray_params
                 ldy reducedTheta_x2,x 
                 mxOverCosX16 C_16_L,C_16_H 
                 
-                ldx rayTheta
                 ldy mirrorReducedTheta_x2,x
                 mxOverCosX16 D_16_L,D_16_H 
 
