@@ -60,14 +60,14 @@ init_ray_params
                 ldy mirrorReducedTheta_x2,x
                 mxOverCos B_16_L,B_16_H
 
-                lda square_size_x2
+                
                 ldx rayTheta
                 ldy reducedTheta_x2,x 
-                mxOverCos C_16_L,C_16_H 
-                lda square_size_x2
+                mxOverCosX16 C_16_L,C_16_H 
+                
                 ldx rayTheta
                 ldy mirrorReducedTheta_x2,x
-                mxOverCos D_16_L,D_16_H 
+                mxOverCosX16 D_16_L,D_16_H 
 
                 rts
 

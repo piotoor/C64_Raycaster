@@ -48,3 +48,18 @@ defm mxOverCos
         lda (F_16),y
         sta /2
         endm
+
+
+;;---------------------------------------------
+;; mxOverCosX16 target_L,target_H 
+;; special case
+;; x = 16
+;; theta in y
+;;--------------------------------------------- 
+defm mxOverCosX16        
+        lda mxOverCos_16,y
+        sta /1
+        iny
+        lda mxOverCos_16,y
+        sta /2
+        endm
