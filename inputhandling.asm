@@ -55,31 +55,16 @@ rotate_left
 ;; move_forward
 ;;---------------------------------------------
 move_forward    
-                ldx theta
-                ldy reducedTheta,x
+                ldy theta
                 lda cosX16,y
                 ;lsr ; TODO add speed
                 sta stepX
 
-                ldy mirrorReducedTheta,x
-                lda cosX16,y
+                lda sinX16,y
                 ;lsr ; TODO add speed
                 sta stepY
 
-                
-                ldy xPlusTheta,x
-                bne @x_end
-@x_minus                lda stepX
-                        eor #$ff
-                        adc #1
-                        sta stepX
-@x_end          ldy yPlusTheta,x
-                bne @y_end
-@y_minus                lda stepY
-                        eor #$ff
-                        adc #1
-                        sta stepY
-@y_end          lda posX
+                lda posX
                 sta tmp_posX
                 adc stepX
                 sta posX
@@ -115,33 +100,19 @@ move_forward
 ;; move_back
 ;;---------------------------------------------
 move_back       
-                ldx theta
-                ldy reducedTheta,x
+                ldy theta
                 lda cosX16,y
                 ;lsr ; TODO add speed
                 sta stepX
 
-                ldy mirrorReducedTheta,x
-                lda cosX16,y
+                lda sinX16,y
                 ;lsr ; TODO add speed
                 sta stepY
-
-                
-                ldy xPlusTheta,x
-                beq @x_end
-@x_plus                 lda stepX
-                        eor #$ff
-                        adc #1
-                        sta stepX
-@x_end          ldy yPlusTheta,x
-                beq @y_end
-@y_plus                 lda stepY
-                        eor #$ff
-                        adc #1
-                        sta stepY
-@y_end          lda posX
+     
+                lda posX
                 sta tmp_posX
-                adc stepX
+                sec
+                sbc stepX
                 sta posX
 
                 tax
@@ -150,7 +121,8 @@ move_back
                 
                 lda posY
                 sta tmp_posY
-                adc stepY
+                sec
+                sbc stepY
                 sta posY
 
                 tax
