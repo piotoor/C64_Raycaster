@@ -37,7 +37,7 @@ s_pressed       ;lda #%11111101
 ;;---------------------------------------------
 rotate_right    
                 lda theta
-                adc #6
+                adc #4
                 sta theta
                 rts
 
@@ -47,7 +47,7 @@ rotate_right
 rotate_left     
                 lda theta
                 sec
-                sbc #6
+                sbc #4
                 sta theta
                 rts
 
