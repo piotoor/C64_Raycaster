@@ -134,24 +134,34 @@ cast_ray
                                 sta A_16_H
                                 jmp @loop                   
 
-@final_res_a    lda A_16_L
+@final_res_a    lda rayTheta
+                sec
+                sbc theta
+                tay
+                ldx absThetaDist,y
+
+
+                lda A_16_L      ; final dist max 0x7fff
                 asl             ; bit 7 -> 0
                 lda #0          ;
                 adc #0          ;
                 aso A_16_H
                 ;asl E_16_H
                 ;ora E_16_H
-                tay
-                lda lineStartRow,y
-
-                ldx ray_id
-                sta ray_start,x
+                lineStartRow
 
                 lda color2
                 sta ray_color,x
                 rts
 
-@final_res_b    lda B_16_L
+@final_res_b    lda rayTheta
+                sec
+                sbc theta
+                tay
+                ldx absThetaDist,y
+
+
+                lda B_16_L
                 asl             ; bit 7 -> 0
                 lda #0          ;
                 adc #0          ;
@@ -159,11 +169,8 @@ cast_ray
                 aso B_16_H
                 ;asl E_16_H
                 ;ora E_16_H
-                tay
-                lda lineStartRow,y
-
-                ldx ray_id
-                sta ray_start,x
+                lineStartRow
+                
 
                 lda color1
                 sta ray_color,x

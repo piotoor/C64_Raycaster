@@ -63,3 +63,31 @@ defm mxOverCosX16
         lda mxOverCos_16,y
         sta /2
         endm
+
+;;---------------------------------------------
+;; lineStartRow target
+;; dist in a
+;; theta in x
+;; returns line height with fisheye distortion correction
+;;--------------------------------------------- 
+defm lineStartRow 
+
+        ldy lineStartRowVect,x
+        sty F_16_L
+        inx
+        ldy lineStartRowVect,x
+        sty F_16_H
+        
+        tay
+        ldx ray_id
+        ; debug
+        ;sta $0400,x
+        ; 
+        lda (F_16),y        
+        sta ray_start,x
+        
+        ; debug
+        ;lda ray_id
+        ;sta $0428,x
+        ;
+        endm
