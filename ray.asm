@@ -7,14 +7,19 @@ ray_id=$6f
 theta_ray_zero=$70
 
 ray_start=$C000
-ray_color=$C028
+ray_texture=$C028
 tex_column_offsets=$C050
 back_buff=$C800
-color1=#8
-color2=#9
+texture1=#0
+texture2=#2
 ceil_color=#0
 floor_color=#11
 
+texture=$75
+texture_L=$75
+texture_H=$76
+;texture1_L=$77
+;texture1_H=$78
 
 ;;---------------------------------------------
 ;; init_ray_params
@@ -200,7 +205,9 @@ cast_ray
                 tay
                 lda texColumnOffset,y
                 sta tex_column_offsets,x
-                
+                lda texture1
+                sta ray_texture,x
+                ; load texture
                 rts
 
 @final_res_a    lda rayTheta
@@ -245,7 +252,7 @@ cast_ray
                 tay
                 lda texColumnOffset,y
                 sta tex_column_offsets,x
-
+                ; load texture
+                lda texture2
+                sta ray_texture,x
                 rts
-
-

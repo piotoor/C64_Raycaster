@@ -53,6 +53,14 @@ draw_back_buffer
                                 jmp @end
 @draw_walls                     
                                 stx f_8
+                                ldx ray_texture,y
+                                lda texturesVect,x
+                                sta texture_L
+                                inx
+                                lda texturesVect,x
+                                sta texture_H
+                                
+
                                 ldx ray_start,y
                                 lda textureMappingOffsets,x ; beginning of list of "steps" for every ray_start
                                 clc
@@ -61,10 +69,16 @@ draw_back_buffer
                                 lda tex_column_offsets,y ; beginning of a texture vertical strip
                                 adc textureMappingCoords,x
                                         
-                                tax
-                                lda wall_1,x
+                                sty g_8
+                                tay
+                                lda (texture),y
+                                ;lda wall_1,y
+                                ldy g_8
                                 sta (E_16),y
                                 ldx f_8
+                                 
+                                 ;lda ray_color,y 
+                                 ;sta (E_16),y
                                         
 @end                           
 
