@@ -31,36 +31,8 @@ compute_frame
 ;; - E_16 - pointer to "upper-part" of the color_buffer
 ;; - ray_start
 ;; - ray_color
+;; - todo: document texturing stuff
 ;;---------------------------------------------
-;draw_back_buffer     
-;                
-;                ldx #12
-;@rows                   
-;                        ; update upper part pointer
-;                        lda backBuffUpperL,x
-;                        sta E_16_L
-;                        lda backBuffUpperH,x
-;                        sta E_16_H
-
-;                        ldy #39 ; screen_width - 1
-;@cols                           clc
-;                                txa
-;                                cmp ray_start,y
-;                                bcs @draw_walls
-;@draw_ceil_and_floor            lda ceil_color
-;                                sta (E_16),y
-;                                jmp @end
-;@draw_walls                     lda ray_color,y  
-;                                sta (E_16),y
-;@end                           
-
-;                        dey
-;                        bpl @cols
-;                        
-;                dex
-;                bpl @rows
-;                rts
-
 draw_back_buffer     
                 
                 ldx #12
@@ -80,50 +52,18 @@ draw_back_buffer
                                 sta (E_16),y
                                 jmp @end
 @draw_walls                     
-                                ;texYCoordStep           byte 1,1,1,1,1,2,2,2,3,3,4,7,13
-                                
-                                
                                 stx f_8
-                                
-                                ;lda tex_column_offsets,y
-                                
-                                ;ldx f_8
-                                
-                                
                                 ldx ray_start,y
                                 lda textureMappingOffsets,x ; beginning of list of "steps" for every ray_start
                                 clc
                                 adc f_8
                                 tax
-                                
                                 lda tex_column_offsets,y ; beginning of a texture vertical strip
                                 adc textureMappingCoords,x
                                         
                                 tax
-
-
-
-
-                                
                                 lda wall_1,x
                                 sta (E_16),y
-
-                                ldx f_8
-                                
-                                
-
-;                                ldx tex_column_offsets,y
-;                                lda wall_1,x
-;                                sta (E_16),y
-;                                
-;                                lda ray_start,y
-;                                tax
-;                                clc
-;                                lda tex_column_offsets,y
-;                                adc texYCoordStep,x
-;                                ;txa
-;                                sta tex_column_offsets,y
-
                                 ldx f_8
                                         
 @end                           

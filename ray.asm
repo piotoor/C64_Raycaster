@@ -174,26 +174,12 @@ cast_ray
                 ;ora E_16_H
                 lineStartRow
 
-                ;lda color1
-                ;sta ray_color,x
-                
-                ;lda c_8
-;                ldx ray_id
-;                sta $400,x
-;                lda d_8
-;                sta $428,x
                 lda d_8
                 asl
                 ldx rayTheta
                 ldy reducedTheta,x
                 xOverTan
                 sta e_8
-;                ;debug----------
-;                ldx ray_id
-;                sta $400,x
-;                tya
-;                sta $428,x
-;                ;debug----------
                 ldx rayTheta
                 lda xPlusTheta,x
                 beq @x_minus
@@ -207,17 +193,14 @@ cast_ray
                 sec
                 sbc e_8
 @x_end   
-                ;ldx mapX
-                ;sec
-                ;sbc mapCoordsToPos,x
                 tax
                 lda posMod16,x
                 ldx ray_id
-                ;sta $400,x
+                
                 tay
                 lda texColumnOffset,y
                 sta tex_column_offsets,x
-                ;sta $400,x
+                
                 rts
 
 @final_res_a    lda rayTheta
@@ -235,26 +218,12 @@ cast_ray
                 ;ora E_16_H
                 lineStartRow 
                
-                ;lda color2
-                ;sta ray_color,x
-
-;                lda c_8
-;                ldx ray_id
-;                sta $400,x
-;                lda d_8
-;                sta $428,x
                 lda c_8
                 asl
                 ldx rayTheta
                 ldy mirrorReducedTheta,x
                 xOverTan
                 sta e_8
-;                ;debug----------
-;                ldx ray_id
-;                sta $400,x
-;                tya
-;                sta $428,x
-;                ;debug----------
                 ldx rayTheta
                 lda yPlusTheta,x
                 beq @y_minus
@@ -268,9 +237,7 @@ cast_ray
                 sec
                 sbc e_8
 @y_end   
-;                ldx mapY
-;                sec
-;                sbc mapCoordsToPos,x
+
                 tax
                 lda posMod16,x
                 ldx ray_id
@@ -278,7 +245,7 @@ cast_ray
                 tay
                 lda texColumnOffset,y
                 sta tex_column_offsets,x
-                ;sta $400,x
+
                 rts
 
 
