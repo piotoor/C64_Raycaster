@@ -174,8 +174,8 @@ cast_ray
                 ;ora E_16_H
                 lineStartRow
 
-                lda color1
-                sta ray_color,x
+                ;lda color1
+                ;sta ray_color,x
                 
                 ;lda c_8
 ;                ldx ray_id
@@ -207,10 +207,13 @@ cast_ray
                 sec
                 sbc e_8
 @x_end   
-                ldx mapX
-                sec
-                sbc mapCoordsToPos,x
+                ;ldx mapX
+                ;sec
+                ;sbc mapCoordsToPos,x
+                tax
+                lda posMod16,x
                 ldx ray_id
+                ;sta $400,x
                 tay
                 lda texColumnOffset,y
                 sta tex_column_offsets,x
@@ -232,8 +235,8 @@ cast_ray
                 ;ora E_16_H
                 lineStartRow 
                
-                lda color2
-                sta ray_color,x
+                ;lda color2
+                ;sta ray_color,x
 
 ;                lda c_8
 ;                ldx ray_id
@@ -265,10 +268,13 @@ cast_ray
                 sec
                 sbc e_8
 @y_end   
-                ldx mapY
-                sec
-                sbc mapCoordsToPos,x
+;                ldx mapY
+;                sec
+;                sbc mapCoordsToPos,x
+                tax
+                lda posMod16,x
                 ldx ray_id
+                
                 tay
                 lda texColumnOffset,y
                 sta tex_column_offsets,x

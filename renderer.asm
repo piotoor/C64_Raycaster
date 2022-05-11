@@ -84,21 +84,47 @@ draw_back_buffer
                                 
                                 
                                 stx f_8
+                                
+                                ;lda tex_column_offsets,y
+                                
+                                ;ldx f_8
+                                
+                                
+                                ldx ray_start,y
+                                lda textureMappingOffsets,x ; beginning of list of "steps" for every ray_start
+                                clc
+                                adc f_8
+                                tax
+                                
+                                lda tex_column_offsets,y ; beginning of a texture vertical strip
+                                adc textureMappingCoords,x
+                                        
+                                tax
 
-                                ldx tex_column_offsets,y
-                                ;stx $400,y
+
+
+
+                                
                                 lda wall_1,x
-                                ;lda ray_color,y  
                                 sta (E_16),y
 
-                                txa
-                                ldx ray_start,y
-                                adc texYCoordStep,x
-                                sta tex_column_offsets,y
                                 ldx f_8
+                                
+                                
 
-                                ;lda tex_column_offsets,y
-                                ;sta $400,y
+;                                ldx tex_column_offsets,y
+;                                lda wall_1,x
+;                                sta (E_16),y
+;                                
+;                                lda ray_start,y
+;                                tax
+;                                clc
+;                                lda tex_column_offsets,y
+;                                adc texYCoordStep,x
+;                                ;txa
+;                                sta tex_column_offsets,y
+
+                                ldx f_8
                                         
 @end                           
 
