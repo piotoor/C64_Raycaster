@@ -28,19 +28,48 @@ compute_frame
 ;; Only upper half of the screen is calculated
 ;; Lower part is just a mirror.
 ;; Uses:
-;; - F_16 - pointer to "upper-part" of the color_buffer
+;; - E_16 - pointer to "upper-part" of the color_buffer
 ;; - ray_start
 ;; - ray_color
 ;;---------------------------------------------
+;draw_back_buffer     
+;                
+;                ldx #12
+;@rows                   
+;                        ; update upper part pointer
+;                        lda backBuffUpperL,x
+;                        sta E_16_L
+;                        lda backBuffUpperH,x
+;                        sta E_16_H
+
+;                        ldy #39 ; screen_width - 1
+;@cols                           clc
+;                                txa
+;                                cmp ray_start,y
+;                                bcs @draw_walls
+;@draw_ceil_and_floor            lda ceil_color
+;                                sta (E_16),y
+;                                jmp @end
+;@draw_walls                     lda ray_color,y  
+;                                sta (E_16),y
+;@end                           
+
+;                        dey
+;                        bpl @cols
+;                        
+;                dex
+;                bpl @rows
+;                rts
+
 draw_back_buffer     
                 
                 ldx #12
 @rows                   
                         ; update upper part pointer
                         lda backBuffUpperL,x
-                        sta F_16_L
+                        sta E_16_L
                         lda backBuffUpperH,x
-                        sta F_16_H
+                        sta E_16_H
 
                         ldy #39 ; screen_width - 1
 @cols                           clc
@@ -48,10 +77,29 @@ draw_back_buffer
                                 cmp ray_start,y
                                 bcs @draw_walls
 @draw_ceil_and_floor            lda ceil_color
-                                sta (F_16),y
+                                sta (E_16),y
                                 jmp @end
-@draw_walls                     lda ray_color,y  
-                                sta (F_16),y
+@draw_walls                     
+                                ;texYCoordStep           byte 1,1,1,1,1,2,2,2,3,3,4,7,13
+                                
+                                
+                                stx f_8
+
+                                ldx tex_column_offsets,y
+                                ;stx $400,y
+                                lda wall_1,x
+                                ;lda ray_color,y  
+                                sta (E_16),y
+
+                                txa
+                                ldx ray_start,y
+                                adc texYCoordStep,x
+                                sta tex_column_offsets,y
+                                ldx f_8
+
+                                ;lda tex_column_offsets,y
+                                ;sta $400,y
+                                        
 @end                           
 
                         dey
