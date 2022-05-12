@@ -32,6 +32,7 @@ absWallHitXDist=$67
 absWallHitYDist=$68
 
 calculatedAbsWallHitDist=$79
+textureMapCode=$7A
 
 rayStart=$C000
 rayTextureId=$C028
@@ -127,6 +128,7 @@ cast_ray
                                 adc mapX                ; 
                                 tax                     ; 
                                 lda game_map,x          ; 
+                                sta textureMapCode      ; save texture code
                                 bne @final_res_b        ; 
 
                                 clc                     ; if not hit
@@ -153,6 +155,7 @@ cast_ray
                                 adc mapCoordsToPos,x    ;
                                 tax                     ;
                                 lda game_map,x          ;
+                                sta textureMapCode      ; save texture code
                                 bne @final_res_a        ;
 
                                 clc                     ; if not hit
@@ -170,7 +173,8 @@ cast_ray
                                 jmp @loop
 
 ; vertical gridline hit
-@final_res_b    lda rayTheta            ; absolute difference between rayTheta and
+@final_res_b    
+                lda rayTheta            ; absolute difference between rayTheta and
                 sec                     ; playerTheta
                 sbc playerTheta         ;
                 tay                     ;
@@ -210,7 +214,9 @@ cast_ray
                 tay                             ; 
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
-                lda TEXTURE_1_ID                ; 
+                lda textureMapCode              ; subtract 1 to get dark version of the texture
+                sec                             ;
+                sbc #1                          ;
                 sta rayTextureId,x              ; 
                 rts
 
@@ -256,6 +262,8 @@ cast_ray
                 tay                             ;
                 lda texColumnOffset,y           ;
                 sta texColumnOffsets,x          ;
-                lda TEXTURE_2_ID                ;
+                lda textureMapCode              ; add 1 to get light version of the texture
+                clc                             ;
+                adc #1                          ;
                 sta rayTextureId,x              ;
                 rts
