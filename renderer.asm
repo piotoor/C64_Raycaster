@@ -1,6 +1,6 @@
 f_8=$74
 g_8=$77
-
+prevTextureId=$78
 ;;---------------------------------------------
 ;; compute_frame
 ;;
@@ -32,7 +32,8 @@ compute_frame
 ;; Lower part is just a mirror.
 ;;---------------------------------------------
 draw_back_buffer     
-                
+                lda #-1
+                sta prevTextureId
                 ldx #HALF_SCREEN_HEIGHT -1
 @rows                   
                         ; update upper part pointer
@@ -52,13 +53,18 @@ draw_back_buffer
 @draw_walls                     
                                 stx f_8                         ; save x
 
+                                
                                 ldx rayTextureId,y              ; calculate texture pointer
+                                cpx prevTextureId               ; if current column uses the same texture as previous one
+                                beq @same_texture               ; don't reload
                                 lda texturesVect,x              ; 
                                 sta texture_L                   ; 
+                                stx prevTextureId               ;
                                 inx                             ; 
                                 lda texturesVect,x              ; 
                                 sta texture_H                   ; 
-
+                                
+@same_texture
                                 ldx rayStart,y
                                 lda texColumnOffset,x           ; beginning of list of "steps" for every rayStart
                                 clc
