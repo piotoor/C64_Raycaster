@@ -1,6 +1,6 @@
-square_size_x2=#32
-map_width=#16
-map_height=#16
+SQUARE_SIZE_X2=#32
+MAP_WIDTH=#16
+MAP_HEIGHT=#16
 
 game_map        byte 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
                 byte 1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1
