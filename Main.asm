@@ -114,7 +114,7 @@ player_setup
                 lda #$85
                 sta posY
                 lda #0
-                sta theta
+                sta playerTheta
                 rts
 
 ;;---------------------------------------------

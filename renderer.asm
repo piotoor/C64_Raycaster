@@ -1,37 +1,35 @@
+f_8=$74
+g_8=$77
+
 ;;---------------------------------------------
 ;; compute_frame
 ;;
 ;; Raycasting is done there, in two steps
 ;;---------------------------------------------
 compute_frame   
-                lda theta
+                lda playerTheta
                 sec
                 sbc half_fov
-                sta theta_ray_zero
+                sta thetaRayZero
 
                 ldx #39; screen_width - 1
-                stx ray_id
-@loop                   lda theta_ray_zero
-                        adc ray_id
+                stx rayId
+@loop                   lda thetaRayZero
+                        adc rayId
                         sta rayTheta
 
                         jsr init_ray_params
                         jsr cast_ray
-                dec ray_id 
+                dec rayId 
                 bpl @loop
                 rts
 
 ;;---------------------------------------------
 ;; draw_back_buffer
 ;;
-;; Renders frame on a back buffer
+;; Renders frame on a back buffer ($C800)
 ;; Only upper half of the screen is calculated
 ;; Lower part is just a mirror.
-;; Uses:
-;; - E_16 - pointer to "upper-part" of the color_buffer
-;; - ray_start
-;; - ray_color
-;; - todo: document texturing stuff
 ;;---------------------------------------------
 draw_back_buffer     
                 
@@ -46,14 +44,14 @@ draw_back_buffer
                         ldy #39 ; screen_width - 1
 @cols                           clc
                                 txa
-                                cmp ray_start,y
+                                cmp rayStart,y
                                 bcs @draw_walls
-@draw_ceil_and_floor            lda ceil_color
+@draw_ceil_and_floor            lda CEIL_FLOOR_COLOR
                                 sta (E_16),y
                                 jmp @end
 @draw_walls                     
                                 stx f_8
-                                ldx ray_texture,y
+                                ldx rayTextureId,y
                                 lda texturesVect,x
                                 sta texture_L
                                 inx
@@ -61,12 +59,12 @@ draw_back_buffer
                                 sta texture_H
                                 
 
-                                ldx ray_start,y
-                                lda textureMappingOffsets,x ; beginning of list of "steps" for every ray_start
+                                ldx rayStart,y
+                                lda textureMappingOffsets,x ; beginning of list of "steps" for every rayStart
                                 clc
                                 adc f_8
                                 tax
-                                lda tex_column_offsets,y ; beginning of a texture vertical strip
+                                lda texColumnOffsets,y ; beginning of a texture vertical strip
                                 adc textureMappingCoords,x
                                         
                                 sty g_8
@@ -1618,3 +1616,6 @@ draw_front_buffer
                 sta $da07
                 
                 rts
+
+
+

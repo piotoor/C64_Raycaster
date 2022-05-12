@@ -36,26 +36,26 @@ s_pressed       ;lda #%11111101
 ;; rotate_right
 ;;---------------------------------------------
 rotate_right    
-                lda theta
+                lda playerTheta
                 adc #4
-                sta theta
+                sta playerTheta
                 rts
 
 ;;---------------------------------------------
 ;; rotate_left
 ;;---------------------------------------------
 rotate_left     
-                lda theta
+                lda playerTheta
                 sec
                 sbc #4
-                sta theta
+                sta playerTheta
                 rts
 
 ;;---------------------------------------------
 ;; move_forward
 ;;---------------------------------------------
 move_forward    
-                ldy theta
+                ldy playerTheta
                 lda cosX16,y
                 ;lsr ; TODO add speed
                 sta stepX
@@ -65,7 +65,7 @@ move_forward
                 sta stepY
 
                 lda posX
-                sta tmp_posX
+                sta tmpPosX
                 adc stepX
                 sta posX
 
@@ -74,7 +74,7 @@ move_forward
                 sta mapX                
                 lda posY
 
-                sta tmp_posY
+                sta tmpPosY
                 adc stepY
                 sta posY
 
@@ -90,9 +90,9 @@ move_forward
                 tax
                 lda game_map,x
                 beq @end
-                        lda tmp_posX
+                        lda tmpPosX
                         sta posX
-                        lda tmp_posY
+                        lda tmpPosY
                         sta posY
 @end            rts
 
@@ -100,7 +100,7 @@ move_forward
 ;; move_back
 ;;---------------------------------------------
 move_back       
-                ldy theta
+                ldy playerTheta
                 lda cosX16,y
                 ;lsr ; TODO add speed
                 sta stepX
@@ -110,7 +110,7 @@ move_back
                 sta stepY
      
                 lda posX
-                sta tmp_posX
+                sta tmpPosX
                 sec
                 sbc stepX
                 sta posX
@@ -120,7 +120,7 @@ move_back
                 sta mapX
                 
                 lda posY
-                sta tmp_posY
+                sta tmpPosY
                 sec
                 sbc stepY
                 sta posY
@@ -137,8 +137,8 @@ move_back
                 tax
                 lda game_map,x
                 beq @end
-                        lda tmp_posX
+                        lda tmpPosX
                         sta posX
-                        lda tmp_posY
+                        lda tmpPosY
                         sta posY
 @end            rts
