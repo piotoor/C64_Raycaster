@@ -56,14 +56,14 @@ init_ray_params
 @x_plus                 
                         lda plusThetaInitCoord,y
                         sta absWallHitXDist
-                        lsr absWallHitXDist
+                        asl
                         ldy #1
                         sty stepX
                 jmp @x_end
 @x_minus                
                         lda minusThetaInitCoord,y
                         sta absWallHitXDist
-                        lsr absWallHitXDist
+                        asl
                         ldy #-1
                         sty stepX
 @x_end          
@@ -79,14 +79,14 @@ init_ray_params
 @y_plus                 
                         lda plusThetaInitCoord,y
                         sta absWallHitYDist
-                        lsr absWallHitYDist
+                        asl
                         ldy #1
                         sty stepY
                 jmp @y_end
 @y_minus                
                         lda minusThetaInitCoord,y
                         sta absWallHitYDist
-                        lsr absWallHitYDist
+                        asl
                         ldy #-1
                         sty stepY
 @y_end          
