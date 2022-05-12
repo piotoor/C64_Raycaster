@@ -50,34 +50,30 @@ draw_back_buffer
                                 sta (E_16),y
                                 jmp @end
 @draw_walls                     
-                                stx f_8
-                                ldx rayTextureId,y
-                                lda texturesVect,x
-                                sta texture_L
-                                inx
-                                lda texturesVect,x
-                                sta texture_H
-                                
+                                stx f_8                         ; save x
+
+                                ldx rayTextureId,y              ; calculate texture pointer
+                                lda texturesVect,x              ; 
+                                sta texture_L                   ; 
+                                inx                             ; 
+                                lda texturesVect,x              ; 
+                                sta texture_H                   ; 
 
                                 ldx rayStart,y
-                                lda texColumnOffset,x ; beginning of list of "steps" for every rayStart
+                                lda texColumnOffset,x           ; beginning of list of "steps" for every rayStart
                                 clc
                                 adc f_8
                                 tax
-                                lda texColumnOffsets,y ; beginning of a texture vertical strip
-                                adc textureMappingCoords,x
+                                lda texColumnOffsets,y          ; beginning of a texture vertical strip
+                                adc textureMappingCoords,x      ; add texel coord
                                         
-                                sty g_8
-                                tay
-                                lda (texture),y
-                                ;lda wall_1,y
-                                ldy g_8
-                                sta (E_16),y
-                                ldx f_8
-                                 
-                                 ;lda ray_color,y 
-                                 ;sta (E_16),y
-                                        
+                                sty g_8                         ; load texel
+                                tay                             ; and store in the back_buffer
+                                lda (texture),y                 ;
+                                ldy g_8                         ;
+                                sta (E_16),y                    ;
+
+                                ldx f_8                         ; restore x
 @end                           
 
                         dey
