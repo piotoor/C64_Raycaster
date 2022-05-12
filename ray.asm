@@ -5,13 +5,21 @@ stepX=$6d
 stepY=$6e
 ray_id=$6f
 theta_ray_zero=$70
+
 ray_start=$C000
-ray_color=$C028
+ray_texture=$C028
+tex_column_offsets=$C050
 back_buff=$C800
-color1=#8
-color2=#9
+texture1=#0
+texture2=#2
 ceil_color=#0
 floor_color=#11
+
+texture=$75
+texture_L=$75
+texture_H=$76
+;texture1_L=$77
+;texture1_H=$78
 
 ;;---------------------------------------------
 ;; init_ray_params
@@ -20,6 +28,9 @@ floor_color=#11
 ;; B_16 - currDistY
 ;; C_16 - dx
 ;; D_16 - dy
+;;
+;; c_8  - abs(wallHitXDist)
+;; d_8  - abs(wallHitYDist)
 ;;---------------------------------------------
 init_ray_params
                 ldy posX
@@ -30,11 +41,15 @@ init_ray_params
                 beq @x_minus
 @x_plus                 
                         lda plusThetaInitCoord,y
+                        sta c_8
+                        lsr c_8
                         ldy #1
                         sty stepX
                 jmp @x_end
 @x_minus                
                         lda minusThetaInitCoord,y
+                        sta c_8
+                        lsr c_8
                         ldy #-1
                         sty stepX
 @x_end          
@@ -49,11 +64,15 @@ init_ray_params
                 beq @y_minus
 @y_plus                 
                         lda plusThetaInitCoord,y
+                        sta d_8
+                        lsr d_8
                         ldy #1
                         sty stepY
                 jmp @y_end
 @y_minus                
                         lda minusThetaInitCoord,y
+                        sta d_8
+                        lsr d_8
                         ldy #-1
                         sty stepY
 @y_end          
@@ -110,6 +129,11 @@ cast_ray
                                 lda B_16_H
                                 adc D_16_H
                                 sta B_16_H
+
+                                lda d_8
+                                clc
+                                adc #16
+                                sta d_8
                                 jmp @loop    
 @y_ge_x                         
                                 clc
@@ -132,34 +156,18 @@ cast_ray
                                 lda A_16_H
                                 adc C_16_H
                                 sta A_16_H
+
+                                lda c_8
+                                clc
+                                adc #16
+                                sta c_8
                                 jmp @loop                   
-
-@final_res_a    lda rayTheta
-                sec
-                sbc theta
-                tay
-                ldx absThetaDist,y
-
-
-                lda A_16_L      ; final dist max 0x7fff
-                asl             ; bit 7 -> 0
-                lda #0          ;
-                adc #0          ;
-                aso A_16_H
-                ;asl E_16_H
-                ;ora E_16_H
-                lineStartRow
-
-                lda color2
-                sta ray_color,x
-                rts
 
 @final_res_b    lda rayTheta
                 sec
                 sbc theta
                 tay
                 ldx absThetaDist,y
-
 
                 lda B_16_L
                 asl             ; bit 7 -> 0
@@ -170,8 +178,81 @@ cast_ray
                 ;asl E_16_H
                 ;ora E_16_H
                 lineStartRow
-                
 
-                lda color1
-                sta ray_color,x
+                lda d_8
+                asl
+                ldx rayTheta
+                ldy reducedTheta,x
+                xOverTan
+                sta e_8
+                ldx rayTheta
+                lda xPlusTheta,x
+                beq @x_minus
+@x_plus                 
+                lda posX
+                clc
+                adc e_8
+                jmp @x_end
+@x_minus                
+                lda posX
+                sec
+                sbc e_8
+@x_end   
+                tax
+                lda posMod16,x
+                ldx ray_id
+                
+                tay
+                lda texColumnOffset,y
+                sta tex_column_offsets,x
+                lda texture1
+                sta ray_texture,x
+                ; load texture
+                rts
+
+@final_res_a    lda rayTheta
+                sec
+                sbc theta
+                tay
+                ldx absThetaDist,y
+
+                lda A_16_L      ; final dist max 0x7fff
+                asl             ; bit 7 -> 0
+                lda #0          ;
+                adc #0          ;
+                aso A_16_H
+                ;asl E_16_H
+                ;ora E_16_H
+                lineStartRow 
+               
+                lda c_8
+                asl
+                ldx rayTheta
+                ldy mirrorReducedTheta,x
+                xOverTan
+                sta e_8
+                ldx rayTheta
+                lda yPlusTheta,x
+                beq @y_minus
+@y_plus                 
+                lda posY
+                clc
+                adc e_8
+                jmp @y_end
+@y_minus                
+                lda posY
+                sec
+                sbc e_8
+@y_end   
+
+                tax
+                lda posMod16,x
+                ldx ray_id
+                
+                tay
+                lda texColumnOffset,y
+                sta tex_column_offsets,x
+                ; load texture
+                lda texture2
+                sta ray_texture,x
                 rts

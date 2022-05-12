@@ -28,9 +28,10 @@ compute_frame
 ;; Only upper half of the screen is calculated
 ;; Lower part is just a mirror.
 ;; Uses:
-;; - F_16 - pointer to "upper-part" of the color_buffer
+;; - E_16 - pointer to "upper-part" of the color_buffer
 ;; - ray_start
 ;; - ray_color
+;; - todo: document texturing stuff
 ;;---------------------------------------------
 draw_back_buffer     
                 
@@ -38,9 +39,9 @@ draw_back_buffer
 @rows                   
                         ; update upper part pointer
                         lda backBuffUpperL,x
-                        sta F_16_L
+                        sta E_16_L
                         lda backBuffUpperH,x
-                        sta F_16_H
+                        sta E_16_H
 
                         ldy #39 ; screen_width - 1
 @cols                           clc
@@ -48,10 +49,37 @@ draw_back_buffer
                                 cmp ray_start,y
                                 bcs @draw_walls
 @draw_ceil_and_floor            lda ceil_color
-                                sta (F_16),y
+                                sta (E_16),y
                                 jmp @end
-@draw_walls                     lda ray_color,y  
-                                sta (F_16),y
+@draw_walls                     
+                                stx f_8
+                                ldx ray_texture,y
+                                lda texturesVect,x
+                                sta texture_L
+                                inx
+                                lda texturesVect,x
+                                sta texture_H
+                                
+
+                                ldx ray_start,y
+                                lda textureMappingOffsets,x ; beginning of list of "steps" for every ray_start
+                                clc
+                                adc f_8
+                                tax
+                                lda tex_column_offsets,y ; beginning of a texture vertical strip
+                                adc textureMappingCoords,x
+                                        
+                                sty g_8
+                                tay
+                                lda (texture),y
+                                ;lda wall_1,y
+                                ldy g_8
+                                sta (E_16),y
+                                ldx f_8
+                                 
+                                 ;lda ray_color,y 
+                                 ;sta (E_16),y
+                                        
 @end                           
 
                         dey

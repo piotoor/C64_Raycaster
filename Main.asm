@@ -145,3 +145,4 @@ incasm  player.asm
 incasm  inputhandling.asm
 incasm  ray.asm
 incasm  renderer.asm
+incasm  assets.asm
