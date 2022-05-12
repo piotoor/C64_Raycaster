@@ -1,3 +1,4 @@
+ROTATION_SPEED=#4
 ;;---------------------------------------------
 ;; check_keyboard
 ;;---------------------------------------------
@@ -37,7 +38,7 @@ s_pressed       ;lda #%11111101
 ;;---------------------------------------------
 rotate_right    
                 lda playerTheta
-                adc #4
+                adc ROTATION_SPEED
                 sta playerTheta
                 rts
 
@@ -47,7 +48,7 @@ rotate_right
 rotate_left     
                 lda playerTheta
                 sec
-                sbc #4
+                sbc ROTATION_SPEED
                 sta playerTheta
                 rts
 
