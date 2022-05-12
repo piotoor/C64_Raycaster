@@ -9,7 +9,7 @@ g_8=$77
 compute_frame   
                 lda playerTheta
                 sec
-                sbc half_fov
+                sbc HALF_FOV
                 sta thetaRayZero
 
                 ldx #39; screen_width - 1

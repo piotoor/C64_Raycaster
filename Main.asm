@@ -6,14 +6,16 @@
 
 *=$1000
 
-screen_width=#40
-screen_height=#25
-half_screen_height=#13
-half_fov=#20
+SCREEN_WIDTH=#40
+SCREEN_HEIGHT=#25
+HALF_SCREEN_HEIGHT=#13
+HALF_FOV=#20
+
 pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
 ddra=$dc02      ; CIA#1 (Data Direction Register A)
 ddrb=$dc03      ; CIA#1 (Data Direction Register B)
+
 synch=$71       
 main_ticks=$72
 irq_ticks=$73
