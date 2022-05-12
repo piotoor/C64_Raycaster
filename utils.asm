@@ -18,15 +18,22 @@ E_16=$65
 E_16_L=$65
 E_16_H=$66
 
-b_8=$67
 
-F_16=$68
-F_16_L=$68
-F_16_H=$69
 
-G_16=$74
-G_16_L=$74
-G_16_H=$75
+c_8=$67
+d_8=$68
+e_8=$79
+f_8=$74
+g_8=$77
+
+
+;F_16=$68
+;F_16_L=$68
+;F_16_H=$69
+
+;G_16=$74
+;G_16_L=$74
+;G_16_H=$75
 
 
 ;;---------------------------------------------
@@ -37,15 +44,15 @@ G_16_H=$75
 defm mxOverCos 
         tax
         lda mxOverCosVect,x
-        sta F_16_L
+        sta E_16_L
         inx
         lda mxOverCosVect,x
-        sta F_16_H
+        sta E_16_H
         
-        lda (F_16),y
+        lda (E_16),y
         sta /1
         iny
-        lda (F_16),y
+        lda (E_16),y
         sta /2
         endm
 
@@ -73,21 +80,33 @@ defm mxOverCosX16
 defm lineStartRow 
 
         ldy lineStartRowVect,x
-        sty F_16_L
+        sty E_16_L
         inx
         ldy lineStartRowVect,x
-        sty F_16_H
+        sty E_16_H
         
         tay
         ldx ray_id
-        ; debug
-        ;sta $0400,x
-        ; 
-        lda (F_16),y        
+
+        lda (E_16),y        
         sta ray_start,x
         
-        ; debug
-        ;lda ray_id
-        ;sta $0428,x
-        ;
+        endm
+
+;;---------------------------------------------
+;; xOverTan target
+;; x in a
+;; theta in y
+;; result in a
+;;--------------------------------------------- 
+defm xOverTan 
+        tax
+        lda xOverTanVect,x
+        sta E_16_L
+        inx
+        lda xOverTanVect,x
+        sta E_16_H
+        
+        lda (E_16),y
+        ;sta /1
         endm
