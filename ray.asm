@@ -139,7 +139,7 @@ cast_ray
 
                                 lda absWallHitYDist     ; increase absWallHitYDist
                                 clc                     ; 
-                                adc #16                 ; 
+                                adc #SQUARE_SIZE        ; 
                                 sta absWallHitYDist     ; 
                                 jmp @loop    
 @y_ge_x                         
@@ -165,7 +165,7 @@ cast_ray
 
                                 lda absWallHitXDist     ; increase absWallHitXDist
                                 clc                     ;
-                                adc #16                 ;
+                                adc #SQUARE_SIZE        ;
                                 sta absWallHitXDist     ;
                                 jmp @loop
 
