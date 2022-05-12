@@ -116,85 +116,83 @@ cast_ray
                                 cmp rayCurrDistX_L
                         bcs @y_ge_x
 @y_lt_x                        
-                                clc
-                                lda mapY
-                                adc stepY
-                                sta mapY
+                                clc             ; increase map coordinates
+                                lda mapY        ; 
+                                adc stepY       ; 
+                                sta mapY        ; 
                                 
-                                tax
-                                lda mapCoordsToPos,x
-                                
-                                clc
-                                adc mapX
-                                tax
-                                lda game_map,x
-                                bne @final_res_b
+                                tax                     ; check if hit on a horizontal
+                                lda mapCoordsToPos,x    ; gridline
+                                clc                     ; 
+                                adc mapX                ; 
+                                tax                     ; 
+                                lda game_map,x          ; 
+                                bne @final_res_b        ; 
 
-                                clc
-                                lda rayCurrDistY_L
-                                adc rayDistDy_L
-                                sta rayCurrDistY_L
-                                lda rayCurrDistY_H
-                                adc rayDistDy_H
-                                sta rayCurrDistY_H
+                                clc                     ; if not hit
+                                lda rayCurrDistY_L      ; increase rayCurrDistY
+                                adc rayDistDy_L         ; 
+                                sta rayCurrDistY_L      ; 
+                                lda rayCurrDistY_H      ; 
+                                adc rayDistDy_H         ; 
+                                sta rayCurrDistY_H      ; 
 
-                                lda absWallHitYDist
-                                clc
-                                adc #16
-                                sta absWallHitYDist
+                                lda absWallHitYDist     ; increase absWallHitYDist
+                                clc                     ; 
+                                adc #16                 ; 
+                                sta absWallHitYDist     ; 
                                 jmp @loop    
 @y_ge_x                         
-                                clc
-                                lda mapX
-                                adc stepX
-                                sta mapX
-                                
-                                clc
-                                ldx mapY
-                                adc mapCoordsToPos,x
-                                
-                                tax
-                                lda game_map,x
-                                bne @final_res_a
+                                clc             ; increase map coordinates
+                                lda mapX        ;
+                                adc stepX       ;
+                                sta mapX        ;
+                               
+                                clc                     ; check if hit on a vertical
+                                ldx mapY                ; gridline
+                                adc mapCoordsToPos,x    ;
+                                tax                     ;
+                                lda game_map,x          ;
+                                bne @final_res_a        ;
 
-                                clc
-                                lda rayCurrDistX_L
-                                adc rayDistDx_L
-                                sta rayCurrDistX_L
-                                lda rayCurrDistX_H
-                                adc rayDistDx_H
-                                sta rayCurrDistX_H
+                                clc                     ; if not hit
+                                lda rayCurrDistX_L      ; increase rayCurrDistX
+                                adc rayDistDx_L         ; 
+                                sta rayCurrDistX_L      ; 
+                                lda rayCurrDistX_H      ; 
+                                adc rayDistDx_H         ; 
+                                sta rayCurrDistX_H      ; 
 
-                                lda absWallHitXDist
-                                clc
-                                adc #16
-                                sta absWallHitXDist
-                                jmp @loop                   
+                                lda absWallHitXDist     ; increase absWallHitXDist
+                                clc                     ;
+                                adc #16                 ;
+                                sta absWallHitXDist     ;
+                                jmp @loop
 
-@final_res_b    lda rayTheta
-                sec
-                sbc playerTheta
-                tay
-                ldx absThetaDist,y
+; vertical gridline hit
+@final_res_b    lda rayTheta            ; absolute difference between rayTheta and
+                sec                     ; playerTheta
+                sbc playerTheta         ;
+                tay                     ;
+                ldx absThetaDist,y      ;
 
-                lda rayCurrDistY_L
-                asl             ; bit 7 -> 0
-                lda #0          ;
-                adc #0          ;
-                
-                aso rayCurrDistY_H
-                ;asl E_16_H
-                ;ora E_16_H
-                lineStartRow
+                lda rayCurrDistY_L      ; coputing vertical line starting point
+                asl                     ; bit 7 -> 0
+                lda #0                  ;
+                adc #0                  ;
+                aso rayCurrDistY_H      ; asl rayCurrDistY_H
+                                        ; ora rayCurrDistY_H
+                lineStartRow            ;
 
-                lda absWallHitYDist
-                asl
-                ldx rayTheta
-                ldy reducedTheta,x
-                xOverTan
-                sta calculatedAbsWallHitDist
-                ldx rayTheta
-                lda xPlusTheta,x
+                lda absWallHitYDist             ; calculating absWallHitDist
+                asl                             ; 
+                ldx rayTheta                    ; 
+                ldy reducedTheta,x              ; 
+                xOverTan                        ; 
+                sta calculatedAbsWallHitDist    ; 
+
+                ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
+                lda xPlusTheta,x                ; to / from posX
                 beq @x_minus
 @x_plus                 
                 lda posX
@@ -206,42 +204,41 @@ cast_ray
                 sec
                 sbc calculatedAbsWallHitDist
 @x_end   
-                tax
-                lda posMod16,x
-                ldx rayId
-                
-                tay
-                lda texColumnOffset,y
-                sta texColumnOffsets,x
-                lda TEXTURE_1_ID
-                sta rayTextureId,x
-                ; load texture
+                tax                             ; calculate texColumnOffsets
+                lda posMod16,x                  ; store texture id
+                ldx rayId                       ; 
+                tay                             ; 
+                lda texColumnOffset,y           ; 
+                sta texColumnOffsets,x          ; 
+                lda TEXTURE_1_ID                ; 
+                sta rayTextureId,x              ; 
                 rts
 
-@final_res_a    lda rayTheta
-                sec
-                sbc playerTheta
-                tay
-                ldx absThetaDist,y
+; horizontal gridline hit
+@final_res_a    lda rayTheta            ; absolute difference between rayTheta and
+                sec                     ; playerTheta
+                sbc playerTheta         ;
+                tay                     ;
+                ldx absThetaDist,y      ;
 
-                lda rayCurrDistX_L      ; final dist max 0x7fff
-                asl             ; bit 7 -> 0
-                lda #0          ;
-                adc #0          ;
-                aso rayCurrDistX_H
-                ;asl E_16_H
-                ;ora E_16_H
-                lineStartRow 
+                lda rayCurrDistX_L      ; computing vertical line starting point
+                asl                     ; bit 7 -> 0
+                lda #0                  ;
+                adc #0                  ;
+                aso rayCurrDistX_H      ; asl rayCurrDistX_H
+                                        ; ora rayCurrDistX_H
+                lineStartRow            ;
                
-                lda absWallHitXDist
-                asl
-                ldx rayTheta
-                ldy mirrorReducedTheta,x
-                xOverTan
-                sta calculatedAbsWallHitDist
-                ldx rayTheta
-                lda yPlusTheta,x
-                beq @y_minus
+                lda absWallHitXDist             ; calculating absWallHitDist
+                asl                             ;
+                ldx rayTheta                    ;
+                ldy mirrorReducedTheta,x        ;
+                xOverTan                        ;
+                sta calculatedAbsWallHitDist    ;
+
+                ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
+                lda yPlusTheta,x                ; to / from posY
+                beq @y_minus                    
 @y_plus                 
                 lda posY
                 clc
@@ -253,30 +250,12 @@ cast_ray
                 sbc calculatedAbsWallHitDist
 @y_end   
 
-                tax
-                lda posMod16,x
-                ldx rayId
-                
-                tay
-                lda texColumnOffset,y
-                sta texColumnOffsets,x
-                ; load texture
-                lda TEXTURE_2_ID
-                sta rayTextureId,x
+                tax                             ; calculate texColumnOffsets
+                lda posMod16,x                  ; store texture id
+                ldx rayId                       ;
+                tay                             ;
+                lda texColumnOffset,y           ;
+                sta texColumnOffsets,x          ;
+                lda TEXTURE_2_ID                ;
+                sta rayTextureId,x              ;
                 rts
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

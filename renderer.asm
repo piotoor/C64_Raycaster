@@ -12,7 +12,7 @@ compute_frame
                 sbc HALF_FOV
                 sta thetaRayZero
 
-                ldx #39; screen_width - 1
+                ldx #SCREEN_WIDTH -1
                 stx rayId
 @loop                   lda thetaRayZero
                         adc rayId
@@ -33,7 +33,7 @@ compute_frame
 ;;---------------------------------------------
 draw_back_buffer     
                 
-                ldx #12
+                ldx #HALF_SCREEN_HEIGHT -1
 @rows                   
                         ; update upper part pointer
                         lda backBuffUpperL,x
@@ -41,7 +41,7 @@ draw_back_buffer
                         lda backBuffUpperH,x
                         sta E_16_H
 
-                        ldy #39 ; screen_width - 1
+                        ldy #SCREEN_WIDTH -1 
 @cols                           clc
                                 txa
                                 cmp rayStart,y
@@ -60,7 +60,7 @@ draw_back_buffer
                                 
 
                                 ldx rayStart,y
-                                lda textureMappingOffsets,x ; beginning of list of "steps" for every rayStart
+                                lda texColumnOffset,x ; beginning of list of "steps" for every rayStart
                                 clc
                                 adc f_8
                                 tax
