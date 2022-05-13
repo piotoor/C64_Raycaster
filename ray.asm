@@ -174,11 +174,9 @@ cast_ray
 
 ; vertical gridline hit
 @final_res_b    
-                lda rayTheta            ; absolute difference between rayTheta and
-                sec                     ; playerTheta
-                sbc playerTheta         ; X2, because it indexes word vector
-                tay                     ;
-                ldx absThetaDistX2,y      ;
+                ldy rayId                ; absolute difference between rayTheta and
+                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                
 
                 lda rayCurrDistY_L      ; coputing vertical line starting point
                 asl                     ; bit 7 -> 0
@@ -221,11 +219,9 @@ cast_ray
                 rts
 
 ; horizontal gridline hit
-@final_res_a    lda rayTheta            ; absolute difference between rayTheta and
-                sec                     ; playerTheta
-                sbc playerTheta         ; X2, because it indexes word vector
-                tay                     ;
-                ldx absThetaDistX2,y      ;
+@final_res_a    
+                ldy rayId                ; absolute difference between rayTheta and
+                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
 
                 lda rayCurrDistX_L      ; computing vertical line starting point
                 asl                     ; bit 7 -> 0
