@@ -207,9 +207,8 @@ cast_ray
                 sbc calculatedAbsWallHitDist
 @x_end   
                 tax                             ; calculate texColumnOffsets
-                lda posMod16,x                  ; store texture id
+                ldy posMod16,x                  ; store texture id
                 ldx rayId                       ; 
-                tay                             ; 
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
                 lda textureMapCode              ; subtract 1 to get dark version of the texture
@@ -253,9 +252,8 @@ cast_ray
 @y_end   
 
                 tax                             ; calculate texColumnOffsets
-                lda posMod16,x                  ; store texture id
-                ldx rayId                       ;
-                tay                             ;
+                ldy posMod16,x                  ; store texture id
+                ldx rayId                       ;                            ;
                 lda texColumnOffset,y           ;
                 sta texColumnOffsets,x          ;
                 lda textureMapCode              ; add 1 to get light version of the texture
