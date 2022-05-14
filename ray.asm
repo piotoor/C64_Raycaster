@@ -28,8 +28,8 @@ rayDistDy=$63
 rayDistDy_L=$63
 rayDistDy_H=$64
 
-absWallHitXDist=$67
-absWallHitYDist=$68
+absWallHitXDistX2=$67
+absWallHitYDistX2=$68
 
 calculatedAbsWallHitDist=$79
 textureMapCode=$7A
@@ -55,16 +55,14 @@ init_ray_params
                 lda xPlusTheta,x
                 beq @x_minus
 @x_plus                 
-                        lda plusThetaInitCoord,y
-                        sta absWallHitXDist
-                        asl
+                        lda plusThetaInitCoordX2,y      ; x2 to index word array
+                        sta absWallHitXDistX2           ; x2 to index word array
                         ldy #1
                         sty stepX
                 jmp @x_end
 @x_minus                
-                        lda minusThetaInitCoord,y
-                        sta absWallHitXDist
-                        asl
+                        lda minusThetaInitCoordX2,y     ; x2 to index word array
+                        sta absWallHitXDistX2           ; x2 to index word array
                         ldy #-1
                         sty stepX
 @x_end          
@@ -78,16 +76,14 @@ init_ray_params
                 lda yPlusTheta,x
                 beq @y_minus
 @y_plus                 
-                        lda plusThetaInitCoord,y
-                        sta absWallHitYDist
-                        asl
+                        lda plusThetaInitCoordX2,y
+                        sta absWallHitYDistX2
                         ldy #1
                         sty stepY
                 jmp @y_end
 @y_minus                
-                        lda minusThetaInitCoord,y
-                        sta absWallHitYDist
-                        asl
+                        lda minusThetaInitCoordX2,y
+                        sta absWallHitYDistX2
                         ldy #-1
                         sty stepY
 @y_end          
@@ -139,10 +135,10 @@ cast_ray
                                 adc rayDistDy_H         ; 
                                 sta rayCurrDistY_H      ; 
 
-                                lda absWallHitYDist     ; increase absWallHitYDist
+                                lda absWallHitYDistX2   ; increase absWallHitYDist
                                 clc                     ; 
-                                adc #SQUARE_SIZE        ; 
-                                sta absWallHitYDist     ; 
+                                adc #SQUARE_SIZE_X2     ; 
+                                sta absWallHitYDistX2   ; 
                                 jmp @loop    
 @y_ge_x                         
                                 clc             ; increase map coordinates
@@ -166,10 +162,10 @@ cast_ray
                                 adc rayDistDx_H         ; 
                                 sta rayCurrDistX_H      ; 
 
-                                lda absWallHitXDist     ; increase absWallHitXDist
+                                lda absWallHitXDistX2   ; increase absWallHitXDist
                                 clc                     ;
-                                adc #SQUARE_SIZE        ;
-                                sta absWallHitXDist     ;
+                                adc #SQUARE_SIZE_X2     ;
+                                sta absWallHitXDistX2   ;
                                 jmp @loop
 
 ; vertical gridline hit
@@ -186,8 +182,7 @@ cast_ray
                                         ; ora rayCurrDistY_H
                 lineStartRow            ;
 
-                lda absWallHitYDist             ; calculating absWallHitDist
-                asl                             ; 
+                lda absWallHitYDistX2           ; calculating absWallHitDist
                 ldx rayTheta                    ; 
                 ldy reducedTheta,x              ; 
                 xOverTan                        ; 
@@ -230,8 +225,7 @@ cast_ray
                                         ; ora rayCurrDistX_H
                 lineStartRow            ;
                
-                lda absWallHitXDist             ; calculating absWallHitDist
-                asl                             ;
+                lda absWallHitXDistX2           ; calculating absWallHitDist
                 ldx rayTheta                    ;
                 ldy mirrorReducedTheta,x        ;
                 xOverTan                        ;
@@ -261,3 +255,7 @@ cast_ray
                 adc #1                          ;
                 sta rayTextureId,x              ; store texture id
                 rts
+
+
+
+
