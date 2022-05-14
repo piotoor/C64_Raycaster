@@ -113,8 +113,8 @@ cast_ray
                                 cmp rayCurrDistX_L
                         bcs @y_ge_x
 @y_lt_x                        
-                                clc             ; increase map coordinates
-                                lda mapY        ; 
+                                ;clc            ; carry not set. bcs not taken
+                                lda mapY        ; increase map coordinates
                                 adc stepY       ; 
                                 sta mapY        ; 
                                 
