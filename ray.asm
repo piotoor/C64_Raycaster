@@ -136,7 +136,7 @@ cast_ray
                                 sta rayCurrDistY_H      ; 
 
                                 lda absWallHitYDistX2   ; increase absWallHitYDist
-                                clc                     ; 
+                                ;clc                    ; previous addition should never overflow
                                 adc #SQUARE_SIZE_X2     ; 
                                 sta absWallHitYDistX2   ; 
                                 jmp @loop    
@@ -163,7 +163,7 @@ cast_ray
                                 sta rayCurrDistX_H      ; 
 
                                 lda absWallHitXDistX2   ; increase absWallHitXDist
-                                clc                     ;
+                                ;clc                    ; previous addition should never overlfow
                                 adc #SQUARE_SIZE_X2     ;
                                 sta absWallHitXDistX2   ;
                                 jmp @loop
