@@ -206,15 +206,15 @@ cast_ray
                 sec
                 sbc calculatedAbsWallHitDist
 @x_end   
-                tax                             ; calculate texColumnOffsets
-                ldy posMod16,x                  ; store texture id
+                tax                             ; calculate offset in texture to
+                ldy posMod16,x                  ; the start of vertical strip hit by the ray
                 ldx rayId                       ; 
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
                 lda textureMapCode              ; subtract 1 to get dark version of the texture
                 sec                             ;
                 sbc #1                          ;
-                sta rayTextureId,x              ; 
+                sta rayTextureId,x              ; store texture id
                 rts
 
 ; horizontal gridline hit
@@ -251,13 +251,13 @@ cast_ray
                 sbc calculatedAbsWallHitDist
 @y_end   
 
-                tax                             ; calculate texColumnOffsets
-                ldy posMod16,x                  ; store texture id
-                ldx rayId                       ;                            ;
+                tax                             ; calculate offset in texture to
+                ldy posMod16,x                  ; the start of vertical strip hit by the ray
+                ldx rayId                       ;                            
                 lda texColumnOffset,y           ;
                 sta texColumnOffsets,x          ;
                 lda textureMapCode              ; add 1 to get light version of the texture
                 clc                             ;
                 adc #1                          ;
-                sta rayTextureId,x              ;
+                sta rayTextureId,x              ; store texture id
                 rts
