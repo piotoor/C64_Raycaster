@@ -119,27 +119,21 @@ draw_back_buffer
                         sta currTexColumnOffset
 
                         lda texColumnOffset,y
-                        ;sta texMapCoordsIdx
                         clc
                         adc #12
-                        sta texMapCoordsIdx
+                        ;sta texMapCoordsIdx
                         stx g_8
                         tax
                         ldy #HALF_SCREEN_HEIGHT -1        
 @draw_walls                     
-                                ;lda texMapCoordsIdx
                                 sty f_8
-                                
                                 txa
                                 tay
-                                ;dec texMapCoordsIdx
                                 dex
                                 lda textureMappingCoords,y
                                 clc
-                                
                                 adc currTexColumnOffset
-                
-                                
+
                                 tay
                                 lda (texture),y
                                 ldy f_8
