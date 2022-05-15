@@ -83,10 +83,9 @@ draw_back_buffer
                         bmi @end
                         cpy rayStartX
                         bcs @draw_walls
-
+                        lda CEIL_FLOOR_COLOR
 @draw_ceil_and_floor            
-                                lda CEIL_FLOOR_COLOR
-                                sta (E_16),y
+                        sta (E_16),y
                         dey
                         bpl @draw_ceil_and_floor
 
