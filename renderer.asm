@@ -125,15 +125,13 @@ draw_back_buffer
                         stx g_8
                         tax
                         ldy #HALF_SCREEN_HEIGHT -1        
-@draw_walls                     
-                                sty f_8
-                                txa
-                                tay
+@draw_walls                   
+                                lda textureMappingCoords,x
                                 dex
-                                lda textureMappingCoords,y
                                 clc
                                 adc currTexColumnOffset
-
+                                
+                                sty f_8
                                 tay
                                 lda (texture),y
                                 ldy f_8
