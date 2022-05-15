@@ -2,7 +2,7 @@ f_8=$74
 g_8=$77
 prevTextureId=$78
 rayStartX=$7b
-texStripStart=$7c
+texMapCoordsIdx=$7c
 ;;---------------------------------------------
 ;; compute_frame
 ;;
@@ -115,20 +115,23 @@ draw_back_buffer
                         sty rayStartX
 
                         lda texColumnOffset,y
-                        sta texStripStart
+                        ;sta texMapCoordsIdx
+                        clc
+                        adc #12
+                        sta texMapCoordsIdx
                         ldy #HALF_SCREEN_HEIGHT -1        
 @draw_walls                     
-                                lda texStripStart
+                                lda texMapCoordsIdx
                                 sty f_8
+                                
+                                tay
+                                dec texMapCoordsIdx
+                                lda textureMappingCoords,y
                                 clc
-                                adc f_8
-                                stx g_8
-                                tax
-                                lda textureMappingCoords,x
-                                clc
-                                ldx g_8
+                                
                                 adc texColumnOffsets,x
                 
+                                
                                 tay
                                 lda (texture),y
                                 ldy f_8
@@ -1680,6 +1683,7 @@ draw_front_buffer
 
              
                 rts
+
 
 
 
