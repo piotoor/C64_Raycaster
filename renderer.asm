@@ -112,13 +112,13 @@ draw_back_buffer
                         sta E_16_L
                         lda backBuffUpperH,x
                         sta E_16_H
+
                         ldy rayStart,x
-                        sty rayStartX
+                        sty rayStartX                   
+                        lda texColumnOffsets,x          ; beginning of a texture vertical strip
+                        sta currTexColumnOffset         ;
 
-                        lda texColumnOffsets,x
-                        sta currTexColumnOffset
-
-                        lda texColumnOffset,y
+                        lda texColumnOffset,y           ; beginning of list of "steps" for every rayStart
                         clc
                         adc #12
                         ;sta texMapCoordsIdx
@@ -129,13 +129,13 @@ draw_back_buffer
                                 lda textureMappingCoords,x
                                 dex
                                 clc
-                                adc currTexColumnOffset
+                                adc currTexColumnOffset ; compute texel coordinate
                                 
                                 sty f_8
                                 tay
-                                lda (texture),y
+                                lda (texture),y         ; get texel
                                 ldy f_8
-                                sta (E_16),y
+                                sta (E_16),y            ; draw texel to the back buffer
                                 
                         dey
                         bmi @end
