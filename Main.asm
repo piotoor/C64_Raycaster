@@ -82,7 +82,7 @@ irq_setup
                 sta $0314   
                 stx $0315   
 
-                lda #$00    
+                lda #$ff    
                 sta $d012
 
                 lda $d011
