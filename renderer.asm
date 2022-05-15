@@ -62,7 +62,7 @@ draw_back_buffer
 
                         lda texColumnOffset,y           ; beginning of list of "steps" for every rayStart
                         clc
-                        adc #12
+                        adc #HALF_SCREEN_HEIGHT -1
                         ;sta texMapCoordsIdx
                         stx g_8
                         tax
