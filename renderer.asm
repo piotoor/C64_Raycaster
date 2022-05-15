@@ -34,64 +34,6 @@ compute_frame
 ;; Only upper half of the screen is calculated
 ;; Lower part is just a mirror.
 ;;---------------------------------------------
-;draw_back_buffer     
-;                lda #-1
-;                sta prevTextureId
-;                ldx #HALF_SCREEN_HEIGHT -1
-;@rows                   
-;                        ; update upper part pointer
-;                        lda backBuffUpperL,x
-;                        sta E_16_L
-;                        lda backBuffUpperH,x
-;                        sta E_16_H
-
-;                        ldy #SCREEN_WIDTH -1 
-;@cols                           clc
-;                                txa
-;                                cmp rayStart,y
-;                                bcs @draw_walls
-;@draw_ceil_and_floor            lda CEIL_FLOOR_COLOR
-;                                sta (E_16),y
-;                                jmp @end
-;@draw_walls                     
-;                                stx f_8                         ; save x
-
-;                                
-;                                ldx rayTextureId,y              ; calculate texture pointer
-;                                cpx prevTextureId               ; if current column uses the same texture as previous one
-;                                beq @same_texture               ; don't reload
-;                                lda texturesVect,x              ; 
-;                                sta texture_L                   ; 
-;                                stx prevTextureId               ;
-;                                inx                             ; 
-;                                lda texturesVect,x              ; 
-;                                sta texture_H                   ; 
-;                                
-;@same_texture
-;                                ldx rayStart,y
-;                                lda texColumnOffset,x           ; beginning of list of "steps" for every rayStart
-;                                clc
-;                                adc f_8
-;                                tax
-;                                lda texColumnOffsets,y          ; beginning of a texture vertical strip
-;                                adc textureMappingCoords,x      ; add texel coord
-;                                        
-;                                sty g_8                         ; load texel
-;                                tay                             ; and store in the back_buffer
-;                                lda (texture),y                 ;
-;                                ldy g_8                         ;
-;                                sta (E_16),y                    ;
-
-;                                ldx f_8                         ; restore x
-;@end                           
-
-;                        dey
-;                        bpl @cols
-;                        
-;                dex
-;                bpl @rows
-;                rts
-
 draw_back_buffer 
                 lda #-1
                 sta prevTextureId
@@ -1682,9 +1624,5 @@ draw_front_buffer
                 lda $ca07
                 sta $da07
 
-             
                 rts
-
-
-
 
