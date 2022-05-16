@@ -426,7 +426,6 @@ textureMappingCoords ; wasted RAM again
 
 ; textureMappingOffsets[rayStart,y]
 ; offsets to the beginning of texel coords in textureMappingCoords for a given ray_start
-;
+; points to the rightmost column
 ; y - screen col
-; textureMappingOffsets   byte 0,13,26,39,52,65,78,91,104,117,130,143,156,169,182,195;
-; Same values as texColumnOffset.
+textureMappingOffsets   byte 12,25,38,51,64,77,90,103,116,129,142,155,168

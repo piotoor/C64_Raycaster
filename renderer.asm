@@ -59,10 +59,8 @@ draw_back_buffer
                         sty rayStartX                   
                         lda texColumnOffsets,x          ; beginning of a texture vertical strip
                         sta currTexColumnOffset         ;
+                        lda textureMappingOffsets,y     ; beginning of list of "steps" for every rayStart
 
-                        lda texColumnOffset,y           ; beginning of list of "steps" for every rayStart
-                        clc
-                        adc #HALF_SCREEN_HEIGHT -1
                         ;sta texMapCoordsIdx
                         stx g_8
                         tax

@@ -133,7 +133,7 @@ screen_setup
                         sta $06e8,x                        
                 inx
                 bne @loop 
-                lda #1          ; set bg color to black
+                lda #1          ; set bg color 
                 sta $d021       ; fps counter readability
                 rts
 
