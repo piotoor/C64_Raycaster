@@ -11,18 +11,16 @@ currTexColumnOffset=$7d
 ;;---------------------------------------------
 compute_frame   
                 lda playerTheta
-                sec
-                sbc HALF_FOV
-                sta thetaRayZero
+                clc
+                adc HALF_FOV
+                sta rayTheta
 
                 ldx #SCREEN_WIDTH -1
                 stx rayId
-@loop                   lda thetaRayZero
-                        adc rayId
-                        sta rayTheta
-
+@loop                   
                         jsr init_ray_params
                         jsr cast_ray
+                        dec rayTheta
                 dec rayId 
                 bpl @loop
                 rts

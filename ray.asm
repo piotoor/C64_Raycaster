@@ -6,7 +6,7 @@ stepX=$6d
 stepY=$6e
 
 rayId=$6f
-thetaRayZero=$70
+FREE=$70
 
 texture=$75
 texture_L=$75
