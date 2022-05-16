@@ -2,7 +2,6 @@ f_8=$74
 g_8=$77
 prevTextureId=$78
 rayStartX=$7b
-prevRayStartX=$7e
 texMapCoordsIdx=$7c
 currTexColumnOffset=$7d
 ;;---------------------------------------------
@@ -58,8 +57,6 @@ draw_back_buffer
 
                         ldy rayStart,x
                         sty rayStartX
-                        lda prevRayStart,x
-                        sta prevRayStartX
                         lda texColumnOffsets,x          ; beginning of a texture vertical strip
                         sta currTexColumnOffset         ;
                         lda textureMappingOffsets,y     ; beginning of list of "steps" for every rayStart
@@ -85,12 +82,15 @@ draw_back_buffer
                         cpy rayStartX
                         bcs @draw_walls
                         
+                        
+                        ldx g_8
+@draw_ceil_and_floor    
                         lda CEIL_FLOOR_COLOR
-@draw_ceil_and_floor            
                         sta (E_16),y
                         dey
                         bmi @end
-                        cpy prevRayStartX
+                        tya
+                        cmp prevRayStart,x
                         bcs @draw_ceil_and_floor
 
 @end               
