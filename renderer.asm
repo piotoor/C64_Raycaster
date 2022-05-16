@@ -88,13 +88,14 @@ draw_back_buffer
                         lda CEIL_FLOOR_COLOR
                         sta (E_16),y
                         dey
-                        bmi @end
+                        bmi @end_ceil_floor ; workarount to skip redundant ldx
                         tya
                         cmp prevRayStart,x
                         bcs @draw_ceil_and_floor
 
 @end               
                 ldx g_8
+@end_ceil_floor
                 dex
                 bpl @cols
                 rts
