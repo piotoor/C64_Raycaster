@@ -37,6 +37,7 @@ textureMapCode=$7A
 rayStart=$C000
 rayTextureId=$C028
 texColumnOffsets=$C050
+prevRayStart=$C078
 backBuffer=$C800
 
 TEXTURE_1_ID=#0
