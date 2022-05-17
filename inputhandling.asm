@@ -69,23 +69,20 @@ move_forward
                 sta tmpPosX
                 adc stepX
                 sta posX
-
                 tax
                 lda posToMapCoords,x
                 sta mapX                
+                
                 lda posY
-
                 sta tmpPosY
                 adc stepY
                 sta posY
-
                 tax
                 lda posToMapCoords,x
                 sta mapY
 
                 tax
                 lda mapCoordsToPos,x
-
                 clc
                 adc mapX
                 tax
@@ -115,7 +112,6 @@ move_back
                 sec
                 sbc stepX
                 sta posX
-
                 tax
                 lda posToMapCoords,x
                 sta mapX
@@ -125,14 +121,12 @@ move_back
                 sec
                 sbc stepY
                 sta posY
-
                 tax
                 lda posToMapCoords,x
                 sta mapY
 
                 tax
                 lda mapCoordsToPos,x
-
                 clc
                 adc mapX
                 tax

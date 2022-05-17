@@ -37,7 +37,7 @@ draw_back_buffer
                 sta prevTextureId
                 ldx #SCREEN_WIDTH -1
 @cols
-                        ldy rayTextureId,x              ; calculate texture pointer
+                        ldy rayTextureId,x
                         cpy prevTextureId               ; if current column uses the same texture as previous one
                         beq @same_texture               ; don't reload
                         lda texturesVect,y              ; 
@@ -53,47 +53,45 @@ draw_back_buffer
                         lda backBuffUpperH,x
                         sta E_16_H
 
+                        lda #CEIL_FLOOR_COLOR   
                         ldy rayStart,x
                         sty rayStartX
+
+                        ldy prevRayStart,x
+@loop                   cpy rayStartX
+                        bcs @end
+                        
+                        sta (E_16),y
+                        iny
+                        bpl @loop
+@end    
+                        ldy rayStartX
+
                         lda texColumnOffsets,x          ; beginning of a texture vertical strip
                         sta currTexColumnOffset         ;
-                        lda textureMappingOffsets,y     ; beginning of list of "steps" for every rayStart
-
-                        ;sta texMapCoordsIdx
                         stx g_8
+                        ldx rayStartX
+                        lda textureMappingOffsets,x     ; 
+                        
                         tax
-                        ldy #HALF_SCREEN_HEIGHT -1        
-@draw_walls                   
-                                lda textureMappingCoords,x
-                                dex
-                                clc
-                                adc currTexColumnOffset ; compute texel coordinate
-                                
-                                sty f_8
-                                tay
-                                lda (texture),y         ; get texel
-                                ldy f_8
-                                sta (E_16),y            ; draw texel to the back buffer
-                                
-                        dey
-                        bmi @end
-                        cpy rayStartX
-                        bcs @draw_walls
+@draw_walls
+                        lda textureMappingCoords,x
+                        inx
+                        clc
+                        adc currTexColumnOffset
                         
-                        
-                        ldx g_8
-@draw_ceil_and_floor    
-                        lda CEIL_FLOOR_COLOR
+                        sty f_8
+                        tay
+                        lda (texture),y
+                        ldy f_8
                         sta (E_16),y
-                        dey
-                        bmi @end_ceil_floor ; workarount to skip redundant ldx
-                        tya
-                        cmp prevRayStart,x
-                        bcs @draw_ceil_and_floor
-
-@end               
+                        
+                        iny
+                        cpy #HALF_SCREEN_HEIGHT
+                        bne @draw_walls
+                
+                
                 ldx g_8
-@end_ceil_floor
                 dex
                 bpl @cols
                 rts
