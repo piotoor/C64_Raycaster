@@ -103,6 +103,14 @@ setup
                 jsr player_setup
                 jsr screen_setup
                 jsr irq_setup
+
+                lda #0
+                ldx #SCREEN_WIDTH -1
+@loop           
+                sta rayStart,x
+                dex
+
+                bpl @loop
                 rts
 
 ;;---------------------------------------------

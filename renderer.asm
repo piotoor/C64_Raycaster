@@ -11,18 +11,16 @@ currTexColumnOffset=$7d
 ;;---------------------------------------------
 compute_frame   
                 lda playerTheta
-                sec
-                sbc HALF_FOV
-                sta thetaRayZero
+                clc
+                adc HALF_FOV
+                sta rayTheta
 
                 ldx #SCREEN_WIDTH -1
                 stx rayId
-@loop                   lda thetaRayZero
-                        adc rayId
-                        sta rayTheta
-
+@loop                   
                         jsr init_ray_params
                         jsr cast_ray
+                        dec rayTheta
                 dec rayId 
                 bpl @loop
                 rts
@@ -56,7 +54,7 @@ draw_back_buffer
                         sta E_16_H
 
                         ldy rayStart,x
-                        sty rayStartX                   
+                        sty rayStartX
                         lda texColumnOffsets,x          ; beginning of a texture vertical strip
                         sta currTexColumnOffset         ;
                         lda textureMappingOffsets,y     ; beginning of list of "steps" for every rayStart
@@ -81,14 +79,21 @@ draw_back_buffer
                         bmi @end
                         cpy rayStartX
                         bcs @draw_walls
+                        
+                        
+                        ldx g_8
+@draw_ceil_and_floor    
                         lda CEIL_FLOOR_COLOR
-@draw_ceil_and_floor            
                         sta (E_16),y
                         dey
-                        bpl @draw_ceil_and_floor
+                        bmi @end_ceil_floor ; workarount to skip redundant ldx
+                        tya
+                        cmp prevRayStart,x
+                        bcs @draw_ceil_and_floor
 
 @end               
                 ldx g_8
+@end_ceil_floor
                 dex
                 bpl @cols
                 rts

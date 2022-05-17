@@ -6,7 +6,7 @@ stepX=$6d
 stepY=$6e
 
 rayId=$6f
-thetaRayZero=$70
+FREE=$70
 
 texture=$75
 texture_L=$75
@@ -37,6 +37,7 @@ textureMapCode=$7A
 rayStart=$C000
 rayTextureId=$C028
 texColumnOffsets=$C050
+prevRayStart=$C078
 backBuffer=$C800
 
 TEXTURE_1_ID=#0

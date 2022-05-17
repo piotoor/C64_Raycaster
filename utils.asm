@@ -53,7 +53,8 @@ defm lineStartRow
         
         tay
         ldx rayId
-
+        lda rayStart,x
+        sta prevRayStart,x
         lda (E_16),y        
         sta rayStart,x
         
