@@ -58,12 +58,12 @@ draw_back_buffer
                         sty rayStartX
 
                         ldy prevRayStart,x
-@loop                   cpy rayStartX
+@draw_ceil_floor        cpy rayStartX
                         bcs @end
                         
                         sta (E_16),y
                         iny
-                        bpl @loop
+                        bpl @draw_ceil_floor
 @end    
                         
                         lda texColumnOffsets,x          ; beginning of a texture vertical strip
