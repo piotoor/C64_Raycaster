@@ -40,8 +40,6 @@ texColumnOffsets=$C050
 prevRayStart=$C078
 backBuffer=$C800
 
-TEXTURE_1_ID=#0
-TEXTURE_2_ID=#2
 CEIL_FLOOR_COLOR=#0
 
 
