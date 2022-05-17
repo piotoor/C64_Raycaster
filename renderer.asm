@@ -65,13 +65,12 @@ draw_back_buffer
                         iny
                         bpl @loop
 @end    
-                        ldy rayStartX
-
+                        
                         lda texColumnOffsets,x          ; beginning of a texture vertical strip
                         sta currTexColumnOffset         ;
                         stx g_8
-                        ldx rayStartX
-                        lda textureMappingOffsets,x     ; 
+                        ldy rayStartX
+                        lda textureMappingOffsets,y
                         
                         tax
 @draw_walls
