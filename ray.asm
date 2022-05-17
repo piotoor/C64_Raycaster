@@ -6,7 +6,7 @@ stepX=$6d
 stepY=$6e
 
 rayId=$6f
-FREE=$70
+stepYCnt=$70
 
 texture=$75
 texture_L=$75
@@ -105,6 +105,7 @@ init_ray_params
 ;;---------------------------------------------
 cast_ray
                 ldy #0
+                sty stepYCnt
 @loop                   lda rayCurrDistY_H
                         cmp rayCurrDistX_H
                         bcc @y_lt_x
@@ -135,10 +136,11 @@ cast_ray
                                 adc rayDistDy_H         ; 
                                 sta rayCurrDistY_H      ; 
 
-                                lda absWallHitYDistX2   ; increase absWallHitYDist
+                                ;lda absWallHitYDistX2   ; increase absWallHitYDist
                                 ;clc                    ; previous addition should never overflow
-                                adc #SQUARE_SIZE_X2     ; 
-                                sta absWallHitYDistX2   ; 
+                                ;adc #SQUARE_SIZE_X2     ; 
+                                ;sta absWallHitYDistX2   ; 
+                                inc stepYCnt
                                 jmp @loop    
 @y_ge_x                         
                                 clc             ; increase map coordinates
@@ -183,7 +185,10 @@ cast_ray
                 lineStartRow            ;
 
                 lda absWallHitYDistX2           ; calculating absWallHitDist
-                ldx rayTheta                    ; 
+                clc
+                ldx stepYCnt
+                adc yTimesSquareSizeX2,x        ; initial absWallHitYDistX2 + 
+                ldx rayTheta                    ; SquareSizeX2 * num of y-steps
                 ldy reducedTheta,x              ; 
                 xOverTan                        ; 
                 sta calculatedAbsWallHitDist    ; 
