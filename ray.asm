@@ -106,6 +106,7 @@ init_ray_params
 ;; cast_ray
 ;;---------------------------------------------
 cast_ray
+                ldy #0
 @loop                   lda rayCurrDistY_H
                         cmp rayCurrDistX_H
                         bcc @y_lt_x
@@ -143,7 +144,7 @@ cast_ray
                                 jmp @loop    
 @y_ge_x                         
                                 clc             ; increase map coordinates
-                                lda mapX        ;
+                                lda mapX        ; 
                                 adc stepX       ;
                                 sta mapX        ;
                                
@@ -162,11 +163,11 @@ cast_ray
                                 lda rayCurrDistX_H      ; 
                                 adc rayDistDx_H         ; 
                                 sta rayCurrDistX_H      ; 
-
-                                lda absWallHitXDistX2   ; increase absWallHitXDist
+                                iny                     ; counts number of x steps
+                                ;lda absWallHitXDistX2   ; increase absWallHitXDist
                                 ;clc                    ; previous addition should never overlfow
-                                adc #SQUARE_SIZE_X2     ;
-                                sta absWallHitXDistX2   ;
+                                ;adc #SQUARE_SIZE_X2     ;
+                                ;sta absWallHitXDistX2   ;
                                 jmp @loop
 
 ; vertical gridline hit
@@ -215,6 +216,13 @@ cast_ray
 
 ; horizontal gridline hit
 @final_res_a    
+                lda absWallHitXDistX2           ; calculating absWallHitDist
+                clc
+                adc yTimesSquareSizeX2,y        ; initial absWallHitXDistX2 + 
+                ldx rayTheta                    ; SquareSizeX2 * num of x-steps
+                ldy mirrorReducedTheta,x        ; 
+                xOverTan                        ;
+                sta calculatedAbsWallHitDist    ;
                 ldy rayId                ; absolute difference between rayTheta and
                 ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
 
@@ -225,12 +233,6 @@ cast_ray
                 aso rayCurrDistX_H      ; asl rayCurrDistX_H
                                         ; ora rayCurrDistX_H
                 lineStartRow            ;
-               
-                lda absWallHitXDistX2           ; calculating absWallHitDist
-                ldx rayTheta                    ;
-                ldy mirrorReducedTheta,x        ;
-                xOverTan                        ;
-                sta calculatedAbsWallHitDist    ;
 
                 ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
                 lda yPlusTheta,x                ; to / from posY

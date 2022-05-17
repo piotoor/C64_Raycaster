@@ -430,3 +430,4 @@ textureMappingCoords ; wasted RAM again
 ; y - screen col
 ;textureMappingOffsets   byte 12,25,38,51,64,77,90,103,116,129,142,155,168
 textureMappingOffsets   byte 0,14,28,42,56,70,84,98,112,126,140,154,168
+yTimesSquareSizeX2      byte 0,32,64,96,128,160,192,224,0,32,64,96,128,160,192,224
