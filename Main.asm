@@ -103,7 +103,14 @@ setup
                 jsr player_setup
                 jsr screen_setup
                 jsr irq_setup
+                jsr raycaster_setup
+                rts
 
+
+;;---------------------------------------------
+;; raycaster_setup
+;;---------------------------------------------  
+raycaster_setup
                 lda #0
                 ldx #SCREEN_WIDTH -1
 @loop           
@@ -112,6 +119,7 @@ setup
 
                 bpl @loop
                 rts
+                
 
 ;;---------------------------------------------
 ;; player_setup
