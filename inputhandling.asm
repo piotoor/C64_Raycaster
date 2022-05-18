@@ -52,6 +52,7 @@ check_keyboard
 ;;---------------------------------------------
 rotate_right    
                 lda playerTheta
+                clc
                 adc ROTATION_SPEED
                 sta playerTheta
                 rts
@@ -81,11 +82,13 @@ move_forward
 
                 lda posX
                 sta tmpPosX
+                clc
                 adc stepX
                 sta posX      
                 
                 lda posY
                 sta tmpPosY
+                clc
                 adc stepY
                 sta posY
                 
@@ -161,11 +164,13 @@ strafe_left
 
                 lda posX
                 sta tmpPosX
+                clc
                 adc stepX
                 sta posX      
                 
                 lda posY
                 sta tmpPosY
+                clc
                 adc stepY
                 sta posY
                 
@@ -201,11 +206,13 @@ strafe_right
 
                 lda posX
                 sta tmpPosX
+                clc
                 adc stepX
                 sta posX      
                 
                 lda posY
                 sta tmpPosY
+                clc
                 adc stepY
                 sta posY
                 
