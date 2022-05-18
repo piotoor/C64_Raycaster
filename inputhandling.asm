@@ -68,23 +68,19 @@ move_forward
                 lda posX
                 sta tmpPosX
                 adc stepX
-                sta posX
-                tax
-                lda posToMapCoords,x
-                sta mapX                
+                sta posX      
                 
                 lda posY
                 sta tmpPosY
                 adc stepY
                 sta posY
-                tax
-                lda posToMapCoords,x
-                sta mapY
+                
 
-                tax
-                lda mapCoordsToOffset,x
+                tay
+                lda posCoordsToOffset,y
+                ldy posX
                 clc
-                adc mapX
+                adc posToMapCoords,y
                 tax
                 lda game_map,x
                 beq @end
@@ -112,23 +108,18 @@ move_back
                 sec
                 sbc stepX
                 sta posX
-                tax
-                lda posToMapCoords,x
-                sta mapX
                 
                 lda posY
                 sta tmpPosY
                 sec
                 sbc stepY
                 sta posY
-                tax
-                lda posToMapCoords,x
-                sta mapY
-
-                tax
-                lda mapCoordsToOffset,x
+                
+                tay
+                lda posCoordsToOffset,y
+                ldy posX
                 clc
-                adc mapX
+                adc posToMapCoords,y
                 tax
                 lda game_map,x
                 beq @end
