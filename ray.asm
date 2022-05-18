@@ -7,6 +7,7 @@ stepY=$6e
 
 rayId=$6f
 stepYCnt=$70
+gameMapOffset=$7e
 
 texture=$75
 texture_L=$75
@@ -47,9 +48,13 @@ CEIL_FLOOR_COLOR=#0
 ;; init_ray_params
 ;;---------------------------------------------
 init_ray_params
+                ldy posY
+                lda posCoordsToOffset,y
                 ldy posX
-                lda posToMapCoords,y
-                sta mapX   
+                clc
+                adc posToMapCoords,y
+                sta gameMapOffset
+                
                 ldx rayTheta
                 lda xPlusTheta,x
                 beq @x_minus
@@ -69,21 +74,19 @@ init_ray_params
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
 
                 ldy posY
-                lda posToMapCoords,y
-                sta mapY
                 ldx rayTheta
                 lda yPlusTheta,x
                 beq @y_minus
 @y_plus                 
                         lda plusThetaInitCoordX2,y
                         sta absWallHitYDistX2
-                        ldy #1
+                        ldy #MAP_HEIGHT
                         sty stepY
                 jmp @y_end
 @y_minus                
                         lda minusThetaInitCoordX2,y
                         sta absWallHitYDistX2
-                        ldy #-1
+                        ldy #-16
                         sty stepY
 @y_end          
                 ldy mirrorReducedTheta_x2,x
@@ -114,16 +117,12 @@ cast_ray
                                 cmp rayCurrDistX_L
                         bcs @y_ge_x
 @y_lt_x                        
-                                ;clc            ; carry not set. bcs not taken
-                                lda mapY        ; increase map coordinates
-                                adc stepY       ; 
-                                sta mapY        ; 
-                                
-                                tax                     ; check if hit on a horizontal
-                                lda mapCoordsToPos,x    ; gridline
-                                clc                     ; 
-                                adc mapX                ; 
-                                tax                     ; 
+                                lda gameMapOffset       
+                                clc
+                                adc stepY
+                                tax
+                                sta gameMapOffset
+
                                 lda game_map,x          ; 
                                 bne @final_res_b        ; 
 
@@ -138,15 +137,12 @@ cast_ray
                                 inc stepYCnt            ; counts number of y steps
                                 jmp @loop    
 @y_ge_x                         
-                                clc             ; increase map coordinates
-                                lda mapX        ; 
-                                adc stepX       ;
-                                sta mapX        ;
-                               
-                                clc                     ; check if hit on a vertical
-                                ldx mapY                ; gridline
-                                adc mapCoordsToPos,x    ;
-                                tax                     ;
+                                lda gameMapOffset
+                                clc
+                                adc stepX
+                                tax
+                                sta gameMapOffset
+
                                 lda game_map,x          ;
                                 bne @final_res_a        ;
 

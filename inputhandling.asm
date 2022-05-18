@@ -82,7 +82,7 @@ move_forward
                 sta mapY
 
                 tax
-                lda mapCoordsToPos,x
+                lda mapCoordsToOffset,x
                 clc
                 adc mapX
                 tax
@@ -126,7 +126,7 @@ move_back
                 sta mapY
 
                 tax
-                lda mapCoordsToPos,x
+                lda mapCoordsToOffset,x
                 clc
                 adc mapX
                 tax
