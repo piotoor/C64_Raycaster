@@ -71,11 +71,11 @@ rotate_left
 ;;---------------------------------------------
 move_forward    
                 ldy playerTheta
-                lda cosX16,y
+                lda cosX12,y
                 ;lsr ; TODO add speed
                 sta stepX
 
-                lda sinX16,y
+                lda sinX12,y
                 ;lsr ; TODO add speed
                 sta stepY
 
@@ -109,11 +109,11 @@ move_forward
 ;;---------------------------------------------
 move_back       
                 ldy playerTheta
-                lda cosX16,y
+                lda cosX12,y
                 ;lsr ; TODO add speed
                 sta stepX
 
-                lda sinX16,y
+                lda sinX12,y
                 ;lsr ; TODO add speed
                 sta stepY
      
@@ -151,11 +151,11 @@ strafe_left
                 sec
                 sbc #64
                 tay
-                lda cosX16,y
+                lda cosX12,y
                 ;lsr ; TODO add speed
                 sta stepX
 
-                lda sinX16,y
+                lda sinX12,y
                 ;lsr ; TODO add speed
                 sta stepY
 
@@ -191,11 +191,11 @@ strafe_right
                 clc
                 adc #64
                 tay
-                lda cosX16,y
+                lda cosX12,y
                 ;lsr ; TODO add speed
                 sta stepX
 
-                lda sinX16,y
+                lda sinX12,y
                 ;lsr ; TODO add speed
                 sta stepY
 
