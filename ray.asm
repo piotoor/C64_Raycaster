@@ -125,7 +125,6 @@ cast_ray
                                 adc mapX                ; 
                                 tax                     ; 
                                 lda game_map,x          ; 
-                                sta textureMapCode      ; save texture code
                                 bne @final_res_b        ; 
 
                                 clc                     ; if not hit
@@ -136,11 +135,7 @@ cast_ray
                                 adc rayDistDy_H         ; 
                                 sta rayCurrDistY_H      ; 
 
-                                ;lda absWallHitYDistX2   ; increase absWallHitYDist
-                                ;clc                    ; previous addition should never overflow
-                                ;adc #SQUARE_SIZE_X2     ; 
-                                ;sta absWallHitYDistX2   ; 
-                                inc stepYCnt
+                                inc stepYCnt            ; counts number of y steps
                                 jmp @loop    
 @y_ge_x                         
                                 clc             ; increase map coordinates
@@ -153,7 +148,6 @@ cast_ray
                                 adc mapCoordsToPos,x    ;
                                 tax                     ;
                                 lda game_map,x          ;
-                                sta textureMapCode      ; save texture code
                                 bne @final_res_a        ;
 
                                 clc                     ; if not hit
@@ -163,15 +157,13 @@ cast_ray
                                 lda rayCurrDistX_H      ; 
                                 adc rayDistDx_H         ; 
                                 sta rayCurrDistX_H      ; 
+                                
                                 iny                     ; counts number of x steps
-                                ;lda absWallHitXDistX2   ; increase absWallHitXDist
-                                ;clc                    ; previous addition should never overlfow
-                                ;adc #SQUARE_SIZE_X2     ;
-                                ;sta absWallHitXDistX2   ;
                                 jmp @loop
 
 ; vertical gridline hit
 @final_res_b    
+                sta textureMapCode      ; save texture code
                 ldy rayId                ; absolute difference between rayTheta and
                 ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
                 
@@ -185,7 +177,7 @@ cast_ray
                 lineStartRow            ;
 
                 lda absWallHitYDistX2           ; calculating absWallHitDist
-                clc
+                
                 ldx stepYCnt
                 adc yTimesSquareSizeX2,x        ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
@@ -219,6 +211,7 @@ cast_ray
 
 ; horizontal gridline hit
 @final_res_a    
+                sta textureMapCode      ; save texture code
                 lda absWallHitXDistX2           ; calculating absWallHitDist
                 clc
                 adc yTimesSquareSizeX2,y        ; initial absWallHitXDistX2 + 
