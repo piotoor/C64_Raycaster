@@ -8,30 +8,44 @@ check_keyboard
                 lda #%00000000  ; CIA#1 Port B set to input
                 sta ddrb 
                 
-d_pressed       lda #%11111011
+@d_pressed      lda #%11111011
                 sta pra
                 lda prb
                 and #%00000100  
                 beq rotate_right
 
-a_pressed       lda #%11111101
+@a_pressed      lda #%11111101
                 sta pra
                 lda prb
                 and #%00000100
                 beq rotate_left
 
-w_pressed       ;lda #%11111101
+@w_pressed      ;lda #%11111101
                 ;sta pra
                 lda prb
                 and #%00000010
                 beq move_forward
 
-s_pressed       ;lda #%11111101
+@s_pressed      ;lda #%11111101
                 ;sta pra
                 lda prb
                 and #%00100000
                 beq move_back
-                rts
+
+@q_pressed      lda #%01111111
+                sta pra
+                lda prb
+                and #%01000000
+                bne @e_pressed
+                jmp strafe_left
+
+@e_pressed      lda #%11111101
+                sta pra
+                lda prb
+                and #%01000000
+                bne @end_input
+                jmp strafe_right
+@end_input      rts
 
 ;;---------------------------------------------
 ;; rotate_right
@@ -128,3 +142,84 @@ move_back
                         lda tmpPosY
                         sta posY
 @end            rts
+
+;;---------------------------------------------
+;; strafe_left
+;;---------------------------------------------
+strafe_left
+                lda playerTheta
+                sec
+                sbc #64
+                tay
+                lda cosX16,y
+                ;lsr ; TODO add speed
+                sta stepX
+
+                lda sinX16,y
+                ;lsr ; TODO add speed
+                sta stepY
+
+                lda posX
+                sta tmpPosX
+                adc stepX
+                sta posX      
+                
+                lda posY
+                sta tmpPosY
+                adc stepY
+                sta posY
+                
+
+                tay
+                lda posCoordsToOffset,y
+                ldy posX
+                clc
+                adc posToMapCoords,y
+                tax
+                lda game_map,x
+                beq @end
+                        lda tmpPosX
+                        sta posX
+                        lda tmpPosY
+                        sta posY
+@end            rts
+;;---------------------------------------------
+;; strafe_right
+;;---------------------------------------------
+strafe_right
+                lda playerTheta
+                clc
+                adc #64
+                tay
+                lda cosX16,y
+                ;lsr ; TODO add speed
+                sta stepX
+
+                lda sinX16,y
+                ;lsr ; TODO add speed
+                sta stepY
+
+                lda posX
+                sta tmpPosX
+                adc stepX
+                sta posX      
+                
+                lda posY
+                sta tmpPosY
+                adc stepY
+                sta posY
+                
+
+                tay
+                lda posCoordsToOffset,y
+                ldy posX
+                clc
+                adc posToMapCoords,y
+                tax
+                lda game_map,x
+                beq @end
+                        lda tmpPosX
+                        sta posX
+                        lda tmpPosY
+                        sta posY
+@end             rts
