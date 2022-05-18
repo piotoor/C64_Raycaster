@@ -1,4 +1,6 @@
 ROTATION_SPEED=#4
+ROTATION_SPEED_RUNNING=#6
+
 ;;---------------------------------------------
 ;; check_keyboard
 ;;---------------------------------------------
@@ -43,8 +45,15 @@ check_keyboard
                 sta pra
                 lda prb
                 and #%01000000
-                bne @end_input
+                bne @r_pressed
                 jmp strafe_right
+
+@r_pressed      lda #%11111011
+                sta pra
+                lda prb
+                and #%00000010
+                bne @end_input
+                jmp toggle_run
 @end_input      rts
 
 ;;---------------------------------------------
@@ -53,7 +62,7 @@ check_keyboard
 rotate_right    
                 lda playerTheta
                 clc
-                adc ROTATION_SPEED
+                adc rotationSpeed
                 sta playerTheta
                 rts
 
@@ -63,7 +72,7 @@ rotate_right
 rotate_left     
                 lda playerTheta
                 sec
-                sbc ROTATION_SPEED
+                sbc rotationSpeed
                 sta playerTheta
                 rts
 
@@ -72,13 +81,17 @@ rotate_left
 ;;---------------------------------------------
 move_forward    
                 ldy playerTheta
-                lda cosX12,y
-                ;lsr ; TODO add speed
+                lda cosX6,y
                 sta stepX
-
-                lda sinX12,y
-                ;lsr ; TODO add speed
+                lda sinX6,y
                 sta stepY
+
+                lda playerState
+                and #%00000001
+                beq @not_running        ; todo: separete luts (cosX8, sinX8)
+@running        asl stepX
+                asl stepY
+@not_running
 
                 lda posX
                 sta tmpPosX
@@ -112,13 +125,17 @@ move_forward
 ;;---------------------------------------------
 move_back       
                 ldy playerTheta
-                lda cosX12,y
-                ;lsr ; TODO add speed
+                lda cosX6,y
                 sta stepX
-
-                lda sinX12,y
-                ;lsr ; TODO add speed
+                lda sinX6,y
                 sta stepY
+
+                lda playerState
+                and #%00000001
+                beq @not_running        ; todo: separete luts (cosX8, sinX8)
+@running        asl stepX
+                asl stepY
+@not_running
      
                 lda posX
                 sta tmpPosX
@@ -154,13 +171,17 @@ strafe_left
                 sec
                 sbc #64
                 tay
-                lda cosX12,y
-                ;lsr ; TODO add speed
+                lda cosX6,y
                 sta stepX
-
-                lda sinX12,y
-                ;lsr ; TODO add speed
+                lda sinX6,y
                 sta stepY
+
+                lda playerState
+                and #%00000001
+                beq @not_running        ; todo: separete luts (cosX8, sinX8)
+@running        asl stepX
+                asl stepY
+@not_running
 
                 lda posX
                 sta tmpPosX
@@ -188,6 +209,7 @@ strafe_left
                         lda tmpPosY
                         sta posY
 @end            rts
+
 ;;---------------------------------------------
 ;; strafe_right
 ;;---------------------------------------------
@@ -196,14 +218,17 @@ strafe_right
                 clc
                 adc #64
                 tay
-                lda cosX12,y
-                ;lsr ; TODO add speed
+                lda cosX6,y
                 sta stepX
-
-                lda sinX12,y
-                ;lsr ; TODO add speed
+                lda sinX6,y
                 sta stepY
-
+                
+                lda playerState
+                and #%00000001
+                beq @not_running        ; todo: separete luts (cosX8, sinX8)
+@running        asl stepX
+                asl stepY
+@not_running
                 lda posX
                 sta tmpPosX
                 clc
@@ -230,3 +255,24 @@ strafe_right
                         lda tmpPosY
                         sta posY
 @end             rts
+
+;;---------------------------------------------
+;; toggle_run
+;;---------------------------------------------
+toggle_run
+                lda #ROTATION_SPEED
+                sta rotationSpeed
+                lda playerState
+                eor #%00000001
+                sta playerState
+             
+                and #%00000001
+                beq @not_running
+@running        lda #ROTATION_SPEED_RUNNING
+                sta rotationSpeed
+                lda #'R'
+                sta $0427
+                rts
+@not_running    lda DEFAULT_SCREEN_CHARACTER
+                sta $0427
+                rts

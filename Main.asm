@@ -10,6 +10,7 @@ SCREEN_WIDTH=#40
 SCREEN_HEIGHT=#25
 HALF_SCREEN_HEIGHT=#13
 HALF_FOV=#20
+DEFAULT_SCREEN_CHARACTER=#$A0
 
 pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
@@ -133,6 +134,11 @@ player_setup
                 sta posY
                 lda #0
                 sta playerTheta
+                lda #0
+                sta playerState
+
+                lda #4
+                sta rotationSpeed
                 rts
 
 ;;---------------------------------------------
@@ -142,7 +148,7 @@ player_setup
 ;;---------------------------------------------
 screen_setup     
                 ldx #0 
-@loop                   lda #$A0
+@loop                   lda #DEFAULT_SCREEN_CHARACTER
                         sta $0400,x
                         sta $0500,x
                         sta $0600,x
