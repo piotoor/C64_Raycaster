@@ -117,32 +117,43 @@ rotate_left
 ;; move_forward
 ;;---------------------------------------------
 move_forward    
-                ldy playerTheta
-                lda cosX6,y
-                sta stepX
-                lda sinX6,y
-                sta stepY
-
                 lda playerState
                 and #%00000001
-                beq @not_running        ; todo: separete luts (cosX8, sinX8)
-@running        asl stepX
-                asl stepY
-@not_running
-
+                beq @not_running        
+@running        
+                lda playerTheta
+                tay
+                
                 lda posX
                 sta tmpPosX
                 clc
-                adc stepX
-                sta posX      
+                adc cosX12,y
+                sta posX
                 
                 lda posY
                 sta tmpPosY
                 clc
-                adc stepY
+                adc sinX12,y
                 sta posY
                 
-
+                jmp @endif
+@not_running
+                lda playerTheta
+                tay
+                
+                lda posX
+                sta tmpPosX
+                clc
+                adc cosX6,y
+                sta posX
+                
+                lda posY
+                sta tmpPosY
+                clc
+                adc sinX6,y
+                sta posY                
+@endif
+                
                 tay
                 lda posCoordsToOffset,y
                 ldy posX
@@ -155,36 +166,48 @@ move_forward
                         sta posX
                         lda tmpPosY
                         sta posY
-@end            rts
+@end             rts
 
 ;;---------------------------------------------
 ;; move_back
 ;;---------------------------------------------
 move_back       
-                ldy playerTheta
-                lda cosX6,y
-                sta stepX
-                lda sinX6,y
-                sta stepY
-
                 lda playerState
                 and #%00000001
-                beq @not_running        ; todo: separete luts (cosX8, sinX8)
-@running        asl stepX
-                asl stepY
-@not_running
-     
+                beq @not_running        
+@running        
+                lda playerTheta
+                tay
+                
                 lda posX
                 sta tmpPosX
                 sec
-                sbc stepX
+                sbc cosX12,y
                 sta posX
                 
                 lda posY
                 sta tmpPosY
                 sec
-                sbc stepY
+                sbc sinX12,y
                 sta posY
+                
+                jmp @endif
+@not_running
+                lda playerTheta
+                tay
+                
+                lda posX
+                sta tmpPosX
+                sec
+                sbc cosX6,y
+                sta posX
+                
+                lda posY
+                sta tmpPosY
+                sec
+                sbc sinX6,y
+                sta posY                
+@endif
                 
                 tay
                 lda posCoordsToOffset,y
@@ -198,8 +221,7 @@ move_back
                         sta posX
                         lda tmpPosY
                         sta posY
-@end            rts
-
+@end             rts
 ;;---------------------------------------------
 ;; strafe_left
 ;;---------------------------------------------
