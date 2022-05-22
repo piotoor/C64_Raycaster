@@ -12,6 +12,18 @@ HALF_SCREEN_HEIGHT=#13
 HALF_FOV=#20
 DEFAULT_SCREEN_CHARACTER=#$A0
 
+SPRITE_BG_COLOR=#01
+SPRITE_M1_COLOR=#12
+SPRITE_M2_COLOR=#15
+SPRITE_COLOR=#11
+WEAPON_FRAMES=#2
+weaponCurrentFrame=$80
+SPRITES_ADDRESS=$2000  
+;SPRITE_PTR_WEAPON=SPRITES_ADDRESS/#$40
+SPRITE_PTR_WEAPON=$80
+SCREEN_RAM=$0400
+SPRITES_RAM=$07f8
+
 pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
 ddra=$dc02      ; CIA#1 (Data Direction Register A)
@@ -43,7 +55,6 @@ main
 ;;---------------------------------------------
 irq             
                 dec $d019               ; acknowledge IRQ / clear register for next interrupt
-                
                 lda synch
                 beq frame_not_ready
                 jsr draw_front_buffer
@@ -105,8 +116,8 @@ setup
                 jsr screen_setup
                 jsr irq_setup
                 jsr raycaster_setup
+                jsr sprites_setup
                 rts
-
 
 ;;---------------------------------------------
 ;; raycaster_setup
@@ -121,6 +132,65 @@ raycaster_setup
                 bpl @loop
                 rts
                 
+;;---------------------------------------------
+;; sprites_setup
+;;---------------------------------------------  
+sprites_setup
+                lda #0
+                sta weaponCurrentFrame
+                lda #SPRITE_PTR_WEAPON          ; weapong left part (sprite 0)
+                sta $07f8
+
+                lda #SPRITE_PTR_WEAPON+2        ; weapon right part (sprite 1)
+                sta $07f9
+
+                lda #%00000011          ; enable sprites 0 and 1
+                sta $d015 
+                lda #%00000011          ; sprites 0 and 1 multicolor
+                sta $d01c
+                lda #%00000000          ; sprites 0 and 1 over bg
+                sta $d01b               
+
+
+                lda #SPRITE_BG_COLOR                 
+                sta $d021
+                lda #SPRITE_M1_COLOR
+                sta $d025
+                lda #SPRITE_M2_COLOR 
+                sta $d026
+                lda #SPRITE_COLOR       
+                sta $d027               ; sprite 0 color
+                sta $d028               ; sprite 1 color
+
+
+                lda #$00    ; x coord high bit to 0 for all sprites
+                sta $d010
+
+                ; sprite 0 position
+                ;lda #148    ; 
+                lda #160
+                sta $d000   ; sprite 0 x-coord
+                ;lda #208    ; 
+                lda #229
+                sta $d001   ; sprite 0 y-coord
+
+                ; sprite 1 position
+                
+                ;lda #196
+                lda #184
+                sta $d002   ; sprite 0 x-coord
+                ;lda #208    ; 
+                lda #229
+                sta $d003   ; sprite 0 y-coord
+
+
+                ; stretching tmp
+                ;lda #$03
+                
+                ;sta $d01d       ; w
+                ;sta $d017       ; h
+                rts
+
 
 ;;---------------------------------------------
 ;; player_setup
@@ -136,9 +206,6 @@ player_setup
                 sta playerTheta
                 lda #0
                 sta playerState
-
-                lda #4
-                sta rotationSpeed
                 rts
 
 ;;---------------------------------------------
@@ -162,6 +229,9 @@ screen_setup
 
 
 
+*=$2000
+incbin  chaingun_fd.spd,3
+
 incasm  utils.asm
 incasm  lookuptables.asm
 incasm  gameMap.asm
@@ -170,3 +240,4 @@ incasm  inputhandling.asm
 incasm  ray.asm
 incasm  renderer.asm
 incasm  assets.asm
+
