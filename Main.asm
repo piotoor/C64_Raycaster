@@ -170,8 +170,8 @@ sprites_setup
                 ;lda #148    ; 
                 lda #160
                 sta $d000   ; sprite 0 x-coord
-                ;lda #208    ; 
-                lda #229
+                lda #208    ; 
+                ;lda #229
                 sta $d001   ; sprite 0 y-coord
 
                 ; sprite 1 position
@@ -179,16 +179,16 @@ sprites_setup
                 ;lda #196
                 lda #184
                 sta $d002   ; sprite 0 x-coord
-                ;lda #208    ; 
-                lda #229
+                lda #208    ; 
+                ;lda #229
                 sta $d003   ; sprite 0 y-coord
 
 
                 ; stretching tmp
-                ;lda #$03
+                lda #$03
                 
                 ;sta $d01d       ; w
-                ;sta $d017       ; h
+                sta $d017       ; h
                 rts
 
 
@@ -230,7 +230,7 @@ screen_setup
 
 
 *=$2000
-incbin  chaingun_fd.spd,3
+incbin  chaingun_hd.spd,3
 
 incasm  utils.asm
 incasm  lookuptables.asm
