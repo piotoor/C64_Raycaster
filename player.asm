@@ -9,3 +9,19 @@ playerState=$7f
 ;       +- run
 ;
 ;
+
+;;---------------------------------------------
+;; player_setup
+;;
+;; Loads player's initial pos and theta
+;;---------------------------------------------             
+player_setup
+                lda #$6a
+                sta posX
+                lda #$85
+                sta posY
+                lda #0
+                sta playerTheta
+                lda #0
+                sta playerState
+                rts

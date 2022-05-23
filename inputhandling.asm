@@ -353,23 +353,20 @@ strafe_right
 ;; update_weapon
 ;;---------------------------------------------
 update_weapon
-                
-                ;lda #SPRITE_PTR_WEAPON          ; weapong left part (sprite 0)
+                             
                 inc $07f8
                 inc $07f9
                 inc weaponCurrentFrame
                 lda weaponCurrentFrame
-;                sta $0427
+
                 cmp #WEAPON_FRAMES
-                bne @continue
-                lda #SPRITE_PTR_WEAPON
+                bne @endif
+                lda #WEAPON_SPRITE_PTR
                 sta $07f8
-                lda #SPRITE_PTR_WEAPON+2
+                lda #WEAPON_SPRITE_PTR+2
                 sta $07f9
                 lda #0
                 sta weaponCurrentFrame
                
-@continue
-                ;lda #SPRITE_PTR_WEAPON+1        ; weapon right part (sprite 1)
-                
+@endif
                 rts
