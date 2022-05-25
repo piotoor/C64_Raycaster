@@ -3,7 +3,7 @@
 ; full angle = 256u
 ; 1u = PI/128
 ;
-; all angles are reduced to [0;64]
+; angles are reduced to [0;64] where possible
 ; trig func sign is ignored
 ;
 
@@ -52,7 +52,7 @@ mxOverCosVect
 ; lineStartRow[theta][dist]
 ;
 ; vertical line starting point
-; max ray distance is 0x7fff
+; max ray distance is 0x7fff (real distance x 64)
 ; it is then divided by 128 to make it fit in one byte
 ; 
 ; theta - angle between ray and player = [0; 20]        
