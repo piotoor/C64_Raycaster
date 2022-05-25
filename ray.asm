@@ -159,8 +159,14 @@ cast_ray
 
 ; vertical gridline hit
 @final_res_b    
-                sta textureMapCode      ; save texture code
-                ldy rayId                ; absolute difference between rayTheta and
+                ;sta textureMapCode             ; save texture code
+                ;lda textureMapCode             ; subtract 1 to get dark version of the texture
+                sec                             ;
+                sbc #1                          ;
+                ldy rayId                       ;
+                sta rayTextureId,y              ; store texture id
+        
+                ;ldy rayId               ; absolute difference between rayTheta and
                 ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
                 
 
@@ -199,15 +205,17 @@ cast_ray
                 ldx rayId                       ; 
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
-                lda textureMapCode              ; subtract 1 to get dark version of the texture
-                sec                             ;
-                sbc #1                          ;
-                sta rayTextureId,x              ; store texture id
                 rts
 
 ; horizontal gridline hit
 @final_res_a    
-                sta textureMapCode      ; save texture code
+                ;sta textureMapCode              ; save texture code
+                ;lda textureMapCode              ; add 1 to get light version of the texture
+                clc                             ;
+                adc #1                          ;
+                ldx rayId                       ;
+                sta rayTextureId,x              ; store texture id
+
                 lda absWallHitXDistX2           ; calculating absWallHitDist
                 clc
                 adc yTimesSquareSizeX2,y        ; initial absWallHitXDistX2 + 
@@ -245,10 +253,6 @@ cast_ray
                 ldx rayId                       ;                            
                 lda texColumnOffset,y           ;
                 sta texColumnOffsets,x          ;
-                lda textureMapCode              ; add 1 to get light version of the texture
-                clc                             ;
-                adc #1                          ;
-                sta rayTextureId,x              ; store texture id
                 rts
 
 
