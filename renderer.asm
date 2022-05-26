@@ -23,6 +23,9 @@ compute_frame
                         dec rayTheta
                 dec rayId 
                 bpl @loop
+
+                jsr init_enemy_ray_params
+                jsr cast_enemy_ray
                 rts
 
 ;;---------------------------------------------

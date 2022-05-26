@@ -103,6 +103,7 @@ setup
                 sta irq_ticks
                 
                 jsr player_setup
+                jsr enemy_setup
                 jsr screen_setup
                 jsr irq_setup
                 jsr raycaster_setup
@@ -152,6 +153,8 @@ incasm  utils.asm
 incasm  player.asm
 incasm  inputhandling.asm
 incasm  ray.asm
+incasm  enemy_ray.asm
 incasm  sprites.asm
 incasm  weapons.asm
 incasm  lookuptables.asm
+incasm  enemy.asm

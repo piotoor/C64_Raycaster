@@ -80,7 +80,7 @@ defm lineStartRow
         endm
 
 ;;---------------------------------------------
-;; xOverTan target
+;; xOverTan
 ;; x in a
 ;; theta in y
 ;; result in a
@@ -95,4 +95,21 @@ defm xOverTan
         
         lda (E_16),y
         ;sta /1
+        endm
+
+
+;;---------------------------------------------
+;; atan
+;; x in x
+;; y in y
+;; result in a
+;;--------------------------------------------- 
+defm atan 
+        lda atanVect,x
+        sta E_16_L
+        inx
+        lda atanVect,x
+        sta E_16_H
+        
+        lda (E_16),y
         endm

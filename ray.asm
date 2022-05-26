@@ -1,7 +1,5 @@
 rayTheta=$6a
 
-mapX=$6b
-mapY=$6c
 stepX=$6d
 stepY=$6e
 
