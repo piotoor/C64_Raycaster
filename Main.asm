@@ -1,18 +1,10 @@
-; 10 SYS (4096)
-
-;*=$0801
-
-;        BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $30, $39, $36, $29, $00, $00, $00
-
 ; 10 SYS (2069)
 
 *=$0801
 
         BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $32, $30, $36, $39, $29, $00, $00, $00
-
-
-
 *=$0815
+
 SCREEN_WIDTH=#40
 SCREEN_HEIGHT=#25
 HALF_SCREEN_HEIGHT=#13
@@ -103,6 +95,9 @@ irq_setup
 ;; setup
 ;;---------------------------------------------             
 setup
+                lda #$36
+                sta $0001      ; Turn Off BASIC ROM
+
                 lda #0
                 sta main_ticks
                 sta irq_ticks
@@ -147,17 +142,16 @@ screen_setup
 
 
 
-
+incasm  renderer.asm
+incasm  gameMap.asm
 *=$2000
 incbin  chaingun_hd.spd,3
+incasm  assets.asm
 
 incasm  utils.asm
-incasm  lookuptables.asm
-incasm  gameMap.asm
 incasm  player.asm
 incasm  inputhandling.asm
 incasm  ray.asm
-incasm  renderer.asm
-incasm  assets.asm
 incasm  sprites.asm
 incasm  weapons.asm
+incasm  lookuptables.asm

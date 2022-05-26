@@ -1,7 +1,7 @@
 WEAPON_SPRITE_COLOR=#11
 WEAPON_FRAMES=#2
 weaponCurrentFrame=$80
-WEAPON_SPRITE_PTR=$80
+WEAPON_SPRITE_PTR=$80           ; sprites base address / 64
 WEAPON_SPRITES_RAM=$07f8
 
 ;;---------------------------------------------
