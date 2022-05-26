@@ -120,188 +120,57 @@ rotate_left
                 sbc ROTATION_SPEED
                 sta playerTheta
                 rts
-
+                
 ;;---------------------------------------------
 ;; move_forward
 ;;---------------------------------------------
-move_forward    
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
+move_forward           
                 lda playerTheta
                 tay
-                
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX12,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX12,y
-                sta posY
-                
-                jmp @endif
-@not_running
-                lda playerTheta
-                tay
-                
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX6,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX6,y
-                sta posY                
-@endif
-                
-                tay
-                lda posCoordsToOffset,y
-                ldy posX
-                clc
-                adc posToMapCoords,y
-                tax
-                lda game_map,x
-                beq @end
-                        lda tmpPosX
-                        sta posX
-                        lda tmpPosY
-                        sta posY
-@end             rts
+
+                jmp move_common
 
 ;;---------------------------------------------
 ;; move_back
 ;;---------------------------------------------
 move_back       
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
                 lda playerTheta
-                tay
-                
-                lda posX
-                sta tmpPosX
-                sec
-                sbc cosX12,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                sec
-                sbc sinX12,y
-                sta posY
-                
-                jmp @endif
-@not_running
-                lda playerTheta
-                tay
-                
-                lda posX
-                sta tmpPosX
-                sec
-                sbc cosX6,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                sec
-                sbc sinX6,y
-                sta posY                
-@endif
-                
-                tay
-                lda posCoordsToOffset,y
-                ldy posX
                 clc
-                adc posToMapCoords,y
-                tax
-                lda game_map,x
-                beq @end
-                        lda tmpPosX
-                        sta posX
-                        lda tmpPosY
-                        sta posY
-@end             rts
+                adc #128
+                tay
+                
+                jmp move_common
 ;;---------------------------------------------
 ;; strafe_left
 ;;---------------------------------------------
 strafe_left
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
                 lda playerTheta
                 sec
                 sbc #64
                 tay
                 
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX12,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX12,y
-                sta posY
-                
-                jmp @endif
-@not_running
-                lda playerTheta
-                sec
-                sbc #64
-                tay
-                
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX6,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX6,y
-                sta posY                
-@endif
-                
-                tay
-                lda posCoordsToOffset,y
-                ldy posX
-                clc
-                adc posToMapCoords,y
-                tax
-                lda game_map,x
-                beq @end
-                        lda tmpPosX
-                        sta posX
-                        lda tmpPosY
-                        sta posY
-@end             rts
+                jmp move_common
 
 ;;---------------------------------------------
 ;; strafe_right
 ;;---------------------------------------------
 strafe_right
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
                 lda playerTheta
                 clc
                 adc #64
                 tay
                 
+                jmp move_common
+
+;;---------------------------------------------
+;; move_common
+;;---------------------------------------------
+move_common
+                lda playerState
+                and #%00000001
+                beq @not_running        
+                
+@running      
                 lda posX
                 sta tmpPosX
                 clc
@@ -316,11 +185,6 @@ strafe_right
                 
                 jmp @endif
 @not_running
-                lda playerTheta
-                clc
-                adc #64
-                tay
-                
                 lda posX
                 sta tmpPosX
                 clc
@@ -333,7 +197,7 @@ strafe_right
                 adc sinX6,y
                 sta posY                
 @endif
-                
+
                 tay
                 lda posCoordsToOffset,y
                 ldy posX
@@ -346,7 +210,7 @@ strafe_right
                         sta posX
                         lda tmpPosY
                         sta posY
-@end             rts
+@end            rts
 
 
 ;;---------------------------------------------
