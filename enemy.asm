@@ -10,8 +10,10 @@ enemyPosY=$6c
 ;; Loads enemy's initial pos and theta
 ;;---------------------------------------------             
 enemy_setup
-                lda #20
+                lda #128
                 sta enemyPosX
-                lda #20
+                lda #128
                 sta enemyPosY
+                ; calculate enemyMapX and enemyMapY
+                ; for now hardcoded here and on gameMap
                 rts

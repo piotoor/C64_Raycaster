@@ -2,7 +2,6 @@ f_8=$74
 g_8=$77
 prevTextureId=$78
 rayStartX=$7b
-texMapCoordsIdx=$7c
 currTexColumnOffset=$7d
 ;;---------------------------------------------
 ;; compute_frame
@@ -10,6 +9,8 @@ currTexColumnOffset=$7d
 ;; Raycasting is done there, in two steps
 ;;---------------------------------------------
 compute_frame   
+                
+                jsr init_enemy_ray_params
                 lda playerTheta
                 clc
                 adc HALF_FOV
@@ -24,8 +25,8 @@ compute_frame
                 dec rayId 
                 bpl @loop
 
-                jsr init_enemy_ray_params
-                jsr cast_enemy_ray
+                
+                ;jsr cast_enemy_ray
                 rts
 
 ;;---------------------------------------------
