@@ -7,6 +7,9 @@ enemySpriteCurrDistDx_L=$83
 enemySpriteCurrDistDx_H=$84
 
 enemyRayTheta=$85
+deltaTheta=$89
+playerThetaEnemyThetaDiff=$8a
+enemyRayId=$26
 enemyRayThetaQuadrant=$7c       ; 0 - quadrant iii
                                 ; 1 - quadrant iv
                                 ; 2 - quadrant ii
@@ -84,7 +87,7 @@ init_enemy_ray_params
                 sta $0428
 
                 
-                ldx enemyRayThetaQuadrant
+                ldx enemyRayThetaQuadrant       ; calculating full enemyRayTheta
                 stx $0431
                 cpx QUADRANT_I
                 beq @q_end
@@ -113,6 +116,29 @@ init_enemy_ray_params
 @q_end          
                 sta enemyRayTheta               ; full enemyRayTheta in [0; 256)
                 sta $0429
+
+
+                cmp playerTheta                 ; |playerTheta - enemyRayTheta|
+                bcs @enemy_ge_ply               ; TODO: to macro
+@enemy_lt_ply   lda playerTheta                 ;
+                sec                             ;
+                sbc enemyRayTheta               ;
+                                                ;
+                jmp @endif                      ;
+@enemy_ge_ply   sec                             ;
+                sbc playerTheta                 ;
+
+@endif         
+                sta deltaTheta                  ;
+                cmp #128                        ;
+                bcc @done                       ;
+                lda #0                          ;
+                sec                             ;
+                sbc deltaTheta                  ;
+                sta deltaTheta                  ;
+@done                                           ;
+                
+                
                 rts
 
 ;;---------------------------------------------
