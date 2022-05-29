@@ -10,6 +10,9 @@ enemyRayTheta=$85
 deltaTheta=$89
 playerThetaEnemyThetaDiff=$8a
 enemyRayId=$26
+renderEnemyFlags=$27            ; in case of more enemies, 
+                                ; 1 - render, 
+                                ; 0 - don't, it's out of sight
 enemyRayThetaQuadrant=$7c       ; 0 - quadrant iii
                                 ; 1 - quadrant iv
                                 ; 2 - quadrant ii
@@ -30,6 +33,7 @@ enemyPlyPosDeltaY=$88
 init_enemy_ray_params
                 lda #0
                 sta enemyRayThetaQuadrant
+                sta renderEnemyFlags
 
                 lda posX                        ; calculating enemy-player abs deltaX
                 cmp enemyPosX                   
@@ -129,8 +133,8 @@ init_enemy_ray_params
                 sbc playerTheta                 ;
 
 @endif         
-                sta deltaTheta                  ;
-                cmp #128                        ;
+                sta deltaTheta                  ; if delta > 180
+                cmp #128                        ; 360 - delta
                 bcc @done                       ;
                 lda #0                          ;
                 sec                             ;
@@ -138,7 +142,27 @@ init_enemy_ray_params
                 sta deltaTheta                  ;
 @done                                           ;
                 
-                
+                cmp #64                         ; if deltaTheta > 64 (90)
+                bcc @continue                   ; don't render enemy.
+                rts                             ; It's out of sight.
+        
+@continue       inc renderEnemyFlags            ; for now. With more enemies, it should set relevant bit flag                                      
+
+                lda playerTheta                 ; calculating enemyRayId
+                clc                             ; could be negative, when to the left
+                adc deltaTheta                  ; of the left-most rayId
+                cmp enemyRayTheta
+                beq @to_the_right
+@to_the_left    lda #20
+                sec
+                sbc deltaTheta
+                sta enemyRayId
+                jmp @ray_id_end
+@to_the_right   lda #20
+                clc
+                adc deltaTheta
+                sta enemyRayId
+@ray_id_end
                 rts
 
 ;;---------------------------------------------
