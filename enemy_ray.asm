@@ -1,10 +1,10 @@
-enemySpriteCurrDist=$81
-enemySpriteCurrDist_L=$81
-enemySpriteCurrDist_H=$82
+;enemySpriteCurrDist=$81
+;enemySpriteCurrDist_L=$81
+;enemySpriteCurrDist_H=$82
 
-enemySpriteCurrDistDx=$83
-enemySpriteCurrDistDx_L=$83
-enemySpriteCurrDistDx_H=$84
+;enemySpriteCurrDistDx=$83
+;enemySpriteCurrDistDx_L=$83
+;enemySpriteCurrDistDx_H=$84
 
 enemyRayTheta=$85
 deltaTheta=$89
@@ -43,9 +43,14 @@ init_enemy_ray_params
                 lda enemyPosX
                 sbc posX
                 sta enemyPlyPosDeltaX
+                
                 lda enemyRayThetaQuadrant
                 ora #%00000001
                 sta enemyRayThetaQuadrant
+
+                
+
+                
                 jmp @endif_x
 @posX_ge                                        ; enemyRay goes left
                 ;sec already setm bcs taken
@@ -57,8 +62,6 @@ init_enemy_ray_params
                 lsr ; must be x2 to properly index
                 asl
                 tax
-
-
 
                 lda posY                        ; calculating enemy-player abs deltaY
                 cmp enemyPosY
@@ -120,6 +123,7 @@ init_enemy_ray_params
 @q_end          
                 sta enemyRayTheta               ; full enemyRayTheta in [0; 256)
                 sta $0429
+                tax                             ; to save ldx later
 
 
                 cmp playerTheta                 ; |playerTheta - enemyRayTheta|
@@ -131,8 +135,8 @@ init_enemy_ray_params
                 jmp @endif                      ;
 @enemy_ge_ply   sec                             ;
                 sbc playerTheta                 ;
-
-@endif         
+                                                ;
+@endif                                          ;
                 sta deltaTheta                  ; if delta > 180
                 cmp #128                        ; 360 - delta
                 bcc @done                       ;
@@ -163,6 +167,56 @@ init_enemy_ray_params
                 adc deltaTheta
                 sta enemyRayId
 @ray_id_end
+
+                
+          
+
+
+
+
+
+                ;ldx enemyRayTheta              ; tax done before
+                ldy enemyPosX
+                lda xPlusTheta,x
+                beq @x_minus
+@x_plus                 
+                        lda plusThetaInitCoordX2,y      ; x2 to index word array
+                        ;sta absWallHitXDistX2           ; x2 to index word array
+                        ;ldy #1
+                        ;sty stepX
+                jmp @x_end
+@x_minus                
+                        lda minusThetaInitCoordX2,y     ; x2 to index word array
+                        ;sta absWallHitXDistX2           ; x2 to index word array
+                        ;ldy #-1
+                        ;sty stepX
+@x_end          
+                ldy reducedTheta_x2,x
+                mxOverCos rayCurrDistX_L,rayCurrDistX_H
+
+                
+                ldy enemyPosY
+                ldx enemyRayTheta
+                lda yPlusTheta,x
+                beq @y_minus
+@y_plus                 
+                        lda plusThetaInitCoordX2,y
+                jmp @y_end
+@y_minus                
+                        lda minusThetaInitCoordX2,y
+@y_end          
+                ldy mirrorReducedTheta_x2,x
+                mxOverCos rayCurrDistY_L,rayCurrDistY_H
+
+                
+                ldx enemyRayTheta
+                ldy reducedTheta_x2,x 
+                mxOverCosX16 rayDistDx_L,rayDistDx_H 
+                
+                ldy mirrorReducedTheta_x2,x
+                mxOverCosX16 rayDistDy_L,rayDistDy_H  
+
+; TODO extend mxOverCos to 32 to cover both enemyRay "non-16" ends simultaneously
                 rts
 
 ;;---------------------------------------------
