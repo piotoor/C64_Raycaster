@@ -170,59 +170,88 @@ init_enemy_ray_params
 
                 
           
+;zawsze w prawo, bo licze tylko dlugosc, a mam abs dx i abs dy
+;wyliczyc to co wystaje poza siatke w prawo
+;wyliczyc ile mam pol mapy i tyle petla leci
+;koniec
 
-
-
-
-
-                ;ldx enemyRayTheta              ; tax done before
-                ldy enemyPosX
-                lda xPlusTheta,x
-                beq @x_minus
-@x_plus                 
-                        lda plusThetaInitCoordX2,y      ; x2 to index word array
-                        ;sta absWallHitXDistX2           ; x2 to index word array
-                        ;ldy #1
-                        ;sty stepX
-                jmp @x_end
-@x_minus                
-                        lda minusThetaInitCoordX2,y     ; x2 to index word array
-                        ;sta absWallHitXDistX2           ; x2 to index word array
-                        ;ldy #-1
-                        ;sty stepX
-@x_end          
+;posCoordsToOffset
+;posMod16
+                
+                
+                ldy enemyPlyPosDeltaX
+                lda minusThetaInitCoordX2,y
+        
+                ldx enemyRayTheta
                 ldy reducedTheta_x2,x
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
-
                 
-                ldy enemyPosY
-                ldx enemyRayTheta
-                lda yPlusTheta,x
-                beq @y_minus
-@y_plus                 
-                        lda plusThetaInitCoordX2,y
-                jmp @y_end
-@y_minus                
-                        lda minusThetaInitCoordX2,y
-@y_end          
-                ldy mirrorReducedTheta_x2,x
-                mxOverCos rayCurrDistY_L,rayCurrDistY_H
 
-                
                 ldx enemyRayTheta
                 ldy reducedTheta_x2,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
-                
-                ldy mirrorReducedTheta_x2,x
-                mxOverCosX16 rayDistDy_L,rayDistDy_H  
 
-; TODO extend mxOverCos to 32 to cover both enemyRay "non-16" ends simultaneously
+;                ldy posY
+;                lda posCoordsToOffset,y
+;                ldy posX
+;                clc
+;                adc posToMapCoords,y
+;                sta gameMapOffset
+
+                ;ldx enemyRayTheta              ; tax done before
+;                ldy enemyPosX
+;                lda xPlusTheta,x
+;                beq @x_minus
+;@x_plus                 
+;                        lda plusThetaInitCoordX2,y      ; x2 to index word array
+;                        ;sta absWallHitXDistX2           ; x2 to index word array
+;                        ldy #1
+;                        sty stepX
+;                jmp @x_end
+;@x_minus                
+;                        lda minusThetaInitCoordX2,y     ; x2 to index word array
+;                        ;sta absWallHitXDistX2           ; x2 to index word array
+;                        ldy #-1
+;                        sty stepX
+;@x_end          
+;                ldy reducedTheta_x2,x
+;                mxOverCos rayCurrDistX_L,rayCurrDistX_H
+
+;                
+;                ldy enemyPosY
+;                ldx enemyRayTheta
+;                lda yPlusTheta,x
+;                beq @y_minus
+;@y_plus                 
+;                        lda plusThetaInitCoordX2,y
+;                        ldy #MAP_HEIGHT
+;                        sty stepY
+;                jmp @y_end
+;@y_minus                
+;                        lda minusThetaInitCoordX2,y
+;                        ldy #-16
+;                        sty stepY
+;@y_end          
+;                ldy mirrorReducedTheta_x2,x
+;                mxOverCos rayCurrDistY_L,rayCurrDistY_H
+
+;                
+;                ldx enemyRayTheta
+;                ldy reducedTheta_x2,x 
+;                mxOverCosX16 rayDistDx_L,rayDistDx_H 
+;                
+;                ldy mirrorReducedTheta_x2,x
+;                mxOverCosX16 rayDistDy_L,rayDistDy_H  
+
+
                 rts
 
 ;;---------------------------------------------
 ;; cast_enemy_ray
 ;;---------------------------------------------
 cast_enemy_ray
+                ldx enemyPlyPosDeltaX
                 
-                
+                ldy posDiv16,x
+                bne
                 rts

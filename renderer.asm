@@ -26,7 +26,7 @@ compute_frame
                 bpl @loop
 
                 
-                ;jsr cast_enemy_ray
+                jsr cast_enemy_ray
                 rts
 
 ;;---------------------------------------------
