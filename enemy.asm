@@ -2,7 +2,7 @@ enemyPosX=$6b
 enemyPosY=$6c
 ;enemyMapX=$87
 ;enemyMapY=$88
-
+ENEMY_SIZE=#8
 
 ;;---------------------------------------------
 ;; enemy_setup

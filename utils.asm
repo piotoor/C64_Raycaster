@@ -73,11 +73,31 @@ defm lineStartRow
         lda rayStart,x
         sta prevRayStart,x
         lda (E_16),y 
+        sta rayPerpDistance,x
         tay
         lda lineStartRowLut,y
         sta rayStart,x
         
         endm
+
+;;---------------------------------------------
+;; perpDistance
+;; dist in a
+;; theta in x
+;; returns perpendicular distance (/2)
+;;--------------------------------------------- 
+defm perpDistance 
+
+        ldy perpDistanceVect,x
+        sty E_16_L
+        inx
+        ldy perpDistanceVect,x
+        sty E_16_H
+        
+        tay
+        lda (E_16),y 
+        endm
+
 
 ;;---------------------------------------------
 ;; xOverTan

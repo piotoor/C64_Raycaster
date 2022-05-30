@@ -37,6 +37,7 @@ rayStart=$C000
 rayTextureId=$C028
 texColumnOffsets=$C050
 prevRayStart=$C078
+rayPerpDistance=$C0A0
 backBuffer=$C800
 
 CEIL_FLOOR_COLOR=#0

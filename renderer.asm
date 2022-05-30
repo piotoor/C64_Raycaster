@@ -31,6 +31,13 @@ compute_frame
 
 ;;---------------------------------------------
 ;; draw_back_buffer
+;;---------------------------------------------
+draw_enemies
+                
+                rts
+
+;;---------------------------------------------
+;; draw_back_buffer
 ;;
 ;; Renders frame on a back buffer ($C800)
 ;; Only upper half of the screen is calculated
@@ -97,6 +104,8 @@ draw_back_buffer
                 ldx g_8
                 dex
                 bpl @cols
+
+                jsr draw_enemies
                 rts
 
 

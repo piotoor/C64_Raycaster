@@ -1,8 +1,6 @@
-;enemySpriteCurrDist=$81
-;enemySpriteCurrDist_L=$81
-;enemySpriteCurrDist_H=$82
-
-;enemySpriteCurrDistDx=$83
+enemyPerpDistance=$81
+enemyLineStartRow=$82
+enemyHalfAngleSize=$83
 ;enemySpriteCurrDistDx_L=$83
 ;enemySpriteCurrDistDx_H=$84
 
@@ -81,8 +79,8 @@ init_enemy_ray_params
                 sbc enemyPosY
                 sta enemyPlyPosDeltaY
 @endif_y
-                lda enemyPlyPosDeltaY
-                lsr
+                lda enemyPlyPosDeltaY           ; scaling to [0;32]
+                lsr                             ; x2 to index
                 lsr
                 asl
                 tay
@@ -191,59 +189,6 @@ init_enemy_ray_params
                 ldy reducedTheta_x2,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
 
-;                ldy posY
-;                lda posCoordsToOffset,y
-;                ldy posX
-;                clc
-;                adc posToMapCoords,y
-;                sta gameMapOffset
-
-                ;ldx enemyRayTheta              ; tax done before
-;                ldy enemyPosX
-;                lda xPlusTheta,x
-;                beq @x_minus
-;@x_plus                 
-;                        lda plusThetaInitCoordX2,y      ; x2 to index word array
-;                        ;sta absWallHitXDistX2           ; x2 to index word array
-;                        ldy #1
-;                        sty stepX
-;                jmp @x_end
-;@x_minus                
-;                        lda minusThetaInitCoordX2,y     ; x2 to index word array
-;                        ;sta absWallHitXDistX2           ; x2 to index word array
-;                        ldy #-1
-;                        sty stepX
-;@x_end          
-;                ldy reducedTheta_x2,x
-;                mxOverCos rayCurrDistX_L,rayCurrDistX_H
-
-;                
-;                ldy enemyPosY
-;                ldx enemyRayTheta
-;                lda yPlusTheta,x
-;                beq @y_minus
-;@y_plus                 
-;                        lda plusThetaInitCoordX2,y
-;                        ldy #MAP_HEIGHT
-;                        sty stepY
-;                jmp @y_end
-;@y_minus                
-;                        lda minusThetaInitCoordX2,y
-;                        ldy #-16
-;                        sty stepY
-;@y_end          
-;                ldy mirrorReducedTheta_x2,x
-;                mxOverCos rayCurrDistY_L,rayCurrDistY_H
-
-;                
-;                ldx enemyRayTheta
-;                ldy reducedTheta_x2,x 
-;                mxOverCosX16 rayDistDx_L,rayDistDx_H 
-;                
-;                ldy mirrorReducedTheta_x2,x
-;                mxOverCosX16 rayDistDy_L,rayDistDy_H  
-
-
                 rts
 
 ;;---------------------------------------------
@@ -251,7 +196,37 @@ init_enemy_ray_params
 ;;---------------------------------------------
 cast_enemy_ray
                 ldx enemyPlyPosDeltaX
+
+                ldy posToMapCoords,x
+@loop           beq @endloop
                 
-                ldy posDiv16,x
-                bne
+                clc                     ; 
+                lda rayCurrDistX_L      ; 
+                adc rayDistDx_L         ; 
+                sta rayCurrDistX_L      ; 
+                lda rayCurrDistX_H      ; 
+                adc rayDistDx_H         ; 
+                sta rayCurrDistX_H      ; 
+
+                dey
+                jmp @loop
+@endloop
+                
+
+                lda rayCurrDistX_L      ; dividing distance by 128
+                asl                     ; bit 7 -> 0
+                lda #0                  ;
+                adc #0                  ;
+                aso rayCurrDistX_H      ; asl rayCurrDistY_H
+                                        ; ora rayCurrDistY_H
+                
+                ldx deltaTheta
+                perpDistance
+                sta enemyPerpDistance
+                tax
+                lda sprtStartRowLut,x
+                sta enemyLineStartRow
+                lda sprtHalfAngSize,x
+                sta enemyHalfAngleSize
+
                 rts
