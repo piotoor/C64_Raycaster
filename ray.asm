@@ -121,7 +121,7 @@ cast_ray
                                 adc stepY
                                 tax
                                 sta gameMapOffset
-
+                                
                                 lda game_map,x          ; 
                                 bne @final_res_b        ; 
 
@@ -169,8 +169,8 @@ cast_ray
                 ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
                 
 
-                lda rayCurrDistY_L      ; coputing vertical line starting point
-                asl                     ; bit 7 -> 0
+                asl rayCurrDistY_L      ; coputing vertical line starting point
+                                        ; bit 7 -> 0
                 lda #0                  ;
                 adc #0                  ;
                 aso rayCurrDistY_H      ; asl rayCurrDistY_H
@@ -186,16 +186,17 @@ cast_ray
                 xOverTan                        ; 
                 sta calculatedAbsWallHitDist    ; 
 
-                ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
-                lda xPlusTheta,x                ; to / from posX
+                ldx rayTheta                   ; add or subtract calculatedAbsWallHitDist
+                lda posX                        ; extracted from branch to save 1 byte
+                ldy xPlusTheta,x                ; to / from posX
                 beq @x_minus
 @x_plus                 
-                lda posX
+                ;lda posX
                 clc
                 adc calculatedAbsWallHitDist
                 jmp @x_end
 @x_minus                
-                lda posX
+                ;lda posX
                 sec
                 sbc calculatedAbsWallHitDist
 @x_end   
@@ -225,8 +226,8 @@ cast_ray
                 ldy rayId                ; absolute difference between rayTheta and
                 ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
 
-                lda rayCurrDistX_L      ; computing vertical line starting point
-                asl                     ; bit 7 -> 0
+                asl rayCurrDistX_L      ; computing vertical line starting point
+                ;asl                     ; bit 7 -> 0
                 lda #0                  ;
                 adc #0                  ;
                 aso rayCurrDistX_H      ; asl rayCurrDistX_H
