@@ -10,9 +10,9 @@ ENEMY_SIZE=#8
 ;; Loads enemy's initial pos and theta
 ;;---------------------------------------------             
 enemy_setup
-                lda #128
+                lda #82
                 sta enemyPosX
-                lda #128
+                lda #68
                 sta enemyPosY
                 ; calculate enemyMapX and enemyMapY
                 ; for now hardcoded here and on gameMap

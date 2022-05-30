@@ -10,7 +10,6 @@ currTexColumnOffset=$7d
 ;;---------------------------------------------
 compute_frame   
                 
-                jsr init_enemy_ray_params
                 lda playerTheta
                 clc
                 adc HALF_FOV
@@ -25,15 +24,61 @@ compute_frame
                 dec rayId 
                 bpl @loop
 
-                
+                jsr init_enemy_ray_params
+                lda renderEnemyFlags
+                beq @enemy_rend_0
                 jsr cast_enemy_ray
+@enemy_rend_0
                 rts
 
 ;;---------------------------------------------
-;; draw_back_buffer
+;; draw_enemies
 ;;---------------------------------------------
 draw_enemies
+                lda enemyRayId
+                sec
+                sbc enemyHalfAngleSize
+                ;sta $401
                 
+                lda enemyRayId
+                clc
+                adc enemyHalfAngleSize
+                ;sta $402
+                lda enemyHalfAngleSize
+                ;sta $403
+
+;                cmp #SCREEN_WIDTH       ; don't go farther than screen width
+;                bcc @loop               ;
+;                lda #SCREEN_WIDTH       ; 
+;                sta enemyHalfAngleSize  ; 
+                
+                
+@loop
+                ldy enemyLineStartRow
+                ;sty $406
+;                cpx #0
+;                bmi @continue
+;                lda backBuffUpperL,x
+;                sta E_16_L
+;                lda backBuffUpperH,x
+;                sta E_16_H
+
+;                lda #14
+;                ldy enemyLineStartRow
+;                sty $406
+;;@line_loop                              ; will ge replaced with sprite!
+;;                
+;;                
+;;                sta (E_16),y
+;;                iny
+;;                cmp #HALF_SCREEN_HEIGHT
+;;                bne @line_loop
+;                
+
+;@continue       inx
+;                cmp enemyHalfAngleSize
+;                bne @loop
+
                 rts
 
 ;;---------------------------------------------

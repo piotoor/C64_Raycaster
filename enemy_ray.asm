@@ -1,10 +1,10 @@
 enemyPerpDistance=$81
 enemyLineStartRow=$82
 enemyHalfAngleSize=$83
-;enemySpriteCurrDistDx_L=$83
-;enemySpriteCurrDistDx_H=$84
+
 
 enemyRayTheta=$85
+enemyRayThetaRed=$84
 deltaTheta=$89
 playerThetaEnemyThetaDiff=$8a
 enemyRayId=$26
@@ -29,6 +29,7 @@ enemyPlyPosDeltaY=$88
 ;; init_enemy_ray_params
 ;;---------------------------------------------
 init_enemy_ray_params
+        
                 lda #0
                 sta enemyRayThetaQuadrant
                 sta renderEnemyFlags
@@ -57,8 +58,8 @@ init_enemy_ray_params
 @endif_x
                 lda enemyPlyPosDeltaX
                 lsr
-                lsr ; must be x2 to properly index
-                asl
+                lsr 
+                asl ; must be x2 to properly index
                 tax
 
                 lda posY                        ; calculating enemy-player abs deltaY
@@ -79,21 +80,22 @@ init_enemy_ray_params
                 sbc enemyPosY
                 sta enemyPlyPosDeltaY
 @endif_y
-                lda enemyPlyPosDeltaY           ; scaling to [0;32]
-                lsr                             ; x2 to index
+                lda enemyPlyPosDeltaY           ; scaling to [0;64]
+                lsr                             ; 
                 lsr
-                asl
+                
                 tay
                 
                 atan                            ; reduced enemyRayTheta in [0; 64]
                 ; tay                           
                 ; lda unreduceTheta,y
                 sta enemyRayTheta
-                sta $0428
+                sta enemyRayThetaRed
+                ;sta $0428
 
                 
                 ldx enemyRayThetaQuadrant       ; calculating full enemyRayTheta
-                stx $0431
+                ;stx $0431
                 cpx QUADRANT_I
                 beq @q_end
                 cpx QUADRANT_II
@@ -120,7 +122,7 @@ init_enemy_ray_params
 
 @q_end          
                 sta enemyRayTheta               ; full enemyRayTheta in [0; 256)
-                sta $0429
+                ;sta $0429
                 tax                             ; to save ldx later
 
 
@@ -144,6 +146,42 @@ init_enemy_ray_params
                 sta deltaTheta                  ;
 @done                                           ;
                 
+                lda #'P'                        ; <DEBUG>
+                sta $402
+                lda playerTheta
+                sta $42a
+
+                lda #'E'
+                sta $403
+                lda enemyRayThetaRed
+                sta $42b
+
+                lda #'R'
+                sta $404
+                lda #'X'
+                sta $42c        ; enemyRayId
+
+                lda #'D'
+                sta $405
+                lda deltaTheta
+                sta $42d
+
+                lda #'d'
+                sta $407
+                ;distance
+                ;$42f
+
+                lda #'x'
+                sta $408
+                lda enemyPlyPosDeltaX
+                sta $430
+
+                lda #'y'
+                sta $409
+                lda enemyPlyPosDeltaY
+                sta $431
+                                                ; </DEBUG>
+                lda deltaTheta
                 cmp #64                         ; if deltaTheta > 64 (90)
                 bcc @continue                   ; don't render enemy.
                 rts                             ; It's out of sight.
@@ -166,29 +204,31 @@ init_enemy_ray_params
                 sta enemyRayId
 @ray_id_end
 
+                ;lda enemyRayId
+                sta $42c
                 
           
-;zawsze w prawo, bo licze tylko dlugosc, a mam abs dx i abs dy
-;wyliczyc to co wystaje poza siatke w prawo
-;wyliczyc ile mam pol mapy i tyle petla leci
-;koniec
 
-;posCoordsToOffset
-;posMod16
                 
                 
                 ldy enemyPlyPosDeltaX
+                beq @posDeltaX_0
                 lda minusThetaInitCoordX2,y
         
-                ldx enemyRayTheta
+                ldx enemyRayThetaRed
                 ldy reducedTheta_x2,x
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
                 
 
-                ldx enemyRayTheta
+                ldx enemyRayThetaRed
                 ldy reducedTheta_x2,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
+                rts
 
+@posDeltaX_0    lda enemyPlyPosDeltaY
+                lsr; *64 -> / 128 = /2
+                sta rayCurrDistX_L
+                
                 rts
 
 ;;---------------------------------------------
@@ -196,6 +236,7 @@ init_enemy_ray_params
 ;;---------------------------------------------
 cast_enemy_ray
                 ldx enemyPlyPosDeltaX
+                beq @posDeltaX_0
 
                 ldy posToMapCoords,x
 @loop           beq @endloop
@@ -212,21 +253,35 @@ cast_enemy_ray
                 jmp @loop
 @endloop
                 
-
+                
                 lda rayCurrDistX_L      ; dividing distance by 128
                 asl                     ; bit 7 -> 0
                 lda #0                  ;
                 adc #0                  ;
                 aso rayCurrDistX_H      ; asl rayCurrDistY_H
                                         ; ora rayCurrDistY_H
+                sta rayCurrDistX_L
                 
-                ldx deltaTheta
+@posDeltaX_0
+                sta $42f                ; </ DEBUG>
+                lda deltaTheta
+                asl 
+                tax
+                lda rayCurrDistX_L
+                
                 perpDistance
                 sta enemyPerpDistance
+
+                lda #'P'                        ; <DEBUG>
+                sta $40B                        ;
+                lda enemyPerpDistance           ;
+                sta $433                        ; </ DEBUG>
+
                 tax
                 lda sprtStartRowLut,x
                 sta enemyLineStartRow
+                sta $434
                 lda sprtHalfAngSize,x
                 sta enemyHalfAngleSize
-
+                sta $435
                 rts
