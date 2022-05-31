@@ -44,8 +44,6 @@ draw_enemies
                 sta $43b
                 sta enemyLastRayId
 
-                
-
                 bpl @enemy_visible
                 lda #'X'
                 sta $43a
@@ -53,17 +51,12 @@ draw_enemies
                 
 @enemy_visible
                 
-
                 lda enemyRayId
                 sec
                 sbc enemyHalfAngleSize
                 sta $43a
                 tax
-                
-
-                
-                stx $44e
-
+                inx ; to make "sprite" symmetric
                 
 
                 bpl @plus
@@ -78,19 +71,26 @@ draw_enemies
                 cpx enemyLastRayId
                 bcs @endloop
                 
+                lda rayPerpDistance,x
+                sta $44f
+                lda enemyPerpDistance
+                sta $44e
+                cmp rayPerpDistance,x
+                bcs @continue
+
                 lda backBuffUpperL,x
                 sta E_16_L
                 lda backBuffUpperH,x
                 sta E_16_H                
 
-                lda #2
+                lda #4
                 ldy #11
                 sta (E_16),y
                 iny
                 sta (E_16),y
 
                 ;iny
-                inx
+@continue       inx
                 jmp @loop
 @endloop
 
