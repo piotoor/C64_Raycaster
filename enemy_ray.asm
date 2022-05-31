@@ -6,7 +6,7 @@ enemyHalfAngleSize=$83
 enemyRayTheta=$85
 enemyRayThetaRed=$84
 deltaTheta=$89
-playerThetaEnemyThetaDiff=$8a
+enemyLastRayId=$8a
 enemyRayId=$26
 renderEnemyFlags=$27            ; in case of more enemies, 
                                 ; 1 - render, 
@@ -182,7 +182,7 @@ init_enemy_ray_params
                 sta $431
                                                 ; </DEBUG>
                 lda deltaTheta
-                cmp #64                         ; if deltaTheta > 64 (90)
+                cmp #64                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
                 rts                             ; It's out of sight.
         
@@ -212,23 +212,30 @@ init_enemy_ray_params
                 
                 
                 ldy enemyPlyPosDeltaX
-                beq @posDeltaX_0
+                cpy #4                          ; atan inaccuracy workaround
+                bcc @posDeltaX_0
                 lda minusThetaInitCoordX2,y
         
                 ldx enemyRayThetaRed
                 ldy reducedTheta_x2,x
+                sty $453
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
                 
 
                 ldx enemyRayThetaRed
                 ldy reducedTheta_x2,x 
+                sty $453
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 rts
 
 @posDeltaX_0    lda enemyPlyPosDeltaY
                 lsr; *64 -> / 128 = /2
                 sta rayCurrDistX_L
-                
+                sta enemyPerpDistance
+                ;lda #0
+                ;sta rayCurrDistX_H
+                lda #'X'
+                sta $453
                 rts
 
 ;;---------------------------------------------
@@ -236,7 +243,8 @@ init_enemy_ray_params
 ;;---------------------------------------------
 cast_enemy_ray
                 ldx enemyPlyPosDeltaX
-                beq @posDeltaX_0
+                cpx #4
+                bcc @posDeltaX_0
 
                 ldy posToMapCoords,x
 @loop           beq @endloop
@@ -262,8 +270,6 @@ cast_enemy_ray
                                         ; ora rayCurrDistY_H
                 sta rayCurrDistX_L
                 
-@posDeltaX_0
-                sta $42f                ; </ DEBUG>
                 lda deltaTheta
                 asl 
                 tax
@@ -271,7 +277,9 @@ cast_enemy_ray
                 
                 perpDistance
                 sta enemyPerpDistance
-
+@posDeltaX_0
+                lda rayCurrDistX_L      ; </ DEBUG>
+                sta $42f                ; </ DEBUG>
                 lda #'P'                        ; <DEBUG>
                 sta $40B                        ;
                 lda enemyPerpDistance           ;

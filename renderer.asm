@@ -25,6 +25,7 @@ compute_frame
                 bpl @loop
 
                 jsr init_enemy_ray_params
+                
                 lda renderEnemyFlags
                 beq @enemy_rend_0
                 jsr cast_enemy_ray
@@ -34,27 +35,83 @@ compute_frame
 ;;---------------------------------------------
 ;; draw_enemies
 ;;---------------------------------------------
-draw_enemies
-                lda enemyRayId
-                sec
-                sbc enemyHalfAngleSize
-                ;sta $401
-                
+draw_enemies                
+                ;ldy #0
+
                 lda enemyRayId
                 clc
                 adc enemyHalfAngleSize
-                ;sta $402
-                lda enemyHalfAngleSize
-                ;sta $403
+                sta $43b
+                sta enemyLastRayId
 
+                
+
+                bpl @enemy_visible
+                lda #'X'
+                sta $43a
+                rts
+                
+@enemy_visible
+                
+
+                lda enemyRayId
+                sec
+                sbc enemyHalfAngleSize
+                sta $43a
+                tax
+                
 ;                cmp #SCREEN_WIDTH       ; don't go farther than screen width
 ;                bcc @loop               ;
 ;                lda #SCREEN_WIDTH       ; 
 ;                sta enemyHalfAngleSize  ; 
                 
+                stx $44e
+
                 
+
+                bpl @plus
+@minus          inx
+                bmi @minus
+                
+
+@plus           
 @loop
-                ldy enemyLineStartRow
+                cpx #SCREEN_WIDTH
+                bcs @endloop
+                cpx enemyLastRayId
+                bcs @endloop
+                iny
+                inx
+                jmp @loop
+@endloop
+                
+                
+;@loop           cpx #0
+;                bmi @continue
+;                cpx enemyLastRayId
+;                bcs @endloop
+;                cpx #SCREEN_WIDTH
+;                bcs @endloop
+;;                lda backBuffUpperL,x
+;;                sta E_16_L
+;;                lda backBuffUpperH,x
+;;                sta E_16_H
+
+;;                ldy #12
+;;                lda #3
+;;                sta (E_16),y
+;                iny
+
+
+;@continue       inx
+;                jmp @loop
+;                beq @endloop
+;                
+;                jmp @loop
+;@endloop
+                stx $44f
+                sty $450
+                ;ldy enemyLineStartRow
                 ;sty $406
 ;                cpx #0
 ;                bmi @continue
@@ -150,7 +207,13 @@ draw_back_buffer
                 dex
                 bpl @cols
 
+                
+                lda renderEnemyFlags
+                beq @enemy_rend_0
+                ldy #0
                 jsr draw_enemies
+@enemy_rend_0
+                
                 rts
 
 
