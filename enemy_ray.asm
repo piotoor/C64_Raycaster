@@ -42,6 +42,7 @@ init_enemy_ray_params
                 lda enemyPosX
                 sbc posX
                 sta enemyPlyPosDeltaX
+                sta f_8
                 
                 lda enemyRayThetaQuadrant
                 ora #%00000001
@@ -55,12 +56,13 @@ init_enemy_ray_params
                 ;sec already setm bcs taken
                 sbc enemyPosX
                 sta enemyPlyPosDeltaX
+                sta f_8
 @endif_x
-                lda enemyPlyPosDeltaX
-                lsr
-                lsr 
-                asl ; must be x2 to properly index
-                tax
+;                lda enemyPlyPosDeltaX
+;                lsr
+;                lsr 
+;                asl ; must be x2 to properly index
+;                tax
 
                 lda posY                        ; calculating enemy-player abs deltaY
                 cmp enemyPosY
@@ -70,6 +72,8 @@ init_enemy_ray_params
                 lda enemyPosY
                 sbc posY
                 sta enemyPlyPosDeltaY
+                sta g_8
+
                 lda enemyRayThetaQuadrant
                 ora #%00000010
                 sta enemyRayThetaQuadrant
@@ -79,13 +83,28 @@ init_enemy_ray_params
                 ;sec already setm bcs taken
                 sbc enemyPosY
                 sta enemyPlyPosDeltaY
+                sta g_8
 @endif_y
-                lda enemyPlyPosDeltaY           ; scaling to [0;64]
-                lsr                             ; 
-                lsr
+;                lda enemyPlyPosDeltaY           ; scaling to [0;64]
+;                lsr                             ; 
+;                lsr
+;                tay
                 
+                lda enemyPlyPosDeltaY
+                ora enemyPlyPosDeltaX
+                and #$C0
+                beq @no_truncate
+                lsr f_8
+                lsr f_8
+                lsr g_8
+                lsr g_8
+
+@no_truncate    lda f_8
+                asl
+                tax
+                lda g_8
                 tay
-                
+
                 atan                            ; reduced enemyRayTheta in [0; 64]
                 ; tay                           
                 ; lda unreduceTheta,y
