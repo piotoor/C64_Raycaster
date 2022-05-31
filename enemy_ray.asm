@@ -204,7 +204,7 @@ init_enemy_ray_params
                 sta enemyRayId
 @ray_id_end
 
-                ;lda enemyRayId
+                lda enemyRayId
                 sta $42c
                 
           

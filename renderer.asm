@@ -60,10 +60,7 @@ draw_enemies
                 sta $43a
                 tax
                 
-;                cmp #SCREEN_WIDTH       ; don't go farther than screen width
-;                bcc @loop               ;
-;                lda #SCREEN_WIDTH       ; 
-;                sta enemyHalfAngleSize  ; 
+
                 
                 stx $44e
 
@@ -80,61 +77,22 @@ draw_enemies
                 bcs @endloop
                 cpx enemyLastRayId
                 bcs @endloop
+                
+                lda backBuffUpperL,x
+                sta E_16_L
+                lda backBuffUpperH,x
+                sta E_16_H                
+
+                lda #2
+                ldy #11
+                sta (E_16),y
                 iny
+                sta (E_16),y
+
+                ;iny
                 inx
                 jmp @loop
 @endloop
-                
-                
-;@loop           cpx #0
-;                bmi @continue
-;                cpx enemyLastRayId
-;                bcs @endloop
-;                cpx #SCREEN_WIDTH
-;                bcs @endloop
-;;                lda backBuffUpperL,x
-;;                sta E_16_L
-;;                lda backBuffUpperH,x
-;;                sta E_16_H
-
-;;                ldy #12
-;;                lda #3
-;;                sta (E_16),y
-;                iny
-
-
-;@continue       inx
-;                jmp @loop
-;                beq @endloop
-;                
-;                jmp @loop
-;@endloop
-                stx $44f
-                sty $450
-                ;ldy enemyLineStartRow
-                ;sty $406
-;                cpx #0
-;                bmi @continue
-;                lda backBuffUpperL,x
-;                sta E_16_L
-;                lda backBuffUpperH,x
-;                sta E_16_H
-
-;                lda #14
-;                ldy enemyLineStartRow
-;                sty $406
-;;@line_loop                              ; will ge replaced with sprite!
-;;                
-;;                
-;;                sta (E_16),y
-;;                iny
-;;                cmp #HALF_SCREEN_HEIGHT
-;;                bne @line_loop
-;                
-
-;@continue       inx
-;                cmp enemyHalfAngleSize
-;                bne @loop
 
                 rts
 
