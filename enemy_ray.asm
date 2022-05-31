@@ -89,17 +89,48 @@ init_enemy_ray_params
 ;                lsr                             ; 
 ;                lsr
 ;                tay
-                
+
                 lda enemyPlyPosDeltaY
                 ora enemyPlyPosDeltaX
-                and #$C0
-                beq @no_truncate
-                lsr f_8
-                lsr f_8
-                lsr g_8
-                lsr g_8
+                tax
+                and #$80                ; >= 128 ?
+                bne @ge_128
+                txa
+                and #$C0                ; >= 64
+                bne @ge_64
 
-@no_truncate    lda f_8
+                jmp @endif_atan
+
+
+@ge_128
+                lsr f_8
+                lsr f_8
+                lsr g_8
+                lsr g_8
+                jmp @endif_atan
+@ge_64
+                lsr f_8
+                lsr g_8
+                jmp @endif_atan
+                
+;                lda enemyPlyPosDeltaY
+;                ora enemyPlyPosDeltaX
+;                and #$C0
+;                beq @lt_64
+;                
+;                lsr f_8
+;                lsr f_8
+;                lsr g_8
+;                lsr g_8
+
+;@lt_64          lda f_8
+;                asl
+;                tax
+;                lda g_8
+;                tay
+
+@endif_atan
+                lda f_8
                 asl
                 tax
                 lda g_8
@@ -231,7 +262,7 @@ init_enemy_ray_params
                 
                 
                 ldy enemyPlyPosDeltaX
-                cpy #4                          ; atan inaccuracy workaround
+                cpy #2                          ; atan inaccuracy workaround
                 bcc @posDeltaX_0
                 lda minusThetaInitCoordX2,y
         
@@ -262,7 +293,7 @@ init_enemy_ray_params
 ;;---------------------------------------------
 cast_enemy_ray
                 ldx enemyPlyPosDeltaX
-                cpx #4
+                cpx #2
                 bcc @posDeltaX_0
 
                 ldy posToMapCoords,x
