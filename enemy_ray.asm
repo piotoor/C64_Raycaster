@@ -98,10 +98,7 @@ init_enemy_ray_params
                 txa
                 and #$C0                ; >= 64
                 bne @ge_64
-
                 jmp @endif_atan
-
-
 @ge_128
                 lsr f_8
                 lsr f_8
@@ -111,23 +108,6 @@ init_enemy_ray_params
 @ge_64
                 lsr f_8
                 lsr g_8
-                jmp @endif_atan
-                
-;                lda enemyPlyPosDeltaY
-;                ora enemyPlyPosDeltaX
-;                and #$C0
-;                beq @lt_64
-;                
-;                lsr f_8
-;                lsr f_8
-;                lsr g_8
-;                lsr g_8
-
-;@lt_64          lda f_8
-;                asl
-;                tax
-;                lda g_8
-;                tay
 
 @endif_atan
                 lda f_8
