@@ -10,6 +10,7 @@ SCREEN_HEIGHT=#25
 HALF_SCREEN_HEIGHT=#13
 HALF_FOV=#20
 DEFAULT_SCREEN_CHARACTER=#$A0
+BG_COLOR=#1
 
 pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
@@ -137,7 +138,7 @@ screen_setup
                         sta $06e8,x                        
                 inx
                 bne @loop 
-                lda #1          ; set bg color 
+                lda #BG_COLOR          ; set bg color 
                 sta $d021       ; fps counter readability
                 rts
 
@@ -147,6 +148,8 @@ incasm  renderer.asm
 incasm  gameMap.asm
 *=$2000
 incbin  chaingun_hd.spd,3
+incbin  masking_sprite.spd,3
+incbin  ufol.spd,3
 incasm  assets.asm
 
 incasm  utils.asm

@@ -34,6 +34,7 @@ init_enemy_ray_params
                 sta enemyRayThetaQuadrant
                 sta renderEnemyFlags
 
+
                 lda posX                        ; calculating enemy-player abs deltaX
                 cmp enemyPosX                   
                 bcs @posX_ge                    
@@ -47,10 +48,6 @@ init_enemy_ray_params
                 lda enemyRayThetaQuadrant
                 ora #%00000001
                 sta enemyRayThetaQuadrant
-
-                
-
-                
                 jmp @endif_x
 @posX_ge                                        ; enemyRay goes left
                 ;sec already setm bcs taken
@@ -58,6 +55,9 @@ init_enemy_ray_params
                 sta enemyPlyPosDeltaX
                 sta f_8
 @endif_x
+
+
+
                 lda posY                        ; calculating enemy-player abs deltaY
                 cmp enemyPosY
                 bcs @posY_ge
@@ -72,7 +72,6 @@ init_enemy_ray_params
                 ora #%00000010
                 sta enemyRayThetaQuadrant
                 jmp @endif_y
-
 @posY_ge                                        ; enemyRay goes up
                 ;sec already setm bcs taken
                 sbc enemyPosY
@@ -80,8 +79,10 @@ init_enemy_ray_params
                 sta g_8
 @endif_y
 
-                lda enemyPlyPosDeltaY
-                ora enemyPlyPosDeltaX
+
+
+                lda enemyPlyPosDeltaY           ; scaling to improve atan accuracy
+                ora enemyPlyPosDeltaX           ; instead of always dividing by 4
                 tax
                 and #$80                ; >= 128 ?
                 bne @ge_128
@@ -109,6 +110,8 @@ init_enemy_ray_params
                 atan                            ; reduced enemyRayTheta in [0; 64]
                 sta enemyRayTheta
                 sta enemyRayThetaRed
+
+
                 
                 ldx enemyRayThetaQuadrant       ; calculating full enemyRayTheta
                 cpx QUADRANT_I
@@ -140,6 +143,7 @@ init_enemy_ray_params
                 tax                             ; to save ldx later
 
 
+
                 cmp playerTheta                 ; |playerTheta - enemyRayTheta|
                 bcs @enemy_ge_ply               ; TODO: to macro
 @enemy_lt_ply   lda playerTheta                 ;
@@ -151,8 +155,8 @@ init_enemy_ray_params
                 sbc playerTheta                 ;
                                                 ;
 @endif                                          ;
-                sta deltaTheta                  ; if delta > 180
-                cmp #128                        ; 360 - delta
+                sta deltaTheta                  ;       if delta > 180
+                cmp #128                        ;       360 - delta
                 bcc @done                       ;
                 lda #0                          ;
                 sec                             ;
@@ -195,7 +199,8 @@ init_enemy_ray_params
 ;                lda enemyPlyPosDeltaY
 ;                sta $431
 ;                                                ; </DEBUG>
-                lda deltaTheta
+
+                lda deltaTheta                  ;
                 cmp #64                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
                 rts                             ; It's out of sight.

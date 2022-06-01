@@ -15,6 +15,7 @@ SPRITES_RAM=$07f8
 sprites_setup
                 jsr common_sprites_setup
                 jsr weapons_sprites_setup
+                jsr enemy_sprites_setup
                 rts
 
 
@@ -22,6 +23,10 @@ sprites_setup
 ;; common_sprites_setup
 ;;---------------------------------------------  
 common_sprites_setup
+
+                lda #$00    ; x coord high bit to 0 for all sprites
+                sta $d010
+
                 lda #SPRITE_BG_COLOR                 
                 sta $d021
                 lda #SPRITE_M1_COLOR

@@ -16,11 +16,17 @@ weapons_sprites_setup
                 lda #WEAPON_SPRITE_PTR+2        ; weapon right part (sprite 1)
                 sta $07f9
 
-                lda #%00000011          ; enable sprites 0 and 1
-                sta $d015 
-                lda #%00000011          ; sprites 0 and 1 multicolor
+                
+                lda $d015               ; enable sprites 0 and 1
+                ora #%00000011
+                sta $d015               
+                
+                lda $d01c               ; sprites 0 and 1 multicolor
+                ora #%00000011          
                 sta $d01c
-                lda #%00000000          ; sprites 0 and 1 over bg
+
+                lda $d01b               ; sprites 0 and 1 over bg
+                ora #%00000000          
                 sta $d01b               
 
 
@@ -29,9 +35,7 @@ weapons_sprites_setup
                 sta $d028               ; sprite 1 color
 
 
-                lda #$00    ; x coord high bit to 0 for all sprites
-                sta $d010
-
+                
                 ; sprite 0 position
                 lda #160
                 sta $d000   ; sprite 0 x-coord
