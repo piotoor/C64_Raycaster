@@ -41,13 +41,6 @@ draw_enemies
                 tay
                 tax
                 dex
-;                clc
-;                adc #2
-                ;sta enemyLastRayId
-                ;lda enemyRayId
-;                sec
-;                sbc #1
-;                tax
         
                 lda enemySpriteX,y
                 sta $d004                       ; sprite 2 x
@@ -88,65 +81,6 @@ draw_enemies
                 adc #MASKING_SPRITE_PTR
                 
                 sta $07fa                       ; sprite 2 (masking sprite) pointer
-
-
-;                ;ldy #0
-
-;                lda enemyRayId
-;                clc
-;                adc enemyHalfAngleSize
-;                ;sta $43b
-;                sta enemyLastRayId
-
-;                bpl @enemy_visible
-;                ;lda #'X'
-;                ;sta $43a
-;                rts
-;                
-;@enemy_visible
-;                
-;                lda enemyRayId
-;                sec
-;                sbc enemyHalfAngleSize
-;                ;sta $43a
-;                tax
-;                inx ; to make "sprite" symmetric
-;                
-
-;                bpl @plus
-;@minus          inx
-;                bmi @minus
-;                
-
-;@plus           
-;@loop
-;                cpx #SCREEN_WIDTH
-;                bcs @endloop
-;                cpx enemyLastRayId
-;                bcs @endloop
-;                
-;                lda rayPerpDistance,x
-;                ;sta $44f
-;                lda enemyPerpDistance
-;                ;sta $44e
-;                cmp rayPerpDistance,x
-;                bcs @continue
-
-;                lda backBuffUpperL,x
-;                sta E_16_L
-;                lda backBuffUpperH,x
-;                sta E_16_H                
-
-;                lda #4
-;                ldy #11
-;                sta (E_16),y
-;                iny
-;                sta (E_16),y
-
-;                ;iny
-;@continue       inx
-;                jmp @loop
-;@endloop
 
                 rts
 

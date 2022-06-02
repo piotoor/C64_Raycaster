@@ -60,6 +60,10 @@ frame_not_ready inc irq_ticks
                 sta irq_ticks
                 sta main_ticks
 @end            
+
+;                lda $d02a               ; enemy sprite color test
+;                eor #%00000100
+;                sta $d02a
                 jmp $ea31               ; kernel irq routine
 
 ;;---------------------------------------------

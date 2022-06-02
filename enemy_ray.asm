@@ -211,13 +211,9 @@ init_enemy_ray_params
                 lda $d010                       ; sprites 2 and 3 x-coord disable high bit
                 and #%11110011
                 sta $d010
-                lda #'N'
-                sta $428
                 rts                             ; 
         
 @continue       inc renderEnemyFlags            ; for now. With more enemies, it should set relevant bit flag                                      
-                lda #'Y'
-                sta $428
                 lda playerTheta                 ; calculating enemyRayId
                 clc                             ; could be negative, when to the left
                 adc deltaTheta                  ; of the left-most rayId
@@ -312,13 +308,4 @@ cast_enemy_ray
 ;                sta $40B                        ;
 ;                lda enemyPerpDistance           ;
 ;                sta $433                        ; </ DEBUG>
-
-;                lda enemyPerpDistance
-;                tax
-                ;lda sprtStartRowLut,x
-                ;sta enemyLineStartRow
-                ;sta $434
-;                lda sprtHalfAngSize,x
-;                sta enemyHalfAngleSize
-                ;sta $435
                 rts
