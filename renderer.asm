@@ -35,64 +35,118 @@ compute_frame
 ;;---------------------------------------------
 ;; draw_enemies
 ;;---------------------------------------------
-draw_enemies                
-                ;ldy #0
-
+draw_enemies          
+                  
                 lda enemyRayId
-                clc
-                adc enemyHalfAngleSize
-                ;sta $43b
-                sta enemyLastRayId
-
-                bpl @enemy_visible
-                ;lda #'X'
-                ;sta $43a
-                rts
-                
-@enemy_visible
-                
-                lda enemyRayId
-                sec
-                sbc enemyHalfAngleSize
-                ;sta $43a
+                tay
                 tax
-                inx ; to make "sprite" symmetric
+                dex
+;                clc
+;                adc #2
+                ;sta enemyLastRayId
+                ;lda enemyRayId
+;                sec
+;                sbc #1
+;                tax
+        
+                lda enemySpriteX,y
+                sta $d004                       ; sprite 2 x
+                sta $d006                       ; sprite 3 x
                 
+                lda $d010                       ; sprites 2 and 3 x-coord high bit
+                and #%11110011
+                ora enemySpriteXd010bits,y
+                sta $d010
+        
+                ldy enemyPerpDistance
+                lda #ENEMY_SPRITE_PTR
+                clc
+                adc enemySpriteScaleFrameIdx,y
+                sta $07fb                       ; sprite 3 (enemy sprite) pointer
 
-                bpl @plus
-@minus          inx
-                bmi @minus
+                lda #0
+                ldy rayPerpDistance,x
+                cpy enemyPerpDistance
+                bcs @second_ray
+                ora #%00000100                  ; ray dist < enemy dist
+@second_ray
+                inx
+                ldy rayPerpDistance,x
+                cpy enemyPerpDistance
+                bcs @third_ray
+                ora #%00000010                  ; ray dist < enemy dist
+
+@third_ray
+                inx
+                ldy rayPerpDistance,x
+                cpy enemyPerpDistance
+                bcs @end
+                ora #%00000001                  ; ray dist < enemy dist
                 
-
-@plus           
-@loop
-                cpx #SCREEN_WIDTH
-                bcs @endloop
-                cpx enemyLastRayId
-                bcs @endloop
+@end                
+                clc
+                adc #MASKING_SPRITE_PTR
                 
-                lda rayPerpDistance,x
-                ;sta $44f
-                lda enemyPerpDistance
-                ;sta $44e
-                cmp rayPerpDistance,x
-                bcs @continue
+                sta $07fa                       ; sprite 2 (masking sprite) pointer
 
-                lda backBuffUpperL,x
-                sta E_16_L
-                lda backBuffUpperH,x
-                sta E_16_H                
 
-                lda #4
-                ldy #11
-                sta (E_16),y
-                iny
-                sta (E_16),y
+;                ;ldy #0
 
-                ;iny
-@continue       inx
-                jmp @loop
-@endloop
+;                lda enemyRayId
+;                clc
+;                adc enemyHalfAngleSize
+;                ;sta $43b
+;                sta enemyLastRayId
+
+;                bpl @enemy_visible
+;                ;lda #'X'
+;                ;sta $43a
+;                rts
+;                
+;@enemy_visible
+;                
+;                lda enemyRayId
+;                sec
+;                sbc enemyHalfAngleSize
+;                ;sta $43a
+;                tax
+;                inx ; to make "sprite" symmetric
+;                
+
+;                bpl @plus
+;@minus          inx
+;                bmi @minus
+;                
+
+;@plus           
+;@loop
+;                cpx #SCREEN_WIDTH
+;                bcs @endloop
+;                cpx enemyLastRayId
+;                bcs @endloop
+;                
+;                lda rayPerpDistance,x
+;                ;sta $44f
+;                lda enemyPerpDistance
+;                ;sta $44e
+;                cmp rayPerpDistance,x
+;                bcs @continue
+
+;                lda backBuffUpperL,x
+;                sta E_16_L
+;                lda backBuffUpperH,x
+;                sta E_16_H                
+
+;                lda #4
+;                ldy #11
+;                sta (E_16),y
+;                iny
+;                sta (E_16),y
+
+;                ;iny
+;@continue       inx
+;                jmp @loop
+;@endloop
 
                 rts
 

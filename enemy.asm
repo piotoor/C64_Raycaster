@@ -19,20 +19,27 @@ enemy_setup
                 rts
 
 
-ENEMY_SPRITE_COLOR=#11
-ENEMY_FRAMES=#2
-enemyCurrentFrame=$28
-MASKING_SPRITE_PTR=#WEAPON_SPRITE_PTR+#WEAPON_FRAMES  
-ENEMY_SPRITE_PTR=#MASKING_SPRITE_PTR+1
+ENEMY_SPRITE_COLOR=#13
+MASKING_SPRITE_COLOR=#0
 
+MASKING_SPRITE_ANIM_FRAMES=#8
+ENEMY_SPRITE_ANIM_FRAMES=#6
+
+MASKING_SPRITE_PTR=#WEAPON_SPRITE_PTR+#WEAPON_SPRITE_ANIM_FRAMES
+ENEMY_SPRITE_PTR=#MASKING_SPRITE_PTR+#MASKING_SPRITE_ANIM_FRAMES
+
+;enemyCurrentFrame=$28
 ;;---------------------------------------------
 ;; enemy_sprites_setup
 ;;---------------------------------------------  
 enemy_sprites_setup
                 lda #0
-                sta enemyCurrentFrame
+                ;sta enemyCurrentFrame
+
                 lda #MASKING_SPRITE_PTR         
-                sta $07fa
+                sta $07fa               ; SPRITE 2 POINTER
+                lda #ENEMY_SPRITE_PTR         
+                sta $07fb               ; SPRITE 3 POINTER
 
                 
                 lda $d015               ; enable sprites 2 and 3
@@ -50,6 +57,10 @@ enemy_sprites_setup
                 lda #ENEMY_SPRITE_COLOR       
                 sta $d02a               ; sprite 3 color
                 lda #BG_COLOR
-                STA $d029
+                sta $d029               ; sprite 2 color
+
+                lda #150                    
+                sta $d005                       ; sprite 2 y
+                sta $d007                       ; sprite 3 y
 
                 rts

@@ -1,11 +1,11 @@
 enemyPerpDistance=$81
-enemyLineStartRow=$82
 enemyHalfAngleSize=$83
 
 
 enemyRayTheta=$85
 enemyRayThetaRed=$84
 deltaTheta=$89
+enemyFirstRayId=$82
 enemyLastRayId=$8a
 enemyRayId=$26
 renderEnemyFlags=$27            ; in case of more enemies, 
@@ -201,12 +201,23 @@ init_enemy_ray_params
 ;                                                ; </DEBUG>
 
                 lda deltaTheta                  ;
-                cmp #64                         ; if deltaTheta >= 64 (90)
+                cmp #22                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
-                rts                             ; It's out of sight.
+                ; sprite 2 (masking) and 3 (enemy) position
+                lda #0                          ; hide sprites 2 and 3
+                sta $d004                       ; sprite 2 x
+                sta $d006                       ; sprite 3 x
+                
+                lda $d010                       ; sprites 2 and 3 x-coord disable high bit
+                and #%11110011
+                sta $d010
+                lda #'N'
+                sta $428
+                rts                             ; 
         
 @continue       inc renderEnemyFlags            ; for now. With more enemies, it should set relevant bit flag                                      
-
+                lda #'Y'
+                sta $428
                 lda playerTheta                 ; calculating enemyRayId
                 clc                             ; could be negative, when to the left
                 adc deltaTheta                  ; of the left-most rayId
@@ -302,12 +313,12 @@ cast_enemy_ray
 ;                lda enemyPerpDistance           ;
 ;                sta $433                        ; </ DEBUG>
 
-                lda enemyPerpDistance
-                tax
-                lda sprtStartRowLut,x
-                sta enemyLineStartRow
+;                lda enemyPerpDistance
+;                tax
+                ;lda sprtStartRowLut,x
+                ;sta enemyLineStartRow
                 ;sta $434
-                lda sprtHalfAngSize,x
-                sta enemyHalfAngleSize
+;                lda sprtHalfAngSize,x
+;                sta enemyHalfAngleSize
                 ;sta $435
                 rts
