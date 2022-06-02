@@ -212,25 +212,3 @@ move_common
                         sta posY
 @end            rts
 
-
-;;---------------------------------------------
-;; update_weapon
-;;---------------------------------------------
-update_weapon
-                             
-                inc $07f8
-                inc $07f9
-                inc weaponCurrentFrame
-                lda weaponCurrentFrame
-
-                cmp #WEAPON_FRAMES
-                bne @endif
-                lda #WEAPON_SPRITE_PTR
-                sta $07f8
-                lda #WEAPON_SPRITE_PTR+2
-                sta $07f9
-                lda #0
-                sta weaponCurrentFrame
-               
-@endif
-                rts

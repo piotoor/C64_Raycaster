@@ -54,6 +54,7 @@ draw_enemies
                 ldy enemyPerpDistance
                 lda #ENEMY_SPRITE_PTR
                 clc
+                adc enemyFrameOffset
                 adc enemySpriteScaleFrameIdx,y
                 sta $07fb                       ; sprite 3 (enemy sprite) pointer
 

@@ -47,6 +47,7 @@ irq
                 beq frame_not_ready
                 jsr draw_front_buffer
                 jsr check_keyboard
+                jsr update_enemy
                 lda #0
                 sta synch
 frame_not_ready inc irq_ticks
@@ -165,7 +166,7 @@ incasm  gameMap.asm
 *=$2000
 incbin  chaingun_hd.spd,3
 incbin  masking_sprite.spd,3
-incbin  ufol.spd,3
+incbin  enemy2.spd,3
 incasm  assets.asm
 
 incasm  utils.asm
