@@ -153,13 +153,6 @@ draw_back_buffer
                 ldx g_8
                 dex
                 bpl @cols
-
-                
-                lda renderEnemyFlags
-                beq @enemy_rend_0
-                ldy #0
-                jsr draw_enemies
-@enemy_rend_0
                 
                 rts
 

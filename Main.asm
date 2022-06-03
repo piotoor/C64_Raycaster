@@ -46,6 +46,12 @@ irq
                 lda synch
                 beq frame_not_ready
                 jsr draw_front_buffer
+
+                lda renderEnemyFlags
+                beq @enemy_rend_0
+                ldy #0
+                jsr draw_enemies
+@enemy_rend_0
                 jsr check_keyboard
                 jsr update_enemy
                 lda #0
