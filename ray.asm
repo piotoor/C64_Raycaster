@@ -33,14 +33,14 @@ absWallHitYDistX2=$68
 calculatedAbsWallHitDist=$79
 textureMapCode=$7A
 
-rayStart=$C300
-rayTextureId=$C328
-texColumnOffsets=$C350
-prevRayStart=$C378
-rayPerpDistance=$C3A0
+rayStart=$C500
+rayTextureId=$C528
+texColumnOffsets=$C550
+prevRayStart=$C578
+rayPerpDistance=$C5A0
 ; virual rays used to simplify enemy sprite visibility calculations at screen borders
-; C0E0, C0E1, C0E2 (virtual rays 40, 41, 42)
-; C2F5, C2F4, C2F3 (wirtual rays -1, -2, -3)
+; C5E0, C5E1, C5E2 (virtual rays 40, 41, 42)
+; C7F5, C7F4, C7F3 (wirtual rays -1, -2, -3)
 ;
 backBuffer=$C800
 
