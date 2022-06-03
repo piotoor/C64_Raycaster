@@ -196,22 +196,16 @@ init_enemy_ray_params
         
                 ldx enemyRayThetaRed
                 ldy reducedTheta_x2,x
-                ;sty $453
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
                 
-
                 ldx enemyRayThetaRed
                 ldy reducedTheta_x2,x 
-                ;sty $453
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 rts
 
 @posDeltaX_0    lda enemyPlyPosDeltaY
                 lsr; *64 -> / 128 = /2
-                sta rayCurrDistX_L
                 sta enemyPerpDistance
-;                lda #'X'
-;                sta $453
                 rts
 
 ;;---------------------------------------------
