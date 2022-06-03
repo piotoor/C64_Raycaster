@@ -156,56 +156,17 @@ init_enemy_ray_params
                 sbc playerTheta                 ;
                                                 ;
 @endif                                          ;
-                sta deltaTheta                  ;       if delta > 180
+                                                ;       if delta > 180
                 cmp #128                        ;       360 - delta
                 bcc @done                       ;
-                ;lda #0                          ;
-                ;sec                             ;
-                ;sbc deltaTheta                  ;
-                ;sta deltaTheta                  ;
-                eor #$ff
-                clc
-                adc #1
-                sta deltaTheta
-@done                                           ;
+                eor #$ff                        ;
+                clc                             ;
+                adc #1                          ;
                 
-;                lda #'P'                        ; <DEBUG>
-;                sta $402
-;                lda playerTheta
-;                sta $42a
+@done                                           
+                sta deltaTheta
 
-;                lda #'E'
-;                sta $403
-;                lda enemyRayThetaRed
-;                sta $42b
-
-;                lda #'R'
-;                sta $404
-;                lda #'X'
-;                sta $42c        ; enemyRayId
-
-;                lda #'D'
-;                sta $405
-;                lda deltaTheta
-;                sta $42d
-
-;                lda #'d'
-;                sta $407
-;                ;distance
-;                ;$42f
-
-;                lda #'x'
-;                sta $408
-;                lda enemyPlyPosDeltaX
-;                sta $430
-
-;                lda #'y'
-;                sta $409
-;                lda enemyPlyPosDeltaY
-;                sta $431
-;                                                ; </DEBUG>
-
-                lda deltaTheta                  ;
+                
                 cmp #22                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
                 ; sprite 2 (masking) and 3 (enemy) position
