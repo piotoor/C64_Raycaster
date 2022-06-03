@@ -43,7 +43,6 @@ init_enemy_ray_params
                 lda enemyPosX
                 sbc posX
                 sta enemyPlyPosDeltaX
-                sta f_8
                 
                 lda enemyRayThetaQuadrant
                 ora #%00000001
@@ -53,7 +52,7 @@ init_enemy_ray_params
                 ;sec already setm bcs taken
                 sbc enemyPosX
                 sta enemyPlyPosDeltaX
-                sta f_8
+                
 @endif_x
 
 
@@ -89,17 +88,17 @@ init_enemy_ray_params
                 txa
                 and #$C0                ; >= 64
                 bne @ge_64
-                lda f_8
+                lda enemyPlyPosDeltaX
                 jmp @endif_atan
 @ge_128
-                lda f_8
+                lda enemyPlyPosDeltaX
                 lsr
                 lsr
                 lsr g_8
                 lsr g_8
                 jmp @endif_atan
 @ge_64
-                lda f_8
+                lda enemyPlyPosDeltaX
                 lsr
                 lsr g_8
 
