@@ -166,17 +166,11 @@ init_enemy_ray_params
 @done                                           
                 sta deltaTheta
 
-                
                 cmp #22                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
-                ; sprite 2 (masking) and 3 (enemy) position
-                lda #0                          ; hide sprites 2 and 3
-                sta $d004                       ; sprite 2 x
-                sta $d006                       ; sprite 3 x
-                
-                lda $d010                       ; sprites 2 and 3 x-coord disable high bit
-                and #%11110011
-                sta $d010
+
+                lda #MASKING_SPRITE_PTR+7       ; cover enemy sprite entirely
+                sta $07fa                       ; sprite 2 (masking) pointer
                 rts                             ; 
         
 @continue       inc renderEnemyFlags            ; for now. With more enemies, it should set relevant bit flag                                      
