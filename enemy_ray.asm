@@ -101,7 +101,6 @@ init_enemy_ray_params
 @ge_64
                 lda f_8
                 lsr
-                
                 lsr g_8
 
 @endif_atan
@@ -160,10 +159,14 @@ init_enemy_ray_params
                 sta deltaTheta                  ;       if delta > 180
                 cmp #128                        ;       360 - delta
                 bcc @done                       ;
-                lda #0                          ;
-                sec                             ;
-                sbc deltaTheta                  ;
-                sta deltaTheta                  ;
+                ;lda #0                          ;
+                ;sec                             ;
+                ;sbc deltaTheta                  ;
+                ;sta deltaTheta                  ;
+                eor #$ff
+                clc
+                adc #1
+                sta deltaTheta
 @done                                           ;
                 
 ;                lda #'P'                        ; <DEBUG>
