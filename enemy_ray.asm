@@ -89,23 +89,25 @@ init_enemy_ray_params
                 txa
                 and #$C0                ; >= 64
                 bne @ge_64
+                lda f_8
                 jmp @endif_atan
 @ge_128
-                lsr f_8
-                lsr f_8
+                lda f_8
+                lsr
+                lsr
                 lsr g_8
                 lsr g_8
                 jmp @endif_atan
 @ge_64
-                lsr f_8
+                lda f_8
+                lsr
+                
                 lsr g_8
 
 @endif_atan
-                lda f_8
                 asl
                 tax
-                lda g_8
-                tay
+                ldy g_8
 
                 atan                            ; reduced enemyRayTheta in [0; 64]
                 sta enemyRayTheta
