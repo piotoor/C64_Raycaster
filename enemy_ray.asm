@@ -121,9 +121,9 @@ init_enemy_ray_params
                 cpx QUADRANT_III
                 beq @q_iii
 @q_iv          
-                lda #0
-                sec
-                sbc enemyRayTheta
+                eor #$ff
+                clc
+                adc #1
                 jmp @q_end
 
 @q_ii
@@ -133,7 +133,7 @@ init_enemy_ray_params
                 jmp @q_end
 
 @q_iii
-                lda enemyRayTheta
+                ;lda enemyRayTheta              ; already has this value
                 clc
                 adc #128
                 jmp @q_end
