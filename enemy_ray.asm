@@ -182,20 +182,12 @@ init_enemy_ray_params
 @to_the_left    lda #20
                 sec
                 sbc deltaTheta
-                sta enemyRayId
                 jmp @ray_id_end
 @to_the_right   lda #20
                 clc
                 adc deltaTheta
-                sta enemyRayId
 @ray_id_end
-
-                lda enemyRayId
-                ;sta $42c
-                
-          
-
-                
+                sta enemyRayId
                 
                 ldy enemyPlyPosDeltaX
                 cpy #2                          ; atan inaccuracy workaround
