@@ -230,28 +230,17 @@ cast_enemy_ray
                 dey
                 jmp @loop
 @endloop
-                
+                lda deltaTheta
+                asl 
+                tax
                 
                 lda rayCurrDistX_L      ; dividing distance by 128
                 asl                     ; bit 7 -> 0
                 lda #0                  ;
                 adc #0                  ;
                 aso rayCurrDistX_H      ; asl rayCurrDistY_H
-                                        ; ora rayCurrDistY_H
-                sta rayCurrDistX_L
-                
-                lda deltaTheta
-                asl 
-                tax
-                lda rayCurrDistX_L
-                
+                                        ; ora rayCurrDistY_H              
                 perpDistance
                 sta enemyPerpDistance
 @posDeltaX_0
-;                lda rayCurrDistX_L      ; </ DEBUG>
-;                sta $42f                ; </ DEBUG>
-;                lda #'P'                        ; <DEBUG>
-;                sta $40B                        ;
-;                lda enemyPerpDistance           ;
-;                sta $433                        ; </ DEBUG>
                 rts
