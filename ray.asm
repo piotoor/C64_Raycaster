@@ -229,7 +229,7 @@ cast_ray
                 sta calculatedAbsWallHitDist    ;
                 ldy rayId                ; absolute difference between rayTheta and
                 ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
-
+                
                 asl rayCurrDistX_L      ; computing vertical line starting point
                 ;asl                     ; bit 7 -> 0
                 lda #0                  ;

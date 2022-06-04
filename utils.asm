@@ -61,7 +61,6 @@ defm mxOverCosX16
 ;        endm
 
 defm lineStartRow 
-
         ldy perpDistanceVect,x
         sty E_16_L
         inx
@@ -87,7 +86,6 @@ defm lineStartRow
 ;; returns perpendicular distance (/2)
 ;;--------------------------------------------- 
 defm perpDistance 
-
         ldy perpDistanceVect,x
         sty E_16_L
         inx
