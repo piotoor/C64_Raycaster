@@ -164,7 +164,7 @@ init_enemy_ray_params
                 
 @done                                           
                 sta deltaTheta
-
+                ; short circuit
                 cmp #22                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
 
