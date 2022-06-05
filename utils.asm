@@ -41,25 +41,10 @@ defm mxOverCosX16
 ;; lineStartRow target
 ;; dist in a
 ;; theta in x
+;; 
 ;; returns line height with fisheye distortion correction
+;; result in a
 ;;--------------------------------------------- 
-;defm lineStartRow 
-
-;        ldy lineStartRowVect,x
-;        sty E_16_L
-;        inx
-;        ldy lineStartRowVect,x
-;        sty E_16_H
-;        
-;        tay
-;        ldx rayId
-;        lda rayStart,x
-;        sta prevRayStart,x
-;        lda (E_16),y        
-;        sta rayStart,x
-;        
-;        endm
-
 defm lineStartRow 
         ldy perpDistanceVect,x
         sty E_16_L
@@ -76,14 +61,15 @@ defm lineStartRow
         tay
         lda lineStartRowLut,y
         sta rayStart,x
-        
         endm
 
 ;;---------------------------------------------
 ;; perpDistance
 ;; dist in a
 ;; theta in x
+;;
 ;; returns perpendicular distance (/2)
+;; result in a
 ;;--------------------------------------------- 
 defm perpDistance 
         ldy perpDistanceVect,x
@@ -96,11 +82,11 @@ defm perpDistance
         lda (E_16),y 
         endm
 
-
 ;;---------------------------------------------
 ;; xOverTan
 ;; x in a
 ;; theta in y
+;;
 ;; result in a
 ;;--------------------------------------------- 
 defm xOverTan 
@@ -112,14 +98,13 @@ defm xOverTan
         sta E_16_H
         
         lda (E_16),y
-        ;sta /1
         endm
-
 
 ;;---------------------------------------------
 ;; atan
 ;; x in x
 ;; y in y
+;;
 ;; result in a
 ;;--------------------------------------------- 
 defm atan 
