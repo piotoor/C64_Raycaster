@@ -31,9 +31,9 @@ ENEMY_SPRITE_PTR=#MASKING_SPRITE_PTR+#MASKING_SPRITE_ANIM_FRAMES
 
 enemyFrameOffset=$28
 ;;---------------------------------------------
-;; enemy_sprites_setup
+;; objects_sprites_setup
 ;;---------------------------------------------  
-enemy_sprites_setup
+objects_sprites_setup
                 lda #0
                 sta enemyFrameOffset
                 ;sta enemyCurrentFrame
