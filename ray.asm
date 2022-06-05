@@ -31,7 +31,7 @@ absWallHitXDistX2=$67
 absWallHitYDistX2=$68
 
 calculatedAbsWallHitDist=$79
-textureMapCode=$7A
+;textureMapCode=$7A             FREE MEM
 
 rayStart=$C500
 rayTextureId=$C528

@@ -1,12 +1,12 @@
 enemyPerpDistance=$81
-enemyHalfAngleSize=$83
+;enemyHalfAngleSize=$83 FREE MEM
 
 
 enemyRayTheta=$85
 enemyRayThetaRed=$84
 deltaTheta=$89
-enemyFirstRayId=$82
-enemyLastRayId=$8a
+;enemyFirstRayId=$82            FREE MEM
+;enemyLastRayId=$8a             FREE MEM
 enemyRayId=$26
 renderEnemyFlags=$27            ; in case of more enemies, 
                                 ; 1 - render, 

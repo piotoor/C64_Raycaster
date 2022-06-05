@@ -42,20 +42,20 @@ draw_enemies
                 tax
                 dex
         
-                lda enemySpriteX,y
+                lda objectSpriteX,y
                 sta $d004                       ; sprite 2 x
                 sta $d006                       ; sprite 3 x
                 
                 lda $d010                       ; sprites 2 and 3 x-coord high bit
                 and #%11110011
-                ora enemySpriteXd010bits,y
+                ora objectSpriteXd010bits,y
                 sta $d010
         
                 ldy enemyPerpDistance
                 lda #ENEMY_SPRITE_PTR
                 clc
                 adc enemyFrameOffset
-                adc enemySpriteScaleFrameIdx,y
+                adc objectSpriteScaleFrameIdx,y
                 sta $07fb                       ; sprite 3 (enemy sprite) pointer
 
                 lda #0
