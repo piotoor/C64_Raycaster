@@ -12,6 +12,8 @@ HALF_FOV=#20
 DEFAULT_SCREEN_CHARACTER=#$A0
 BG_COLOR=#1
 
+SPRITES_MEMORY_START=$2000
+
 pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
 ddra=$dc02      ; CIA#1 (Data Direction Register A)
@@ -170,7 +172,7 @@ screen_setup
 
 incasm  renderer.asm
 incasm  gameMap.asm
-*=$2000
+*=SPRITES_MEMORY_START
 incbin  chaingun_hd.spd,3
 incbin  masking_sprite.spd,3
 incbin  enemy2.spd,3
@@ -180,8 +182,8 @@ incasm  utils.asm
 incasm  player.asm
 incasm  inputhandling.asm
 incasm  ray.asm
-incasm  enemy_ray.asm
+incasm  object_ray.asm
 incasm  sprites.asm
 incasm  weapons.asm
 incasm  lookuptables.asm
-incasm  enemy.asm
+incasm  object.asm

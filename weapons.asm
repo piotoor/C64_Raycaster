@@ -1,59 +1,57 @@
 WEAPON_SPRITE_COLOR=#11
+
 WEAPON_FRAMES=#2
 WEAPON_SPRITE_ANIM_FRAMES=#4
-weaponCurrentFrame=$80
-WEAPON_SPRITE_PTR=$80           ; sprites base address / 64
-WEAPON_SPRITES_RAM=$07f8
 
+WEAPON_SPRITE_PTR=$80
+WEAPON_LEFT_SPRITE_PTR=$80
+WEAPON_RIGHT_SPRITE_PTR=$82
+
+weaponCurrentFrame=$80
 ;;---------------------------------------------
 ;; weapons_sprites_setup
 ;;---------------------------------------------  
 weapons_sprites_setup
                 lda #0
                 sta weaponCurrentFrame
-                lda #WEAPON_SPRITE_PTR          ; weapong left part (sprite 0)
-                sta $07f8
 
-                lda #WEAPON_SPRITE_PTR+2        ; weapon right part (sprite 1)
-                sta $07f9
+                lda #WEAPON_LEFT_SPRITE_PTR
+                sta SPRITE_0_PTR_ADDRESS
 
+                lda #WEAPON_RIGHT_SPRITE_PTR
+                sta SPRITE_1_PTR_ADDRESS
                 
-                lda $d015               ; enable sprites 0 and 1
+                lda SPRITES_ENABLE_ADDRESS
                 ora #%00000011
-                sta $d015               
+                sta SPRITES_ENABLE_ADDRESS  
                 
-                lda $d01c               ; sprites 0 and 1 multicolor
-                ora #%00000011          
-                sta $d01c
+                lda SPRITES_COLOR_MODE_ADDRESS 
+                ora #%00000011
+                sta SPRITES_COLOR_MODE_ADDRESS
 
-                lda $d01b               ; sprites 0 and 1 over bg
-                ora #%00000000          
-                sta $d01b               
-
+                lda SPRITES_PRIORITY_ADDRESS
+                ora #%00000000
+                sta SPRITES_PRIORITY_ADDRESS
 
                 lda #WEAPON_SPRITE_COLOR       
-                sta $d027               ; sprite 0 color
-                sta $d028               ; sprite 1 color
+                sta SPRITE_0_COLOR_ADDRESS
+                sta SPRITE_1_COLOR_ADDRESS
 
-
-                
                 ; sprite 0 position
                 lda #160
-                sta $d000   ; sprite 0 x-coord
-                lda #208    ; 
-                sta $d001   ; sprite 0 y-coord
+                sta SPRITE_0_COORD_X_ADDRESS
+                lda #208
+                sta SPRITE_0_COORD_Y_ADDRESS
 
                 ; sprite 1 position
                 lda #184
-                sta $d002   ; sprite 0 x-coord
-                lda #208    ; 
-                sta $d003   ; sprite 0 y-coord
-
+                sta SPRITE_1_COORD_X_ADDRESS
+                lda #208
+                sta SPRITE_1_COORD_y_ADDRESS
 
                 ; stretching
                 lda #$03
-                ;sta $d01d              ; w
-                sta $d017               ; h
+                sta SPRITES_STRETCH_Y_ADDRESS
                 rts
 
 ;;---------------------------------------------
@@ -61,19 +59,18 @@ weapons_sprites_setup
 ;;---------------------------------------------
 update_weapon
                              
-                inc $07f8
-                inc $07f9
+                inc SPRITE_0_PTR_ADDRESS
+                inc SPRITE_1_PTR_ADDRESS
                 inc weaponCurrentFrame
-                lda weaponCurrentFrame
 
+                lda weaponCurrentFrame
                 cmp #WEAPON_FRAMES
                 bne @endif
-                lda #WEAPON_SPRITE_PTR
-                sta $07f8
-                lda #WEAPON_SPRITE_PTR+2
-                sta $07f9
-                lda #0
-                sta weaponCurrentFrame
-               
+                        lda #WEAPON_LEFT_SPRITE_PTR
+                        sta SPRITE_0_PTR_ADDRESS
+                        lda #WEAPON_RIGHT_SPRITE_PTR
+                        sta SPRITE_1_PTR_ADDRESS
+                        lda #0
+                        sta weaponCurrentFrame
 @endif
                 rts
