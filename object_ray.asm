@@ -26,9 +26,9 @@ enemyPlyPosDeltaY=$88
 ;texMapCoordsIdx=$7c
 
 ;;---------------------------------------------
-;; init_enemy_ray_params
+;; init_object_ray_params
 ;;---------------------------------------------
-init_enemy_ray_params
+init_object_ray_params
         
                 lda #0
                 sta enemyRayThetaQuadrant
@@ -208,9 +208,9 @@ init_enemy_ray_params
                 rts
 
 ;;---------------------------------------------
-;; cast_enemy_ray
+;; cast_object_ray
 ;;---------------------------------------------
-cast_enemy_ray
+cast_object_ray
                 ldx enemyPlyPosDeltaX
                 cpx #2
                 bcc @posDeltaX_0

@@ -24,11 +24,11 @@ compute_frame
                 dec rayId 
                 bpl @loop
 
-                jsr init_enemy_ray_params
+                jsr init_object_ray_params
                 
                 lda renderEnemyFlags
                 beq @enemy_rend_0
-                jsr cast_enemy_ray
+                jsr cast_object_ray
 @enemy_rend_0
                 rts
 
