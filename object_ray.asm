@@ -80,8 +80,7 @@ init_object_ray_params
 
 
 
-                ;lda enemyPlyPosDeltaY           ; scaling to improve atan accuracy
-                                                ; already in a
+                lda enemyPlyPosDeltaY           ; scaling to improve atan accuracy
                 ora enemyPlyPosDeltaX           ; instead of always dividing by 4
                 tax
                 and #$80                ; >= 128 ?
