@@ -21,10 +21,6 @@ weapons_sprites_setup
                 lda #WEAPON_RIGHT_SPRITE_PTR
                 sta SPRITE_1_PTR_ADDRESS
                 
-                lda SPRITES_ENABLE_ADDRESS
-                ora #%00000011
-                sta SPRITES_ENABLE_ADDRESS  
-                
                 lda SPRITES_COLOR_MODE_ADDRESS 
                 ora #%00000011
                 sta SPRITES_COLOR_MODE_ADDRESS

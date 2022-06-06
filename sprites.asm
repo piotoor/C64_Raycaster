@@ -74,5 +74,10 @@ common_sprites_setup
 
                 lda #SPRITE_M1_COLOR 
                 sta SPRITE_M1_COLOR_ADDRESS
+
+
+                lda SPRITES_ENABLE_ADDRESS
+                ora #%11111111
+                sta SPRITES_ENABLE_ADDRESS  
                 rts
 

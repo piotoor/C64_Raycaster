@@ -41,12 +41,7 @@ objects_sprites_setup
                 lda #MASKING_SPRITE_PTR         
                 sta $07fa               ; SPRITE 2 POINTER
                 lda #ENEMY_SPRITE_PTR         
-                sta $07fb               ; SPRITE 3 POINTER
-
-                
-                lda $d015               ; enable sprites 2 and 3
-                ora #%00001100
-                sta $d015               
+                sta $07fb               ; SPRITE 3 POINTER    
                 
                 lda $d01c               ; sprite 3 multicolor
                 ora #%00001000
