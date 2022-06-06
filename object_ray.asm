@@ -2,7 +2,7 @@ enemyPerpDistance=$81
 ;enemyHalfAngleSize=$83 FREE MEM
 
 
-enemyRayTheta=$85
+objectRayTheta=$85
 enemyRayThetaRed=$84
 deltaTheta=$89
 ;enemyFirstRayId=$82            FREE MEM
@@ -80,7 +80,8 @@ init_object_ray_params
 
 
 
-                lda enemyPlyPosDeltaY           ; scaling to improve atan accuracy
+                ;lda enemyPlyPosDeltaY           ; scaling to improve atan accuracy
+                                                ; already in a
                 ora enemyPlyPosDeltaX           ; instead of always dividing by 4
                 tax
                 and #$80                ; >= 128 ?
@@ -114,7 +115,7 @@ init_object_ray_params
                 ldx enemyRayThetaQuadrant       ; full enemyRayTheta in [0; 256)
                 ;lda enemyRayTheta;             ; already in a after atan
                 fullObjectRayTheta              ;
-                sta enemyRayTheta               ;                
+                sta objectRayTheta               ;                
                 
 
 
@@ -123,7 +124,7 @@ init_object_ray_params
                 bcs @enemy_ge_ply               ; TODO: to macro
 @enemy_lt_ply   lda playerTheta                 ;
                 sec                             ;
-                sbc enemyRayTheta               ;
+                sbc objectRayTheta               ;
                                                 ;
                 jmp @endif                      ;
 @enemy_ge_ply   sec                             ;
@@ -151,7 +152,7 @@ init_object_ray_params
                 lda playerTheta                 ; calculating enemyRayId
                 clc                             ; could be negative, when to the left
                 adc deltaTheta                  ; of the left-most rayId
-                cmp enemyRayTheta
+                cmp objectRayTheta
                 beq @to_the_right
 @to_the_left    lda #20
                 sec
