@@ -53,10 +53,7 @@ weapons_sprites_setup
 ;;---------------------------------------------
 ;; update_weapon
 ;;---------------------------------------------
-update_weapon
-                             
-                inc SPRITE_0_PTR_ADDRESS
-                inc SPRITE_1_PTR_ADDRESS
+update_weapon  
                 ldx weaponCurrentFrame
                 inx
                 cpx #WEAPON_FRAMES
@@ -65,7 +62,11 @@ update_weapon
                         sta SPRITE_0_PTR_ADDRESS
                         lda #WEAPON_RIGHT_SPRITE_PTR
                         sta SPRITE_1_PTR_ADDRESS
-                        ldx #0                 
+                        ldx #0       
+                        stx weaponCurrentFrame
+                        rts
 @endif
+                inc SPRITE_0_PTR_ADDRESS
+                inc SPRITE_1_PTR_ADDRESS
                 stx weaponCurrentFrame
                 rts
