@@ -129,20 +129,12 @@ init_object_ray_params
 @enemy_ge_ply   sec                             ;
                 sbc playerTheta                 ;
                                                 ;
-@endif                                          ;
-                 
-; <LUTize>
-                                                ;       if delta > 180
-                cmp #128                        ;       360 - delta
-                bcc @done                       ;
-                eor #$ff                        ;
-                clc                             ;
-                adc #1                          ;
-                
-@done                       
-                sta deltaTheta
+@endif               
 
-; </LUTize>   
+                tax
+                lda reduceDeltaThetaToHalfAngle,x
+                sta deltaTheta
+                 
                 ; short circuit
                 cmp #22                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
