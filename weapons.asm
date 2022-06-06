@@ -61,16 +61,15 @@ update_weapon
                              
                 inc SPRITE_0_PTR_ADDRESS
                 inc SPRITE_1_PTR_ADDRESS
-                inc weaponCurrentFrame
-
-                lda weaponCurrentFrame
-                cmp #WEAPON_FRAMES
+                ldx weaponCurrentFrame
+                inx
+                cpx #WEAPON_FRAMES
                 bne @endif
                         lda #WEAPON_LEFT_SPRITE_PTR
                         sta SPRITE_0_PTR_ADDRESS
                         lda #WEAPON_RIGHT_SPRITE_PTR
                         sta SPRITE_1_PTR_ADDRESS
-                        lda #0
-                        sta weaponCurrentFrame
+                        ldx #0                 
 @endif
+                stx weaponCurrentFrame
                 rts
