@@ -5,7 +5,7 @@ E_16_H=$66
 ;;---------------------------------------------
 ;; mxOverCos target_L,target_H 
 ;; x in a
-;; theta in y
+;; theta in y   ; must be x2
 ;;--------------------------------------------- 
 defm mxOverCos 
         tax
@@ -27,7 +27,7 @@ defm mxOverCos
 ;; mxOverCosX16 target_L,target_H 
 ;; special case
 ;; x = 16
-;; theta in y
+;; theta in y   ; must be x2
 ;;--------------------------------------------- 
 defm mxOverCosX16        
         lda mxOverCos_16,y
@@ -40,7 +40,7 @@ defm mxOverCosX16
 ;;---------------------------------------------
 ;; lineStartRow target
 ;; dist in a
-;; theta in x
+;; theta in x   ; must be x2
 ;; 
 ;; returns line height with fisheye distortion correction
 ;; result in a
@@ -66,7 +66,7 @@ defm lineStartRow
 ;;---------------------------------------------
 ;; perpDistance
 ;; dist in a
-;; theta in x
+;; theta in x   ; must be x2
 ;;
 ;; returns perpendicular distance (/2)
 ;; result in a
@@ -84,7 +84,7 @@ defm perpDistance
 
 ;;---------------------------------------------
 ;; xOverTan
-;; x in a
+;; x in a       ; must be x2
 ;; theta in y
 ;;
 ;; result in a
@@ -102,7 +102,7 @@ defm xOverTan
 
 ;;---------------------------------------------
 ;; atan
-;; x in x
+;; x in x       ; must be x2
 ;; y in y
 ;;
 ;; result in a
@@ -115,4 +115,25 @@ defm atan
         sta E_16_H
         
         lda (E_16),y
+        endm
+
+
+;;---------------------------------------------
+;; fullObjectRayTheta
+;; 
+;; quadrant in x        must be x2
+;; theta in a
+;;
+;; returns full object ray angle 
+;; result in a
+;;--------------------------------------------- 
+defm fullObjectRayTheta 
+        ldy fullObjectRayThetaVect,x
+        sty E_16_L
+        inx
+        ldy fullObjectRayThetaVect,x
+        sty E_16_H
+        
+        tay
+        lda (E_16),y 
         endm

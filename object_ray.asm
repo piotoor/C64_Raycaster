@@ -12,9 +12,9 @@ renderEnemyFlags=$27            ; in case of more enemies,
                                 ; 1 - render, 
                                 ; 0 - don't, it's out of sight
 enemyRayThetaQuadrant=$7c       ; 0 - quadrant iii
-                                ; 1 - quadrant iv
-                                ; 2 - quadrant ii
-                                ; 3 - quadrant i
+                                ; 2 - quadrant iv
+                                ; 4 - quadrant ii
+                                ; 6 - quadrant i
 
 QUADRANT_I=#3
 QUADRANT_II=#2
@@ -45,7 +45,7 @@ init_object_ray_params
                 sta enemyPlyPosDeltaX
                 
                 lda enemyRayThetaQuadrant
-                ora #%00000001
+                ora #%00000010
                 sta enemyRayThetaQuadrant
                 jmp @endif_x
 @posX_ge                                        ; enemyRay goes left
@@ -68,7 +68,7 @@ init_object_ray_params
                 sta g_8
 
                 lda enemyRayThetaQuadrant
-                ora #%00000010
+                ora #%00000100
                 sta enemyRayThetaQuadrant
                 jmp @endif_y
 @posY_ge                                        ; enemyRay goes up
@@ -108,38 +108,13 @@ init_object_ray_params
                 ldy g_8
 
                 atan                            ; reduced enemyRayTheta in [0; 64]
-                sta enemyRayTheta
-                sta enemyRayThetaRed
+                ;sta enemyRayTheta              ; no need to save now
+                sta enemyRayThetaRed            ;
 
-
-                
-                ldx enemyRayThetaQuadrant       ; calculating full enemyRayTheta
-                cpx QUADRANT_I
-                beq @q_end
-                cpx QUADRANT_II
-                beq @q_ii
-                cpx QUADRANT_III
-                beq @q_iii
-@q_iv          
-                eor #$ff
-                clc
-                adc #1
-                jmp @q_end
-
-@q_ii
-                lda #128
-                sec
-                sbc enemyRayTheta
-                jmp @q_end
-
-@q_iii
-                ;lda enemyRayTheta              ; already has this value
-                clc
-                adc #128
-                jmp @q_end
-
-@q_end          
-                sta enemyRayTheta               ; full enemyRayTheta in [0; 256)
+                ldx enemyRayThetaQuadrant       ; full enemyRayTheta in [0; 256)
+                ;lda enemyRayTheta;             ; already in a after atan
+                fullObjectRayTheta              ;
+                sta enemyRayTheta               ;                
                 tax                             ; to save ldx later
 
 
@@ -155,6 +130,8 @@ init_object_ray_params
                 sbc playerTheta                 ;
                                                 ;
 @endif                                          ;
+                 
+; <LUTize>
                                                 ;       if delta > 180
                 cmp #128                        ;       360 - delta
                 bcc @done                       ;
@@ -162,17 +139,23 @@ init_object_ray_params
                 clc                             ;
                 adc #1                          ;
                 
-@done                                           
+@done                       
                 sta deltaTheta
+
+; </LUTize>   
                 ; short circuit
                 cmp #22                         ; if deltaTheta >= 64 (90)
                 bcc @continue                   ; don't render enemy.
 
                 lda #MASKING_SPRITE_PTR+7       ; cover enemy sprite entirely
                 sta $07fa                       ; sprite 2 (masking) pointer
+
                 rts                             ; 
         
 @continue       inc renderEnemyFlags            ; for now. With more enemies, it should set relevant bit flag                                      
+
+                
+; <LUTize>
                 lda playerTheta                 ; calculating enemyRayId
                 clc                             ; could be negative, when to the left
                 adc deltaTheta                  ; of the left-most rayId
@@ -187,7 +170,7 @@ init_object_ray_params
                 adc deltaTheta
 @ray_id_end
                 sta enemyRayId
-                
+; </LUTize>                
                 ldy enemyPlyPosDeltaX
                 cpy #2                          ; atan inaccuracy workaround
                 bcc @posDeltaX_0
