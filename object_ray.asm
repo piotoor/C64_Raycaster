@@ -78,35 +78,29 @@ init_object_ray_params
                 sta g_8
 @endif_y
 
-
-
-                lda enemyPlyPosDeltaY           ; scaling to improve atan accuracy
-                ora enemyPlyPosDeltaX           ; instead of always dividing by 4
-                tax
-                and #$80                ; >= 128 ?
-                bne @ge_128
-                txa
-                and #$C0                ; >= 64
-                bne @ge_64
-                lda enemyPlyPosDeltaX
-                jmp @endif_atan
-@ge_128
+                lda enemyPlyPosDeltaY
+                tay
+                ora enemyPlyPosDeltaX
+                and #$C0
+                beq @lt_64
                 lda enemyPlyPosDeltaX
                 lsr
                 lsr
-                lsr g_8
-                lsr g_8
-                jmp @endif_atan
-@ge_64
-                lda enemyPlyPosDeltaX
-                lsr
-                lsr g_8
-
-@endif_atan
                 asl
                 tax
-                ldy g_8
+                tya
+                lsr 
+                lsr
+                tay
+                jmp @endif_atan
 
+@lt_64
+                lda enemyPlyPosDeltaX
+                asl
+                tax
+                
+@endif_atan
+                ;ldy g_8
                 atan                            ; reduced enemyRayTheta in [0; 64]
                 ;sta enemyRayTheta              ; no need to save now
                 sta enemyRayThetaRed            ;
