@@ -115,7 +115,7 @@ init_object_ray_params
                 ;lda enemyRayTheta;             ; already in a after atan
                 fullObjectRayTheta              ;
                 sta enemyRayTheta               ;                
-                tax                             ; to save ldx later
+                
 
 
 
