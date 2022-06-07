@@ -3,7 +3,7 @@ enemyPerpDistance=$81
 
 
 objectRayTheta=$85
-enemyRayThetaRed=$84
+objectRayThetaRed=$84
 deltaTheta=$89
 ;enemyFirstRayId=$82            FREE MEM
 ;enemyLastRayId=$8a             FREE MEM
@@ -11,7 +11,7 @@ enemyRayId=$26
 renderEnemyFlags=$27            ; in case of more enemies, 
                                 ; 1 - render, 
                                 ; 0 - don't, it's out of sight
-enemyRayThetaQuadrant=$7c       ; 0 - quadrant iii
+objectRayThetaQuadrant=$7c       ; 0 - quadrant iii
                                 ; 2 - quadrant iv
                                 ; 4 - quadrant ii
                                 ; 6 - quadrant i
@@ -21,8 +21,8 @@ QUADRANT_II=#2
 QUADRANT_III=#0
 QUADRANT_IV=#1
 
-enemyPlyPosDeltaX=$87
-enemyPlyPosDeltaY=$88
+objectPlyPosDeltaX=$87
+objectPlyPosDeltaY=$88
 
 ;;---------------------------------------------
 ;; init_object_ray_params
@@ -30,7 +30,7 @@ enemyPlyPosDeltaY=$88
 init_object_ray_params
         
                 lda #0
-                sta enemyRayThetaQuadrant
+                sta objectRayThetaQuadrant
                 sta renderEnemyFlags
 
 
@@ -41,16 +41,16 @@ init_object_ray_params
                 sec
                 lda enemyPosX
                 sbc posX
-                sta enemyPlyPosDeltaX
+                sta objectPlyPosDeltaX
                 
-                lda enemyRayThetaQuadrant
+                lda objectRayThetaQuadrant
                 ora #%00000010
-                sta enemyRayThetaQuadrant
+                sta objectRayThetaQuadrant
                 jmp @endif_x
 @posX_ge                                        ; enemyRay goes left
                 ;sec already setm bcs taken
                 sbc enemyPosX
-                sta enemyPlyPosDeltaX
+                sta objectPlyPosDeltaX
                 
 @endif_x
 
@@ -61,43 +61,43 @@ init_object_ray_params
                 sec
                 lda enemyPosY
                 sbc posY
-                sta enemyPlyPosDeltaY
+                sta objectPlyPosDeltaY
 
-                lda enemyRayThetaQuadrant
+                lda objectRayThetaQuadrant
                 ora #%00000100
-                sta enemyRayThetaQuadrant
+                sta objectRayThetaQuadrant
                 jmp @endif_y
 @posY_ge                                        ; enemyRay goes up
                 ;sec already setm bcs taken
                 sbc enemyPosY
-                sta enemyPlyPosDeltaY
+                sta objectPlyPosDeltaY
 @endif_y
 
 
-                lda enemyPlyPosDeltaY           ; if dx and dy >= 64
+                lda objectPlyPosDeltaY           ; if dx and dy >= 64
                 tay                             ;       rescale
-                ora enemyPlyPosDeltaX           ; else
+                ora objectPlyPosDeltaX           ; else
                 and #$C0                        ;       use original values
                 beq @lt_64                      ;
 
                 lda lsr_lsr,y                   ;
-                ldy enemyPlyPosDeltaX           ;
+                ldy objectPlyPosDeltaX           ;
                 ldx lsr_lsr_X2,y                ;
                 tay                             ;
                 jmp @endif_atan                 ;
 
 @lt_64                                          ;
-                lda enemyPlyPosDeltaX           ;
+                lda objectPlyPosDeltaX           ;
                 asl                             ;
                 tax                             ;
                 
-@endif_atan                                     ;
-                
+@endif_atan     
                 atan                            ; reduced enemyRayTheta in [0; 64]
+                
                 ;sta enemyRayTheta              ; no need to save now
-                sta enemyRayThetaRed            ;
+                sta objectRayThetaRed            ;
 
-                ldx enemyRayThetaQuadrant       ; full enemyRayTheta in [0; 256)
+                ldx objectRayThetaQuadrant       ; full enemyRayTheta in [0; 256)
                 ;lda enemyRayTheta;             ; already in a after atan
                 fullObjectRayTheta              ;
                 sta objectRayTheta              ;                
@@ -148,30 +148,30 @@ init_object_ray_params
 @ray_id_end
                 sta enemyRayId
 ; </LUTize>                
-                ldy enemyPlyPosDeltaX
+                ldy objectPlyPosDeltaX
                 cpy #2                          ; atan inaccuracy workaround
                 bcc @posDeltaX_0
                 lda minusThetaInitCoordX2,y
         
-                ldx enemyRayThetaRed
+                ldx objectRayThetaRed
                 ldy reducedTheta_x2,x
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
                 
-                ldx enemyRayThetaRed
+                ldx objectRayThetaRed
                 ldy reducedTheta_x2,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 rts
 
-@posDeltaX_0    lda enemyPlyPosDeltaY
+@posDeltaX_0    lda objectPlyPosDeltaY
                 lsr; *64 -> / 128 = /2
-                sta enemyPerpDistance
+                sta rayCurrDistX_L
                 rts
 
 ;;---------------------------------------------
 ;; cast_object_ray
 ;;---------------------------------------------
 cast_object_ray
-                ldx enemyPlyPosDeltaX
+                ldx objectPlyPosDeltaX
                 cpx #2
                 bcc @posDeltaX_0
 
@@ -189,6 +189,7 @@ cast_object_ray
                 dey
                 jmp @loop
 @endloop
+
                 lda deltaTheta
                 asl 
                 tax
@@ -201,5 +202,15 @@ cast_object_ray
                                         ; ora rayCurrDistY_H              
                 perpDistance
                 sta enemyPerpDistance
-@posDeltaX_0
                 rts
+
+@posDeltaX_0
+                lda deltaTheta
+                asl 
+                tax
+                lda rayCurrDistX_L
+                perpDistance
+                sta enemyPerpDistance
+                rts
+
+
