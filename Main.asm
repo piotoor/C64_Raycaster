@@ -34,6 +34,7 @@ main
                 lda synch
                 bne @continue
                 jsr compute_frame
+                jsr compute_objects
                 jsr draw_back_buffer
                 inc main_ticks
                 lda #1
@@ -52,7 +53,7 @@ irq
                 lda renderObjectsFlags
                 beq @enemy_rend_0
                 ldy #0
-                jsr draw_enemies
+                jsr draw_objects
 @enemy_rend_0
                 jsr check_keyboard
                 jsr update_enemy

@@ -23,7 +23,13 @@ compute_frame
                         dec rayTheta
                 dec rayId 
                 bpl @loop
+                rts
 
+
+;;---------------------------------------------
+;; compute_objects
+;;---------------------------------------------
+compute_objects
                 jsr init_object_ray_params
                 
                 lda renderObjectsFlags
@@ -33,9 +39,9 @@ compute_frame
                 rts
 
 ;;---------------------------------------------
-;; draw_enemies
+;; draw_objects
 ;;---------------------------------------------
-draw_enemies          
+draw_objects       
                   
                 lda objectRayId
                 tay
