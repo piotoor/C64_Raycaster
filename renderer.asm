@@ -26,7 +26,7 @@ compute_frame
 
                 jsr init_object_ray_params
                 
-                lda renderEnemyFlags
+                lda renderObjectsFlags
                 beq @enemy_rend_0
                 jsr cast_object_ray
 @enemy_rend_0
@@ -37,7 +37,7 @@ compute_frame
 ;;---------------------------------------------
 draw_enemies          
                   
-                lda enemyRayId
+                lda objectRayId
                 tay
                 tax
                 dex
@@ -51,7 +51,7 @@ draw_enemies
                 ora objectSpriteXd010bits,y
                 sta $d010
         
-                ldy enemyPerpDistance
+                ldy objectPerpDistance
                 lda #ENEMY_SPRITE_PTR
                 clc
                 adc enemyFrameOffset
@@ -60,20 +60,20 @@ draw_enemies
 
                 lda #0
                 ldy rayPerpDistance,x
-                cpy enemyPerpDistance
+                cpy objectPerpDistance
                 bcs @second_ray
                 ora #%00000100                  ; ray dist < enemy dist
 @second_ray
                 inx
                 ldy rayPerpDistance,x
-                cpy enemyPerpDistance
+                cpy objectPerpDistance
                 bcs @third_ray
                 ora #%00000010                  ; ray dist < enemy dist
 
 @third_ray
                 inx
                 ldy rayPerpDistance,x
-                cpy enemyPerpDistance
+                cpy objectPerpDistance
                 bcs @end
                 ora #%00000001                  ; ray dist < enemy dist
                 
@@ -1685,4 +1685,7 @@ draw_front_buffer
                 sta $da07
 
                 rts
+
+
+
 

@@ -49,7 +49,7 @@ irq
                 beq frame_not_ready
                 jsr draw_front_buffer
 
-                lda renderEnemyFlags
+                lda renderObjectsFlags
                 beq @enemy_rend_0
                 ldy #0
                 jsr draw_enemies
@@ -70,7 +70,7 @@ frame_not_ready inc irq_ticks
                 sta main_ticks
 @end            
 
-                dec enemyPosY
+                ;dec enemyPosY
 ;                lda $d02a               ; enemy sprite color test
 ;                eor #%00000100
 ;                sta $d02a

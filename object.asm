@@ -1,5 +1,5 @@
-enemyPosX=$6b
-enemyPosY=$6c
+objectPosX=$6b
+objectPosY=$6c
 ;enemyMapX=$87
 ;enemyMapY=$88
 ENEMY_SIZE=#8
@@ -11,9 +11,9 @@ ENEMY_SIZE=#8
 ;;---------------------------------------------             
 enemy_setup
                 lda #54
-                sta enemyPosX
+                sta objectPosX
                 lda #200
-                sta enemyPosY
+                sta objectPosY
                 ; calculate enemyMapX and enemyMapY
                 ; for now hardcoded here and on gameMap
                 rts
@@ -70,3 +70,4 @@ update_enemy
                 eor #%00000110
                 sta enemyFrameOffset
                 rts
+
