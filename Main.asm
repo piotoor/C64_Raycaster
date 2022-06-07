@@ -50,11 +50,8 @@ irq
                 beq frame_not_ready
                 jsr draw_front_buffer
 
-                lda renderObjectsFlags
-                beq @enemy_rend_0
-                ldy #0
                 jsr draw_objects
-@enemy_rend_0
+
                 jsr check_keyboard
                 jsr update_enemy
                 lda #0
@@ -119,7 +116,7 @@ setup
                 sta irq_ticks
                 
                 jsr player_setup
-                jsr enemy_setup
+                jsr objects_setup
                 jsr screen_setup
                 jsr irq_setup
                 jsr raycaster_setup

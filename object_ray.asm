@@ -1,14 +1,9 @@
-objectPerpDistance=$81
-;enemyHalfAngleSize=$83 FREE MEM
-
 
 objectRayTheta=$85
 objectRayThetaRed=$84
 deltaTheta=$89
-;enemyFirstRayId=$82            FREE MEM
-;enemyLastRayId=$8a             FREE MEM
-objectRayId=$26
-renderObjectsFlags=$27            ; in case of more enemies, 
+
+            ; in case of more enemies, 
                                 ; 1 - render, 
                                 ; 0 - don't, it's out of sight
 objectRayThetaQuadrant=$7c       ; 0 - quadrant iii
@@ -24,22 +19,46 @@ QUADRANT_IV=#1
 objectPlyPosDeltaX=$87
 objectPlyPosDeltaY=$88
 
+
+
+
+objectId=$26
+;objectPosX=$6b
+;objectPosY=$6c
+;objectPerpDistance=$81
+;$82
+
+; object arrays (3 object at a given time)
+objectRayId=$c700
+objectPerpDistance=$c703
+objectPosX=$c706
+objectPosY=$c709
+objectAlive=$c70c
+objectSpriteColor=$c70f
+objectInFOV=$c712
+
+maxPerpDist=$6b 
+minPerpDist=$6c
+maxPerpId=$81
+minPerpId=$82
 ;;---------------------------------------------
 ;; init_object_ray_params
 ;;---------------------------------------------
 init_object_ray_params
-        
                 lda #0
                 sta objectRayThetaQuadrant
-                sta renderObjectsFlags
+                ;sta renderObjectsFlags
+                ldy objectId
+                sta objectInFOV,y
+                sta $450,y
 
 
                 lda posX                        ; calculating enemy-player abs deltaX
-                cmp objectPosX                   
+                cmp objectPosX,y                  
                 bcs @posX_ge                    
 @posX_lt                                        ; enemyRay goes right                
                 sec
-                lda objectPosX
+                lda objectPosX,y
                 sbc posX
                 sta objectPlyPosDeltaX
                 
@@ -49,17 +68,17 @@ init_object_ray_params
                 jmp @endif_x
 @posX_ge                                        ; enemyRay goes left
                 ;sec already setm bcs taken
-                sbc objectPosX
+                sbc objectPosX,y
                 sta objectPlyPosDeltaX
                 
 @endif_x
 
                 lda posY                        ; calculating enemy-player abs deltaY
-                cmp objectPosY
+                cmp objectPosY,y
                 bcs @posY_ge
 @posY_lt                                        ; enemyRay goes down
                 sec
-                lda objectPosY
+                lda objectPosY,y
                 sbc posY
                 sta objectPlyPosDeltaY
 
@@ -69,7 +88,7 @@ init_object_ray_params
                 jmp @endif_y
 @posY_ge                                        ; enemyRay goes up
                 ;sec already setm bcs taken
-                sbc objectPosY
+                sbc objectPosY,y
                 sta objectPlyPosDeltaY
 @endif_y
 
@@ -127,13 +146,17 @@ init_object_ray_params
                 bcc @continue                   ; don't render enemy.
 
                 lda #MASKING_SPRITE_PTR+7       ; cover enemy sprite entirely
-                sta $07fa                       ; sprite 2 (masking) pointer
+                ;sta $07fa                       ; sprite 2 (masking) pointer
 
                 rts                             ; 
         
-@continue       inc renderObjectsFlags            ; for now. With more enemies, it should set relevant bit flag                                      
+@continue       ;inc renderObjectsFlags            ; for now. With more enemies, it should set relevant bit flag                                      
+                ldx objectId
+                inc objectInFOV,x
 
-                
+                lda objectInFOV,x
+                sta $450,x
+
 ; <LUTize>
                 lda playerTheta                 ; calculating enemyRayId
                 clc                             ; could be negative, when to the left
@@ -148,7 +171,9 @@ init_object_ray_params
                 clc
                 adc deltaTheta
 @ray_id_end
-                sta objectRayId
+                ldy objectId
+                sta objectRayId,y
+                ;sta $450,y
 ; </LUTize>             
 
                 ldy objectPlyPosDeltaX
@@ -205,8 +230,33 @@ cast_object_ray
                 aso rayCurrDistX_H      ; asl rayCurrDistY_H
                                         ; ora rayCurrDistY_H              
                 perpDistance
-                sta objectPerpDistance
+                ldy objectId
+                sta objectPerpDistance,y
+                sta $428,y
+                tay
+
+                cmp maxPerpDist
+                bcs @curr_gt_max
+                jmp @minimum
+
+@curr_gt_max    sta maxPerpDist
+                lda objectId
+                sta maxPerpId
+
+@minimum
+                tya
+                cmp minPerpDist
+                bcc @curr_lt_min
+                jmp @endif
+
+@curr_lt_min    sta minPerpDist
+                lda objectId
+                sta minPerpId
+
+@endif
                 rts
+
+
 
 @posDeltaX_0
                 lda deltaTheta
@@ -214,7 +264,30 @@ cast_object_ray
                 tax
                 lda rayCurrDistX_L
                 perpDistance
-                sta objectPerpDistance
+                ldy objectId
+                sta objectPerpDistance,y
+                sta $428,y
+                tay
+
+                cmp maxPerpDist
+                bcs @curr_gt_max_
+                jmp @minimum_
+
+@curr_gt_max_   sta maxPerpDist
+                lda objectId
+                sta maxPerpId
+
+@minimum_
+                tya
+                cmp minPerpDist
+                bcc @curr_lt_min_
+                jmp @endif_
+
+@curr_lt_min_   sta minPerpDist
+                lda objectId
+                sta minPerpId
+
+@endif_
                 rts
 
 

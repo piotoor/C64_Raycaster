@@ -2,6 +2,8 @@ E_16=$65
 E_16_L=$65
 E_16_H=$66
 
+f_8=$74
+g_8=$77
 ;;---------------------------------------------
 ;; mxOverCos target_L,target_H 
 ;; x in a
@@ -136,4 +138,18 @@ defm fullObjectRayTheta
         
         tay
         lda (E_16),y 
+        endm
+
+;;---------------------------------------------
+;; swap mem_0, mem_1
+;; 
+;; swaps two memory locations
+;;--------------------------------------------- 
+defm swap
+        lda /1
+        sta f_8
+        lda /2
+        sta /1
+        lda f_8
+        sta /2
         endm
