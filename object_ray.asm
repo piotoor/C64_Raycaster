@@ -83,14 +83,10 @@ init_object_ray_params
                 ora enemyPlyPosDeltaX
                 and #$C0
                 beq @lt_64
-                lda enemyPlyPosDeltaX
-                lsr
-                lsr
-                asl
-                tax
-                tya
-                lsr 
-                lsr
+
+                lda lsr_lsr,y
+                ldy enemyPlyPosDeltaX
+                ldx lsr_lsr_X2,y
                 tay
                 jmp @endif_atan
 
