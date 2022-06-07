@@ -55,8 +55,6 @@ init_object_ray_params
                 
 @endif_x
 
-
-
                 lda posY                        ; calculating enemy-player abs deltaY
                 cmp enemyPosY
                 bcs @posY_ge
@@ -65,7 +63,6 @@ init_object_ray_params
                 lda enemyPosY
                 sbc posY
                 sta enemyPlyPosDeltaY
-                sta g_8
 
                 lda enemyRayThetaQuadrant
                 ora #%00000100
@@ -75,28 +72,28 @@ init_object_ray_params
                 ;sec already setm bcs taken
                 sbc enemyPosY
                 sta enemyPlyPosDeltaY
-                sta g_8
 @endif_y
 
-                lda enemyPlyPosDeltaY
-                tay
-                ora enemyPlyPosDeltaX
-                and #$C0
-                beq @lt_64
 
-                lda lsr_lsr,y
-                ldy enemyPlyPosDeltaX
-                ldx lsr_lsr_X2,y
-                tay
-                jmp @endif_atan
+                lda enemyPlyPosDeltaY           ; if dx and dy >= 64
+                tay                             ;       rescale
+                ora enemyPlyPosDeltaX           ; else
+                and #$C0                        ;       use original values
+                beq @lt_64                      ;
 
-@lt_64
-                lda enemyPlyPosDeltaX
-                asl
-                tax
+                lda lsr_lsr,y                   ;
+                ldy enemyPlyPosDeltaX           ;
+                ldx lsr_lsr_X2,y                ;
+                tay                             ;
+                jmp @endif_atan                 ;
+
+@lt_64                                          ;
+                lda enemyPlyPosDeltaX           ;
+                asl                             ;
+                tax                             ;
                 
-@endif_atan
-                ;ldy g_8
+@endif_atan                                     ;
+                
                 atan                            ; reduced enemyRayTheta in [0; 64]
                 ;sta enemyRayTheta              ; no need to save now
                 sta enemyRayThetaRed            ;
