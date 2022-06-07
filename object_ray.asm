@@ -23,7 +23,6 @@ QUADRANT_IV=#1
 
 enemyPlyPosDeltaX=$87
 enemyPlyPosDeltaY=$88
-;texMapCoordsIdx=$7c
 
 ;;---------------------------------------------
 ;; init_object_ray_params
@@ -101,29 +100,28 @@ init_object_ray_params
                 ldx enemyRayThetaQuadrant       ; full enemyRayTheta in [0; 256)
                 ;lda enemyRayTheta;             ; already in a after atan
                 fullObjectRayTheta              ;
-                sta objectRayTheta               ;                
+                sta objectRayTheta              ;                
                 
 
 
 
-                cmp playerTheta                 ; |playerTheta - enemyRayTheta|
-                bcs @enemy_ge_ply               ; TODO: to macro
-@enemy_lt_ply   lda playerTheta                 ;
-                sec                             ;
+                cmp playerTheta                  ; |playerTheta - enemyRayTheta|
+                bcs @enemy_ge_ply                ; TODO: to macro
+@enemy_lt_ply   lda playerTheta                  ;
+                sec                              ;
                 sbc objectRayTheta               ;
-                                                ;
-                jmp @endif                      ;
-@enemy_ge_ply   sec                             ;
-                sbc playerTheta                 ;
-                                                ;
-@endif               
-
-                tax
-                lda reduceDeltaThetaToHalfAngle,x
-                sta deltaTheta
+                                                 ;
+                jmp @endif                       ;
+@enemy_ge_ply   sec                              ;
+                sbc playerTheta                  ;
+                                                 ;
+@endif                                           ;
+                tax                              ;
+                lda reduceDeltaThetaToHalfAngle,x;
+                sta deltaTheta                   ;
                  
                 ; short circuit
-                cmp #22                         ; if deltaTheta >= 64 (90)
+                cmp #22                         ; if deltaTheta >= 22
                 bcc @continue                   ; don't render enemy.
 
                 lda #MASKING_SPRITE_PTR+7       ; cover enemy sprite entirely
