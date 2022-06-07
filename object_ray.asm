@@ -23,11 +23,6 @@ objectPlyPosDeltaY=$88
 
 
 objectId=$26
-;objectPosX=$6b
-;objectPosY=$6c
-;objectPerpDistance=$81
-;$82
-
 ; object arrays (3 object at a given time)
 objectRayId=$c700
 objectPerpDistance=$c703
@@ -41,6 +36,8 @@ maxPerpDist=$6b
 minPerpDist=$6c
 maxPerpId=$81
 minPerpId=$82
+
+
 ;;---------------------------------------------
 ;; init_object_ray_params
 ;;---------------------------------------------
@@ -50,7 +47,7 @@ init_object_ray_params
                 ;sta renderObjectsFlags
                 ldy objectId
                 sta objectInFOV,y
-                sta $450,y
+                ;sta $450,y
 
 
                 lda posX                        ; calculating enemy-player abs deltaX
@@ -155,7 +152,7 @@ init_object_ray_params
                 inc objectInFOV,x
 
                 lda objectInFOV,x
-                sta $450,x
+                ;sta $450,x
 
 ; <LUTize>
                 lda playerTheta                 ; calculating enemyRayId
@@ -232,7 +229,7 @@ cast_object_ray
                 perpDistance
                 ldy objectId
                 sta objectPerpDistance,y
-                sta $428,y
+                ;sta $428,y
                 tay
 
                 cmp maxPerpDist
@@ -266,7 +263,7 @@ cast_object_ray
                 perpDistance
                 ldy objectId
                 sta objectPerpDistance,y
-                sta $428,y
+                ;sta $428,y
                 tay
 
                 cmp maxPerpDist

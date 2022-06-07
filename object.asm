@@ -53,36 +53,56 @@ OBJECT_SPRITE_ANIM_FRAMES=#6
 MASKING_SPRITE_PTR=#WEAPON_SPRITE_PTR+#WEAPON_SPRITE_ANIM_FRAMES
 OBJECT_SPRITE_PTR=#MASKING_SPRITE_PTR+#MASKING_SPRITE_ANIM_FRAMES
 
-enemyFrameOffset=$28
+OBJECT_SPRITE_3_COLOR=#1
+OBJECT_SPRITE_5_COLOR=#3
+OBJECT_SPRITE_7_COLOR=#4
+
+objectFrameOffset=$28; common for all for now
 ;;---------------------------------------------
 ;; objects_sprites_setup
 ;;---------------------------------------------  
 objects_sprites_setup
-;                lda #0
-;                sta enemyFrameOffset
-;                ;sta enemyCurrentFrame
+                lda #0
+                sta objectFrameOffset
 
-;                lda #MASKING_SPRITE_PTR         
-;                sta $07fa               ; SPRITE 2 POINTER
-;                lda #OBJECT_SPRITE_PTR         
-;                sta $07fb               ; SPRITE 3 POINTER    
-;                
-;                lda $d01c               ; sprite 3 multicolor
-;                ora #%00001000
-;                sta $d01c
+                lda #MASKING_SPRITE_PTR
+                sta SPRITE_2_PTR_ADDRESS
+                sta SPRITE_4_PTR_ADDRESS
+                sta SPRITE_6_PTR_ADDRESS
 
-;                lda $d01b               ; sprite 3 over bg
-;                ora #%00000100          ; sprite 2 not
-;                sta $d01b   
+                lda #OBJECT_SPRITE_PTR
+                sta SPRITE_3_PTR_ADDRESS
+                sta SPRITE_5_PTR_ADDRESS
+                sta SPRITE_7_PTR_ADDRESS
 
-;                lda #ENEMY_SPRITE_COLOR       
-;                sta $d02a               ; sprite 3 color
-;                lda #BG_COLOR
-;                sta $d029               ; sprite 2 color
+                lda SPRITES_COLOR_MODE_ADDRESS 
+                ora #%10101000
+                sta SPRITES_COLOR_MODE_ADDRESS
 
-;                lda #150                    
-;                sta $d005                       ; sprite 2 y
-;                sta $d007                       ; sprite 3 y
+                lda SPRITES_PRIORITY_ADDRESS
+                ora #%01010100
+                sta SPRITES_PRIORITY_ADDRESS
+
+                lda #MASKING_SPRITE_COLOR
+                sta SPRITE_2_COLOR_ADDRESS
+                sta SPRITE_4_COLOR_ADDRESS
+                sta SPRITE_6_COLOR_ADDRESS
+
+                ldy #0
+                lda #OBJECT_SPRITE_3_COLOR
+                sta objectSpriteColor,y
+                iny
+                lda #OBJECT_SPRITE_5_COLOR
+                sta objectSpriteColor,y
+                iny
+                lda #OBJECT_SPRITE_7_COLOR
+                sta objectSpriteColor,y
+;                lda #OBJECT_SPRITE_3_COLOR
+;                sta SPRITE_3_COLOR_ADDRESS
+;                lda #OBJECT_SPRITE_5_COLOR
+;                sta SPRITE_5_COLOR_ADDRESS
+;                lda #OBJECT_SPRITE_7_COLOR
+;                sta SPRITE_7_COLOR_ADDRESS
 
                 rts
 
@@ -90,8 +110,8 @@ objects_sprites_setup
 ;; update_enemy
 ;;---------------------------------------------  
 update_enemy
-;                lda enemyFrameOffset
-;                eor #%00000110
-;                sta enemyFrameOffset
+                lda objectFrameOffset
+                eor #%00000110
+                sta objectFrameOffset
                 rts
 
