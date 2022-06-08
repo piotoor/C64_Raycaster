@@ -62,8 +62,7 @@ compute_objects
 
 ;;-----------------------------
 compute_offsets_and_masks
-                        lda objectRayId,x
-                        sta currObjectRayId
+
                         lda objectPerpDistance,x
                         sta currObjectPerpDist
                         
@@ -135,7 +134,8 @@ draw_objects
                         lda objectInFOV,x
                         beq @skip_object
                         ;ldy objectId
-                        
+                        lda objectRayId,x
+                        sta currObjectRayId
                         jsr compute_offsets_and_masks
 
                         ; objectPerpDistance in a
@@ -152,7 +152,6 @@ draw_objects
                         dey                                     ; sprite offset
                         lda currObjectRayId
                         objectSpriteXd010
-                        
                         sta objectSpriteXd10bitsCurr
                         
                         lda SPRITES_X_COORD_BIT_8_ADDRESS
@@ -198,19 +197,14 @@ draw_objects
                         asl
                         tay
 
-                        ;dex ; currObjectRayId
                         ldx currObjectRayId
                         lda objectSpriteX,x
-                        ;ldx #150; sprite y in the middle of the screen
+                        
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
-                        lda #150
-                        sta SPRITES_COORD_Y_ADDRESS_START,y
                         iny
                         iny
                         lda objectSpriteX,x
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
-                        lda #150
-                        sta SPRITES_COORD_Y_ADDRESS_START,y
                                 
 @skip_object        
                 
