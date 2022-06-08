@@ -68,7 +68,12 @@ frame_not_ready inc irq_ticks
                 sta main_ticks
 @end            
 
-                ;dec enemyPosY
+                ldx #0
+                dec objectPosY,x
+                inx
+                dec objectPosX,x
+                inx
+                inc objectPosY,x
 ;                lda $d02a               ; enemy sprite color test
 ;                eor #%00000100
 ;                sta $d02a

@@ -66,22 +66,31 @@ compute_offsets_and_masks
                         sta currObjectRayId
                         lda objectPerpDistance,x
                         sta currObjectPerpDist
-
+                        
                         cmp maxPerpDist
                         beq @obj_is_max
                         cmp minPerpDist
                         beq @obj_is_min
 @obj_is_mid             
+                        lda SPRITES_ENABLE_ADDRESS
+                        ora #%00110000
+                        sta SPRITES_ENABLE_ADDRESS
                         ldx #%11001111
                         ldy #4
                         jmp @endif
 
 @obj_is_max
+                        lda SPRITES_ENABLE_ADDRESS
+                        ora #%11000000
+                        sta SPRITES_ENABLE_ADDRESS
                         inc maxPerpDist
                         ldx #%00111111
                         ldy #6
                         jmp @endif
 @obj_is_min
+                        lda SPRITES_ENABLE_ADDRESS
+                        ora #%00001100
+                        sta SPRITES_ENABLE_ADDRESS
                         dec minPerpDist
                         ldx #%11110011
                         ldy #2
@@ -108,13 +117,16 @@ draw_objects
                 sta $4a1
 
                 
-                lda #250
-                sta SPRITE_2_COORD_Y_ADDRESS
-                sta SPRITE_3_COORD_Y_ADDRESS
-                sta SPRITE_4_COORD_Y_ADDRESS
-                sta SPRITE_5_COORD_Y_ADDRESS
-                sta SPRITE_6_COORD_Y_ADDRESS
-                sta SPRITE_7_COORD_Y_ADDRESS
+;                lda #250
+;                sta SPRITE_2_COORD_Y_ADDRESS
+;                sta SPRITE_3_COORD_Y_ADDRESS
+;                sta SPRITE_4_COORD_Y_ADDRESS
+;                sta SPRITE_5_COORD_Y_ADDRESS
+;                sta SPRITE_6_COORD_Y_ADDRESS
+;                sta SPRITE_7_COORD_Y_ADDRESS
+
+                lda #%00000011
+                sta SPRITES_ENABLE_ADDRESS
 
                 ldx #MAX_NUM_OF_OBJECTS-1
                 stx objectId
@@ -128,7 +140,7 @@ draw_objects
 
                         ; objectPerpDistance in a
                         ; ldy objectPerpDistance
-                        tax
+                        ldx currObjectPerpDist
 
                         lda #OBJECT_SPRITE_PTR
                         clc
@@ -142,10 +154,10 @@ draw_objects
                         objectSpriteXd010
                         
                         sta objectSpriteXd10bitsCurr
-                        ;ldx currObjectRayId
+                        
                         lda SPRITES_X_COORD_BIT_8_ADDRESS
                         and spriteDataBitMask
-                        ;ora objectSpriteXd010bits,x             ; BUG
+                        
                         ora objectSpriteXd10bitsCurr
                         sta SPRITES_X_COORD_BIT_8_ADDRESS
                         
@@ -199,10 +211,6 @@ draw_objects
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
                         lda #150
                         sta SPRITES_COORD_Y_ADDRESS_START,y
-                          
-                        ;ldy objectId
-                        ;sta $4c8,y
-
                                 
 @skip_object        
                 
