@@ -191,7 +191,6 @@ draw_objects
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
                         iny
                         iny
-                        ;lda objectSpriteX,x
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
                                 
 @skip_object        
