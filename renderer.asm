@@ -60,8 +60,11 @@ compute_objects
                 bpl @loop
                 rts
 
+
 ;;-----------------------------
-compute_offsets_and_masks
+;; sort_objects
+;;-----------------------------
+sort_objects
 
                         lda objectPerpDistance,x
                         sta currObjectPerpDist
@@ -115,28 +118,19 @@ draw_objects
                 lda maxPerpId
                 sta $4a1
 
-                
-;                lda #250
-;                sta SPRITE_2_COORD_Y_ADDRESS
-;                sta SPRITE_3_COORD_Y_ADDRESS
-;                sta SPRITE_4_COORD_Y_ADDRESS
-;                sta SPRITE_5_COORD_Y_ADDRESS
-;                sta SPRITE_6_COORD_Y_ADDRESS
-;                sta SPRITE_7_COORD_Y_ADDRESS
-
                 lda #%00000011
                 sta SPRITES_ENABLE_ADDRESS
 
                 ldx #MAX_NUM_OF_OBJECTS-1
                 stx objectId
 @loop                   
-                        
                         lda objectInFOV,x
                         beq @skip_object
-                        ;ldy objectId
+
                         lda objectRayId,x
                         sta currObjectRayId
-                        jsr compute_offsets_and_masks
+                        
+                        jsr sort_objects
 
                         ; objectPerpDistance in a
                         ; ldy objectPerpDistance
@@ -149,14 +143,12 @@ draw_objects
                         ; sprite offset still in y
                         sta SPRITES_PTR_ADDRESS_START,y
 
-                        dey                                     ; sprite offset
+                        dey                                     ; from masking to sprite                
                         lda currObjectRayId
                         objectSpriteXd010
                         sta objectSpriteXd10bitsCurr
-                        
                         lda SPRITES_X_COORD_BIT_8_ADDRESS
                         and spriteDataBitMask
-                        
                         ora objectSpriteXd10bitsCurr
                         sta SPRITES_X_COORD_BIT_8_ADDRESS
                         
@@ -178,32 +170,28 @@ draw_objects
                         cpy currObjectPerpDist
                         bcs @third_ray
                         ora #%00000010                  ; ray dist < enemy dist
-
 @third_ray
                         inx
                         ldy rayPerpDistance,x
                         cpy currObjectPerpDist
                         bcs @end
-                        ora #%00000001                  ; ray dist < enemy dist
-                        
+                        ora #%00000001                  ; ray dist < enemy dist                      
 @end                
-                        
                         clc
                         adc #MASKING_SPRITE_PTR
-                        
                         ldy maskingSpriteDataOffset
                         sta SPRITES_PTR_ADDRESS_START,y
+                        
                         tya
                         asl
                         tay
-
-                        ldx currObjectRayId
+                        ;ldx currObjectRayId
+                        dex
                         lda objectSpriteX,x
-                        
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
                         iny
                         iny
-                        lda objectSpriteX,x
+                        ;lda objectSpriteX,x
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
                                 
 @skip_object        
