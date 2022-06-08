@@ -155,7 +155,6 @@ init_object_ray_params
                 lda objectInFOV,x
                 sta $450,x
 
-; <LUTize>
                 lda playerTheta                 ; calculating enemyRayId
                 clc                             ; could be negative, when to the left
                 adc deltaTheta                  ; of the left-most rayId
@@ -171,36 +170,45 @@ init_object_ray_params
 @ray_id_end
                 ldy objectId
                 sta objectRayId,y
-                ;sta $450,y
-; </LUTize>             
+                ;sta $450,y       
 
-                ldy objectPlyPosDeltaX
-                
-                cpy #4                          ; atan inaccuracy workaround
-                bcc @posDeltaX_0
-                lda minusThetaInitCoordX2,y
-        
+
                 ldx objectRayThetaRed
+                cpx #32
+                bcs @ge_32
+@lt_32
+                ldy objectPlyPosDeltaX
+                lda minusThetaInitCoordX2,y
                 ldy reducedTheta_x2,x
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
-                
                 ldx objectRayThetaRed
                 ldy reducedTheta_x2,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 rts
+@ge_32
+                ldy objectPlyPosDeltaY
+                lda minusThetaInitCoordX2,y
+                ldy mirrorReducedTheta_x2,x
+                mxOverCos rayCurrDistX_L,rayCurrDistX_H
 
-@posDeltaX_0    lda objectPlyPosDeltaY
-                lsr; *64 -> / 128 = /2
-                sta rayCurrDistX_L
+                ldx objectRayThetaRed
+                ldy mirrorReducedTheta_x2,x 
+                mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 rts
 
 ;;---------------------------------------------
 ;; cast_object_ray
 ;;---------------------------------------------
 cast_object_ray
+                ldx objectRayThetaRed
+                cpx #32
+                bcs @ge_32
+@lt_32
                 ldx objectPlyPosDeltaX
-                cpx #4
-                bcc @posDeltaX_0
+                jmp @endif_rtr
+@ge_32
+                ldx objectPlyPosDeltaY
+@endif_rtr
 
                 ldy posToMapCoords,x
 @loop           beq @endloop
@@ -245,52 +253,9 @@ cast_object_ray
                 tya
                 cmp minPerpDist
                 bcc @curr_lt_min
-                jmp @endif
+                rts
 
 @curr_lt_min    sta minPerpDist
                 lda objectId
                 sta minPerpId
-
-@endif
                 rts
-
-
-
-@posDeltaX_0
-                lda deltaTheta
-                asl 
-                tax
-                lda rayCurrDistX_L
-                perpDistance
-                ldy objectId
-                sta objectPerpDistance,y
-                sta $428,y
-                tay
-
-                cmp maxPerpDist
-                bcs @curr_gt_max_
-                jmp @minimum_
-
-@curr_gt_max_   sta maxPerpDist
-                lda objectId
-                sta maxPerpId
-
-@minimum_
-                tya
-                cmp minPerpDist
-                bcc @curr_lt_min_
-                jmp @endif_
-
-@curr_lt_min_   sta minPerpDist
-                lda objectId
-                sta minPerpId
-
-@endif_
-                rts
-
-
-
-
-
-
-
