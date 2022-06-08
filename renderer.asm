@@ -77,10 +77,12 @@ compute_offsets_and_masks
                         jmp @endif
 
 @obj_is_max
+                        inc maxPerpDist
                         ldx #%00111111
                         ldy #6
                         jmp @endif
 @obj_is_min
+                        dec minPerpDist
                         ldx #%11110011
                         ldy #2
 @endif
