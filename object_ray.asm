@@ -141,18 +141,13 @@ init_object_ray_params
                 ; short circuit
                 cmp #22                         ; if deltaTheta >= 22
                 bcc @continue                   ; don't render enemy.
-
-                ; TODO
-                ;lda #MASKING_SPRITE_PTR+7       ; cover enemy sprite entirely
-                ;sta $07fa                       ; sprite 2 (masking) pointer
-
                 rts                             ; 
         
 @continue       ;inc renderObjectsFlags            ; for now. With more enemies, it should set relevant bit flag                                      
                 ldx objectId
                 inc objectInFOV,x
 
-                lda objectInFOV,x
+                ;lda objectInFOV,x
                 ;sta $450,x
 
                 lda playerTheta                 ; calculating enemyRayId
@@ -239,23 +234,21 @@ cast_object_ray
                 ldy objectId
                 sta objectPerpDistance,y
                 ;sta $428,y
-                tay
-
+                
                 cmp maxPerpDist
                 bcs @curr_gt_max
                 jmp @minimum
-
 @curr_gt_max    sta maxPerpDist
-                lda objectId
-                sta maxPerpId
+                ;ldy objectId
+                ;sty maxPerpId
 
 @minimum
-                tya
+                
                 cmp minPerpDist
                 bcc @curr_lt_min
                 rts
 
 @curr_lt_min    sta minPerpDist
-                lda objectId
-                sta minPerpId
+                ;ldy objectId
+                ;sty minPerpId
                 rts
