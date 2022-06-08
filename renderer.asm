@@ -41,8 +41,8 @@ compute_frame
 compute_objects
                 lda #255
                 sta minPerpDist
-                sta maxPerpId
-                sta minPerpId
+                ;sta maxPerpId
+                ;sta minPerpId
              
                 lda #0
                 sta maxPerpDist
