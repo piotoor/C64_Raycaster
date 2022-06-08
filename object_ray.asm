@@ -163,8 +163,8 @@ init_object_ray_params
                 clc
                 adc deltaTheta
 @ray_id_end
-                ldy objectId
-                sta objectRayId,y
+                ;ldy objectId objectId is still in x
+                sta objectRayId,x
                 ;sta $450,y       
 
 
