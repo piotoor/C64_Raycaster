@@ -36,6 +36,7 @@ compute_frame
 
 ;;---------------------------------------------
 ;; compute_objects
+;;
 ;;---------------------------------------------
 compute_objects
                 lda #255
@@ -63,6 +64,9 @@ compute_objects
 
 ;;-----------------------------
 ;; sort_objects
+;;
+;; simple comparision against max and min perpDist values
+;; calculated during object casting
 ;;-----------------------------
 sort_objects
 
@@ -108,15 +112,15 @@ sort_objects
 ;; draw_objects
 ;;---------------------------------------------
 draw_objects       
-                lda minPerpDist
-                sta $478
-                lda maxPerpDist
-                sta $479
+;                lda minPerpDist
+;                sta $478
+;                lda maxPerpDist
+;                sta $479
 
-                lda minPerpId
-                sta $4a0
-                lda maxPerpId
-                sta $4a1
+;                lda minPerpId
+;                sta $4a0
+;                lda maxPerpId
+;                sta $4a1
 
                 lda #%00000011
                 sta SPRITES_ENABLE_ADDRESS

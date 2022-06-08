@@ -47,7 +47,7 @@ init_object_ray_params
                 ;sta renderObjectsFlags
                 ldy objectId
                 sta objectInFOV,y
-                sta $450,y
+                ;sta $450,y
 
 
                 lda posX                        ; calculating enemy-player abs deltaX
@@ -153,7 +153,7 @@ init_object_ray_params
                 inc objectInFOV,x
 
                 lda objectInFOV,x
-                sta $450,x
+                ;sta $450,x
 
                 lda playerTheta                 ; calculating enemyRayId
                 clc                             ; could be negative, when to the left
@@ -238,7 +238,7 @@ cast_object_ray
                 perpDistance
                 ldy objectId
                 sta objectPerpDistance,y
-                sta $428,y
+                ;sta $428,y
                 tay
 
                 cmp maxPerpDist
