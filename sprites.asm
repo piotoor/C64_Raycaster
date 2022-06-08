@@ -82,7 +82,7 @@ common_sprites_setup
 
                 lda SPRITES_ENABLE_ADDRESS
                 ;ora #%11111111
-                ora #%1111
+                ora #%11111111
                 sta SPRITES_ENABLE_ADDRESS  
                 rts
 

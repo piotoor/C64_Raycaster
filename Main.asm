@@ -168,7 +168,7 @@ screen_setup
                 rts
 
 
-
+incasm  utils.asm
 incasm  renderer.asm
 incasm  gameMap.asm
 *=SPRITES_MEMORY_START
@@ -177,7 +177,6 @@ incbin  masking_sprite.spd,3
 incbin  enemy2.spd,3
 incasm  assets.asm
 
-incasm  utils.asm
 incasm  player.asm
 incasm  inputhandling.asm
 incasm  ray.asm

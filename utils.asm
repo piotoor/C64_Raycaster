@@ -129,7 +129,7 @@ defm atan
 ;; returns full object ray angle 
 ;; result in a
 ;;--------------------------------------------- 
-defm fullObjectRayTheta 
+defm fullObjectRayTheta
         ldy fullObjectRayThetaVect,x
         sty E_16_L
         inx
@@ -141,15 +141,20 @@ defm fullObjectRayTheta
         endm
 
 ;;---------------------------------------------
-;; swap mem_0, mem_1
+;; objectSpriteXd010
 ;; 
-;; swaps two memory locations
+;; sprite offset in y
+;; objectRayId in a
+;;
+;; result in a
 ;;--------------------------------------------- 
-defm swap
-        lda /1
-        sta f_8
-        lda /2
-        sta /1
-        lda f_8
-        sta /2
+defm objectSpriteXd010
+        ldx objectSpriteXd010Vect,y
+        stx E_16_L
+        iny
+        ldx objectSpriteXd010Vect,y
+        stx E_16_H
+        
+        tay
+        lda (E_16),y 
         endm

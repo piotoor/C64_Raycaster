@@ -8,6 +8,7 @@ spriteDataOffset=$83
 maskingSpriteDataOffset=$86
 currObjectRayId=$29
 currObjectPerpDist=$2a
+objectSpriteXd10bitsCurr=$2b
 
 MAX_NUM_OF_OBJECTS=#3
 ;;---------------------------------------------
@@ -47,46 +48,20 @@ compute_objects
 
                 ldx #MAX_NUM_OF_OBJECTS-1
                 stx objectId
-                ;stx numOfVisibleObjects
 @loop                   
                         jsr init_object_ray_params
 
                         ldx objectId
                         lda objectInFOV,x
                         beq @skip_object
-                        ;dec numOfVisibleObjects
                         jsr cast_object_ray
 @skip_object                        
                 dec objectId 
                 bpl @loop
                 rts
 
-;;---------------------------------------------
-;; draw_objects
-;;---------------------------------------------
-draw_objects       
-;                lda minPerpDist
-;                sta $478
-;                lda maxPerpDist
-;                sta $479
-
-;                lda minPerpId
-;                sta $4a0
-;                lda maxPerpId
-;                sta $4a1
-
-;SPRITES_COLOR_ADDRESS_START
-;SPRITES_PTR_ADDRESS_START
-;SPRITES_COORD_X_ADDRESS_START
-;SPRITES_COORD_Y_ADDRESS_START
-
-                ldx #MAX_NUM_OF_OBJECTS-1
-                stx objectId
-@loop                   lda objectInFOV,x
-                        beq @skip_object
-                        
-                        
-                        ;ldy objectId
+;;-----------------------------
+compute_offsets_and_masks
                         lda objectRayId,x
                         sta currObjectRayId
                         lda objectPerpDistance,x
@@ -98,36 +73,61 @@ draw_objects
                         beq @obj_is_min
 @obj_is_mid             
                         ldx #%11001111
-                        ;stx spriteDataBitMask
                         ldy #4
-;                        sty maskingSpriteDataOffset
-;                        iny
-;                        sty spriteDataOffset
                         jmp @endif
 
 @obj_is_max
                         ldx #%00111111
-                        ;stx spriteDataBitMask
                         ldy #6
-;                        sty maskingSpriteDataOffset
-;                        iny
-;                        sty spriteDataOffset
                         jmp @endif
 @obj_is_min
                         ldx #%11110011
-                        ;stx spriteDataBitMask
                         ldy #2
-;                        sty maskingSpriteDataOffset
-;                        iny
-;                        sty spriteDataOffset
 @endif
                         sty maskingSpriteDataOffset
                         iny
                         sty spriteDataOffset
                         stx spriteDataBitMask
+
+                rts
+
+;;---------------------------------------------
+;; draw_objects
+;;---------------------------------------------
+draw_objects       
+                lda minPerpDist
+                sta $478
+                lda maxPerpDist
+                sta $479
+
+                lda minPerpId
+                sta $4a0
+                lda maxPerpId
+                sta $4a1
+
+                
+                lda #250
+                sta SPRITE_2_COORD_Y_ADDRESS
+                sta SPRITE_3_COORD_Y_ADDRESS
+                sta SPRITE_4_COORD_Y_ADDRESS
+                sta SPRITE_5_COORD_Y_ADDRESS
+                sta SPRITE_6_COORD_Y_ADDRESS
+                sta SPRITE_7_COORD_Y_ADDRESS
+
+                ldx #MAX_NUM_OF_OBJECTS-1
+                stx objectId
+@loop                   
+                        
+                        lda objectInFOV,x
+                        beq @skip_object
+                        ;ldy objectId
+                        
+                        jsr compute_offsets_and_masks
+
                         ; objectPerpDistance in a
                         ; ldy objectPerpDistance
                         tax
+
                         lda #OBJECT_SPRITE_PTR
                         clc
                         adc objectFrameOffset
@@ -135,14 +135,25 @@ draw_objects
                         ; sprite offset still in y
                         sta SPRITES_PTR_ADDRESS_START,y
 
-                        ldx currObjectRayId
+                        dey                                     ; sprite offset
+                        lda currObjectRayId
+                        objectSpriteXd010
+                        
+                        sta objectSpriteXd10bitsCurr
+                        ;ldx currObjectRayId
                         lda SPRITES_X_COORD_BIT_8_ADDRESS
-                        and #%11110011
-                        ora objectSpriteXd010bits,x
+                        and spriteDataBitMask
+                        ;ora objectSpriteXd010bits,x             ; BUG
+                        ora objectSpriteXd10bitsCurr
                         sta SPRITES_X_COORD_BIT_8_ADDRESS
-
+                        
+                        ldx objectId
+                        lda objectSpriteColor,x
+                        ldy spriteDataOffset
+                        sta SPRITES_COLOR_ADDRESS_START,y
 
                         lda #0
+                        ldx currObjectRayId
                         dex
                         ldy rayPerpDistance,x
                         cpy currObjectPerpDist
@@ -173,68 +184,32 @@ draw_objects
                         asl
                         tay
 
-                        dex ; currObjectRayId
+                        ;dex ; currObjectRayId
+                        ldx currObjectRayId
                         lda objectSpriteX,x
+                        ;ldx #150; sprite y in the middle of the screen
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
+                        lda #150
+                        sta SPRITES_COORD_Y_ADDRESS_START,y
                         iny
+                        iny
+                        lda objectSpriteX,x
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
+                        lda #150
+                        sta SPRITES_COORD_Y_ADDRESS_START,y
+                          
+                        ;ldy objectId
+                        ;sta $4c8,y
+
                                 
-@skip_object                        
+@skip_object        
+                
                 dec objectId 
                 ldx objectId
                 bmi @exit
                 jmp @loop
 @exit
                 rts
-
-
-;                lda objectRayId
-;                tay
-;                tax
-;                dex
-;        
-;                lda objectSpriteX,y
-;                sta $d004                       ; sprite 2 x
-;                sta $d006                       ; sprite 3 x
-;                
-                ;                lda $d010                       ; sprites 2 and 3 x-coord high bit
-                ;                and #%11110011
-                ;                ora objectSpriteXd010bits,y
-                ;                sta $d010
-;        
-                ;                ldy objectPerpDistance
-                ;                lda #OBJECT_SPRITE_PTR
-                ;                clc
-                ;                adc enemyFrameOffset
-                ;                adc objectSpriteScaleFrameIdx,y
-                ;                sta $07fb                       ; sprite 3 (enemy sprite) pointer
-
-                ;                lda #0
-                ;                ldy rayPerpDistance,x
-                ;                cpy objectPerpDistance
-                ;                bcs @second_ray
-                ;                ora #%00000100                  ; ray dist < enemy dist
-                ;@second_ray
-                ;                inx
-                ;                ldy rayPerpDistance,x
-                ;                cpy objectPerpDistance
-                ;                bcs @third_ray
-                ;                ora #%00000010                  ; ray dist < enemy dist
-
-                ;@third_ray
-                ;                inx
-                ;                ldy rayPerpDistance,x
-                ;                cpy objectPerpDistance
-                ;                bcs @end
-                ;                ora #%00000001                  ; ray dist < enemy dist
-                ;                
-                ;@end                
-                ;                clc
-                ;                adc #MASKING_SPRITE_PTR
-                ;                
-                ;                sta $07fa                       ; sprite 2 (masking sprite) pointer
-
-                ;rts
 
 ;;---------------------------------------------
 ;; draw_back_buffer

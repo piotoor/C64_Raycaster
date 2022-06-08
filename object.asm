@@ -15,7 +15,7 @@ objects_setup
 
                 lda #64
                 sta objectPosX,y
-                lda $96
+                lda #96
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
@@ -26,7 +26,7 @@ objects_setup
                 iny
                 lda #64
                 sta objectPosX,y
-                lda $112
+                lda #112
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
@@ -36,7 +36,7 @@ objects_setup
                 iny
                 lda #96
                 sta objectPosX,y
-                lda $128
+                lda #128
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
@@ -104,6 +104,14 @@ objects_sprites_setup
 ;                lda #OBJECT_SPRITE_7_COLOR
 ;                sta SPRITE_7_COLOR_ADDRESS
 
+                
+                lda #150
+                sta SPRITE_2_COORD_Y_ADDRESS
+                sta SPRITE_3_COORD_Y_ADDRESS
+                sta SPRITE_4_COORD_Y_ADDRESS
+                sta SPRITE_5_COORD_Y_ADDRESS
+                sta SPRITE_6_COORD_Y_ADDRESS
+                sta SPRITE_7_COORD_Y_ADDRESS
                 rts
 
 ;;---------------------------------------------

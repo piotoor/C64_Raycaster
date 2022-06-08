@@ -47,7 +47,7 @@ init_object_ray_params
                 ;sta renderObjectsFlags
                 ldy objectId
                 sta objectInFOV,y
-                ;sta $450,y
+                sta $450,y
 
 
                 lda posX                        ; calculating enemy-player abs deltaX
@@ -142,7 +142,8 @@ init_object_ray_params
                 cmp #22                         ; if deltaTheta >= 22
                 bcc @continue                   ; don't render enemy.
 
-                lda #MASKING_SPRITE_PTR+7       ; cover enemy sprite entirely
+                ; TODO
+                ;lda #MASKING_SPRITE_PTR+7       ; cover enemy sprite entirely
                 ;sta $07fa                       ; sprite 2 (masking) pointer
 
                 rts                             ; 
@@ -152,7 +153,7 @@ init_object_ray_params
                 inc objectInFOV,x
 
                 lda objectInFOV,x
-                ;sta $450,x
+                sta $450,x
 
 ; <LUTize>
                 lda playerTheta                 ; calculating enemyRayId
@@ -229,7 +230,7 @@ cast_object_ray
                 perpDistance
                 ldy objectId
                 sta objectPerpDistance,y
-                ;sta $428,y
+                sta $428,y
                 tay
 
                 cmp maxPerpDist
@@ -263,7 +264,7 @@ cast_object_ray
                 perpDistance
                 ldy objectId
                 sta objectPerpDistance,y
-                ;sta $428,y
+                sta $428,y
                 tay
 
                 cmp maxPerpDist
