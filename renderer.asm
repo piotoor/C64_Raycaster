@@ -68,7 +68,7 @@ compute_objects
 ;; simple comparision against max and min perpDist values
 ;; calculated during object casting
 ;;-----------------------------
-sort_objects
+assign_sprites
 
                         lda objectPerpDistance,x
                         sta currObjectPerpDist
@@ -108,6 +108,36 @@ sort_objects
 
                 rts
 
+
+;;---------------------------------------------
+;; prepare_masking_sprite
+;;---------------------------------------------
+prepare_masking_sprite
+                lda #0
+                ldx currObjectRayId
+                dex
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @second_ray
+                ora #%00000100                  ; ray dist < enemy dist
+@second_ray
+                inx
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @third_ray
+                ora #%00000010                  ; ray dist < enemy dist
+@third_ray
+                inx
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @end
+                ora #%00000001                  ; ray dist < enemy dist                      
+@end                
+                clc
+                adc #MASKING_SPRITE_PTR
+                ldy maskingSpriteDataOffset
+                sta SPRITES_PTR_ADDRESS_START,y
+                rts
 ;;---------------------------------------------
 ;; draw_objects
 ;;---------------------------------------------
@@ -134,7 +164,7 @@ draw_objects
                         lda objectRayId,x
                         sta currObjectRayId
                         
-                        jsr sort_objects
+                        jsr assign_sprites
 
                         ; objectPerpDistance in a
                         ; ldy objectPerpDistance
@@ -161,32 +191,9 @@ draw_objects
                         ldy spriteDataOffset
                         sta SPRITES_COLOR_ADDRESS_START,y
 
-                        lda #0
-                        ldx currObjectRayId
-                        dex
-                        ldy rayPerpDistance,x
-                        cpy currObjectPerpDist
-                        bcs @second_ray
-                        ora #%00000100                  ; ray dist < enemy dist
-@second_ray
-                        inx
-                        ldy rayPerpDistance,x
-                        cpy currObjectPerpDist
-                        bcs @third_ray
-                        ora #%00000010                  ; ray dist < enemy dist
-@third_ray
-                        inx
-                        ldy rayPerpDistance,x
-                        cpy currObjectPerpDist
-                        bcs @end
-                        ora #%00000001                  ; ray dist < enemy dist                      
-@end                
-                        clc
-                        adc #MASKING_SPRITE_PTR
-                        ldy maskingSpriteDataOffset
-                        sta SPRITES_PTR_ADDRESS_START,y
-                        
-                        tya
+                        jsr prepare_masking_sprite
+
+                        tya                     ; maskingSpriteDataOffset in y
                         asl
                         tay
                         ;ldx currObjectRayId
