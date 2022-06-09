@@ -68,12 +68,12 @@ frame_not_ready inc irq_ticks
                 sta main_ticks
 @end            
 
-                ldx #0
-                dec objectPosY,x
-                inx
-                dec objectPosX,x
-                inx
-                inc objectPosY,x
+;                ldx #0
+;                dec objectPosY,x
+;                inx
+;                dec objectPosX,x
+;                inx
+;                inc objectPosY,x
 ;                lda $d02a               ; enemy sprite color test
 ;                eor #%00000100
 ;                sta $d02a
@@ -178,7 +178,7 @@ incasm  renderer.asm
 incasm  gameMap.asm
 *=SPRITES_MEMORY_START
 incbin  chaingun_hd.spd,3
-incbin  masking_sprite.spd,3
+incbin  masking_sprite_xtd.spd,3
 incbin  enemy2.spd,3
 incasm  assets.asm
 

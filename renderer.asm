@@ -11,6 +11,7 @@ currObjectPerpDist=$2a
 objectSpriteXd10bitsCurr=$2b
 
 MAX_NUM_OF_OBJECTS=#3
+OBJECT_SPRITE_STRETCHING_THRESHOLD=#1
 ;;---------------------------------------------
 ;; compute_frame
 ;;
@@ -113,6 +114,11 @@ assign_sprites
 ;; prepare_masking_sprite
 ;;---------------------------------------------
 prepare_masking_sprite
+
+                lda currObjectPerpDist
+                ;cmp #18
+                cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
+                bcc @stretch_object_sprite
                 lda #0
                 ldx currObjectRayId
                 dex
@@ -134,9 +140,65 @@ prepare_masking_sprite
                 ora #%00000001                  ; ray dist < enemy dist                      
 @end                
                 clc
+                ;adc #MASKING_SPRITE_PTR
+                tax
+                lda regularSpriteMaskIdx,x
                 adc #MASKING_SPRITE_PTR
                 ldy maskingSpriteDataOffset
                 sta SPRITES_PTR_ADDRESS_START,y
+                rts
+
+@stretch_object_sprite
+                lda #0
+                ldx currObjectRayId
+                dex
+                dex
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @second_ray
+                ora #%00100000                  ; ray dist < enemy dist
+@second_ray_
+                inx
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @third_ray
+                ora #%00010000                  ; ray dist < enemy dist
+@third_ray_
+                inx
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @fourth_ray_
+                ora #%00001000                  ; ray dist < enemy dist  
+
+@fourth_ray_               
+                inx
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @fifth_ray_
+                ora #%00000100                  ; ray dist < enemy dist
+@fifth_ray_
+                inx
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @sixth_ray_
+                ora #%00000010                  ; ray dist < enemy dist
+@sixth_ray_
+                inx
+                ldy rayPerpDistance,x
+                cpy currObjectPerpDist
+                bcs @end
+                ora #%00000001                  ; ray dist < enemy dist    
+                   
+@end_               
+                clc
+                ;adc #MASKING_SPRITE_PTR
+                ; lut
+                tax
+                lda stretchedSpriteMaskIdx,x
+                adc #MASKING_SPRITE_PTR
+                ldy maskingSpriteDataOffset
+                sta SPRITES_PTR_ADDRESS_START,y
+
                 rts
 ;;---------------------------------------------
 ;; draw_objects
@@ -165,21 +227,26 @@ draw_objects
                         sta currObjectRayId
                         
                         jsr assign_sprites
-
-                        ; objectPerpDistance in a
-                        ; ldy objectPerpDistance
+                        
                         ldx currObjectPerpDist
-
                         lda #OBJECT_SPRITE_PTR
                         clc
                         adc objectFrameOffset
                         adc objectSpriteScaleFrameIdx,x
-                        ; sprite offset still in y
-                        sta SPRITES_PTR_ADDRESS_START,y
+                        sta SPRITES_PTR_ADDRESS_START,y         ; sprite offset still in y
 
-                        dey                                     ; from masking to sprite                
+                        dey                                     ; masking sprite offset         
+                        lda currObjectPerpDist
+                        cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
+                        bcc @stretch_object_sprite
                         lda currObjectRayId
                         objectSpriteXd010
+                        jmp @endif
+@stretch_object_sprite
+                        lda currObjectRayId
+                        stretchedObjectSpriteXd010
+@endif
+
                         sta objectSpriteXd10bitsCurr
                         lda SPRITES_X_COORD_BIT_8_ADDRESS
                         and spriteDataBitMask
@@ -196,8 +263,8 @@ draw_objects
                         tya                     ; maskingSpriteDataOffset in y
                         asl
                         tay
-                        ;ldx currObjectRayId
-                        dex
+
+                        ldx currObjectRayId
                         lda objectSpriteX,x
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
                         iny

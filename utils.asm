@@ -158,3 +158,22 @@ defm objectSpriteXd010
         tay
         lda (E_16),y 
         endm
+
+;;---------------------------------------------
+;; stretchedObjectSpriteXd010
+;; 
+;; sprite offset in y
+;; objectRayId in a
+;;
+;; result in a
+;;--------------------------------------------- 
+defm stretchedObjectSpriteXd010
+        ldx stretchedObjectSpriteXd010Vect,y
+        stx E_16_L
+        iny
+        ldx stretchedObjectSpriteXd010Vect,y
+        stx E_16_H
+        
+        tay
+        lda (E_16),y 
+        endm

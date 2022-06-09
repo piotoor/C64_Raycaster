@@ -139,7 +139,7 @@ init_object_ray_params
                 sta deltaTheta                   ;
                  
                 ; short circuit
-                cmp #22                         ; if deltaTheta >= 22
+                cmp #24                         ; if deltaTheta >= 22
                 bcc @continue                   ; don't render enemy.
                 rts                             ; 
         
