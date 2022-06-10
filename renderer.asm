@@ -321,7 +321,6 @@ draw_objects
                         ldy spriteDataOffset
                         sta SPRITES_PTR_ADDRESS_START,y         
 
-                        dey                                     ; masking sprite offset         
                         jsr calculate_sprites_pos_and_size
                                 
 @skip_object        
