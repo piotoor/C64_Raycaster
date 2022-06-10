@@ -319,9 +319,7 @@ draw_objects
                 
                 dec objectId 
                 ldx objectId
-                bmi @exit
-                jmp @loop
-@exit
+                bpl @loop
                 rts
 
 ;;---------------------------------------------
