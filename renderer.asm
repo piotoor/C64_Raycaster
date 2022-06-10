@@ -208,7 +208,7 @@ prepare_masking_sprite
 ;;---------------------------------------------
 ;; calculate_sprites_positions
 ;;---------------------------------------------
-calculate_sprites_positions
+calculate_sprites_pos_and_size
                 ; TODO JOIN BOTH IFS
                 ;ldy 
                 lda currObjectPerpDist
@@ -308,12 +308,12 @@ draw_objects
                         lda #OBJECT_SPRITE_PTR
                         clc
                         adc objectFrameOffset
-                        adc objectSpriteScaleFrameIdx,x         ; TODO STRETCHED
+                        adc objectSpriteScaleFrameIdx,x         
                         ldy spriteDataOffset
                         sta SPRITES_PTR_ADDRESS_START,y         
 
                         dey                                     ; masking sprite offset         
-                        jsr calculate_sprites_positions
+                        jsr calculate_sprites_pos_and_size
                                 
 @skip_object        
                 
