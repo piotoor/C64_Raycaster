@@ -139,7 +139,7 @@ init_object_ray_params
                 sta deltaTheta                   ;
                  
                 ; short circuit
-                cmp #24                         ; if deltaTheta >= 22
+                cmp #24                         ; if deltaTheta >= 24
                 bcc @continue                   ; don't render enemy.
                 rts                             ; 
         
@@ -151,9 +151,9 @@ init_object_ray_params
                 ;sta $450,x
 
                 lda playerTheta                 ; calculating enemyRayId
-                clc                             ; could be negative, when to the left
+                ;clc                            ; could be negative, when to the left
                 adc deltaTheta                  ; of the left-most rayId
-                cmp objectRayTheta
+                cmp objectRayTheta              ; clc clear after bcc
                 beq @to_the_right
 @to_the_left    lda #20
                 sec
