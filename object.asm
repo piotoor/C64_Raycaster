@@ -105,7 +105,7 @@ objects_sprites_setup
 ;                sta SPRITE_7_COLOR_ADDRESS
 
                 
-                lda #150
+                lda #140
                 sta SPRITE_2_COORD_Y_ADDRESS
                 sta SPRITE_3_COORD_Y_ADDRESS
                 sta SPRITE_4_COORD_Y_ADDRESS
