@@ -130,7 +130,7 @@ init_object_ray_params
                 sbc objectRayTheta               ;
                                                  ;
                 jmp @endif                       ;
-@enemy_ge_ply   sec                              ;
+@enemy_ge_ply   ;sec                             ; already set after bcs
                 sbc playerTheta                  ;
                                                  ;
 @endif                                           ;
@@ -160,7 +160,7 @@ init_object_ray_params
                 sbc deltaTheta
                 jmp @ray_id_end
 @to_the_right   lda #20
-                clc
+                clc                            
                 adc deltaTheta
 @ray_id_end
                 ;ldy objectId objectId is still in x
