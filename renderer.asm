@@ -12,7 +12,7 @@ currObjectPerpDist=$2a
 objectSpriteXd10bitsCurr=$2b
 
 MAX_NUM_OF_OBJECTS=#3
-OBJECT_SPRITE_STRETCHING_THRESHOLD=#16
+OBJECT_SPRITE_STRETCHING_THRESHOLD=#19
 ;;---------------------------------------------
 ;; compute_frame
 ;;

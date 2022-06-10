@@ -89,13 +89,14 @@ objects_sprites_setup
                 sta SPRITE_6_COLOR_ADDRESS
 
                 ldy #0
-                lda #OBJECT_SPRITE_3_COLOR
+                ;lda #OBJECT_SPRITE_3_COLOR
+                lda #WEAPON_SPRITE_COLOR
                 sta objectSpriteColor,y
                 iny
-                lda #OBJECT_SPRITE_5_COLOR
+                ;lda #OBJECT_SPRITE_5_COLOR
                 sta objectSpriteColor,y
                 iny
-                lda #OBJECT_SPRITE_7_COLOR
+                ;lda #OBJECT_SPRITE_7_COLOR
                 sta objectSpriteColor,y
 ;                lda #OBJECT_SPRITE_3_COLOR
 ;                sta SPRITE_3_COLOR_ADDRESS
