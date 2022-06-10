@@ -204,65 +204,79 @@ prepare_masking_sprite
 ;; calculate_sprites_positions
 ;;---------------------------------------------
 calculate_sprites_pos_and_size
-                ; TODO JOIN BOTH IFS
-                ;ldy 
-                lda currObjectPerpDist
-                cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
-                bcc @stretch_object_sprite
-                lda currObjectRayId
-                objectSpriteXd010
-                jmp @endif
-@stretch_object_sprite
-                lda currObjectRayId
-                stretchedObjectSpriteXd010
-@endif
-                sta objectSpriteXd10bitsCurr
-                lda SPRITES_X_COORD_BIT_8_ADDRESS
-                and spriteDataBitMask
-                ora objectSpriteXd10bitsCurr
-                sta SPRITES_X_COORD_BIT_8_ADDRESS
-
-                lda maskingSpriteDataOffset
-                ;tya                     ; maskingSpriteDataOffset in y
-                asl
-                tay
 
                 ldx currObjectRayId
                 lda currObjectPerpDist
                 cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
                 bcc @stretch_object_sprite_
                 
-                lda SPRITES_STRETCH_Y_ADDRESS           ;
-                and spriteDataBitMask                   ; destretching
-                sta SPRITES_STRETCH_Y_ADDRESS           ;
-                lda SPRITES_STRETCH_X_ADDRESS           ;
-                and spriteDataBitMask                   ;
-                sta SPRITES_STRETCH_X_ADDRESS           ;
+                        lda SPRITES_STRETCH_Y_ADDRESS           ;
+                        and spriteDataBitMask                   ; destretching
+                        sta SPRITES_STRETCH_Y_ADDRESS           ;
+                        lda SPRITES_STRETCH_X_ADDRESS           ;
+                        and spriteDataBitMask                   ;
+                        sta SPRITES_STRETCH_X_ADDRESS           ;
 
-                lda objectSpriteX,x
-                ldx #140
-                
-                jmp @endif_
+                        lda maskingSpriteDataOffset
+                        asl
+                        tay
+                        
+                        lda objectSpriteX,x
+                        ldx #140
+                        sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
+                        iny
+                        iny
+                        sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
+                        txa 
+                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; sprite
+                        dey
+                        dey 
+                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; masking
+                        
+                        ldy maskingSpriteDataOffset
+                        lda currObjectRayId
+                        objectSpriteXd010
+                        sta objectSpriteXd10bitsCurr
+                        lda SPRITES_X_COORD_BIT_8_ADDRESS
+                        and spriteDataBitMask
+                        ora objectSpriteXd10bitsCurr
+                        sta SPRITES_X_COORD_BIT_8_ADDRESS
+                        
+                        jmp @endif_
 @stretch_object_sprite_
-                lda SPRITES_STRETCH_Y_ADDRESS           ;
-                ora spriteDataBitMaskNeg                ; stretching
-                sta SPRITES_STRETCH_Y_ADDRESS           ;
-                lda SPRITES_STRETCH_X_ADDRESS           ;
-                ora spriteDataBitMaskNeg                ;
-                sta SPRITES_STRETCH_X_ADDRESS           ;
+                        lda SPRITES_STRETCH_Y_ADDRESS           ;
+                        ora spriteDataBitMaskNeg                ; stretching
+                        sta SPRITES_STRETCH_Y_ADDRESS           ;
+                        lda SPRITES_STRETCH_X_ADDRESS           ;
+                        ora spriteDataBitMaskNeg                ;
+                        sta SPRITES_STRETCH_X_ADDRESS           ;
 
-                lda stretchedObjectSpriteX,x
-                ldx #130
+                        lda maskingSpriteDataOffset
+                        asl
+                        tay
+
+                        lda stretchedObjectSpriteX,x
+                        ldx #130
+                        sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
+                        iny
+                        iny
+                        sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
+                        txa 
+                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; sprite
+                        dey
+                        dey 
+                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; masking
+
+                        ldy maskingSpriteDataOffset
+                        lda currObjectRayId
+                        stretchedObjectSpriteXd010
+                        sta objectSpriteXd10bitsCurr
+                        lda SPRITES_X_COORD_BIT_8_ADDRESS
+                        and spriteDataBitMask
+                        ora objectSpriteXd10bitsCurr
+                        sta SPRITES_X_COORD_BIT_8_ADDRESS
 @endif_
-                sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
-                iny
-                iny
-                sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
-                txa 
-                sta SPRITES_COORD_Y_ADDRESS_START,y     ; sprite
-                dey
-                dey 
-                sta SPRITES_COORD_Y_ADDRESS_START,y     ; masking
+
 
                 rts
 
