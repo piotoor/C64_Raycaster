@@ -117,9 +117,7 @@ assign_sprites
 ;; prepare_masking_sprite
 ;;---------------------------------------------
 prepare_masking_sprite
-
                 lda currObjectPerpDist
-                ;cmp #18
                 cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
                 bcc @stretch_object_sprite
                 lda #0
@@ -143,7 +141,6 @@ prepare_masking_sprite
                 ora #%00000001                  ; ray dist < enemy dist                      
 @end                
                 clc
-                ;adc #MASKING_SPRITE_PTR
                 tax
                 lda regularSpriteMaskIdx,x
                 adc #MASKING_SPRITE_PTR
@@ -194,8 +191,6 @@ prepare_masking_sprite
                    
 @end_               
                 clc
-                ;adc #MASKING_SPRITE_PTR
-                ; lut
                 tax
                 lda stretchedSpriteMaskIdx,x
                 adc #MASKING_SPRITE_PTR
