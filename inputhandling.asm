@@ -191,12 +191,6 @@ strafe_left
 ;; strafe_right
 ;;---------------------------------------------
 strafe_right
-                
-                lda threshold
-                cmp #1
-                bcc @stop_incr
-                dec threshold
-@stop_incr
                 lda playerTheta
                 clc
                 adc #64
