@@ -199,11 +199,14 @@ cast_ray
                 ;lda posX
                 sec
                 sbc calculatedAbsWallHitDist
+                sbc #1
 @x_end   
                 tax                             ; calculate offset in texture to
                 ldy posMod16,x                  ; the start of vertical strip hit by the ray
 
                 ldx rayId                       ; 
+                tya
+                sta $428,x
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
 
@@ -259,6 +262,7 @@ cast_ray
                 ;lda posX
                 sec
                 sbc calculatedAbsWallHitDist
+                sbc #1
                 tax
                 lda posMod16,x
 ;                ldx rayTheta
@@ -267,6 +271,8 @@ cast_ray
                 ;sec
                 ;sbc xOverTan_8,y
 @x_end_door   
+                ldy rayId
+                sta $428,y
                 tay
 
                 cpy threshold
