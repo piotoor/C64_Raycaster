@@ -54,7 +54,11 @@ weapons_sprites_setup
 ;; update_weapon
 ;;---------------------------------------------
 update_weapon  
+                lda threshold
+                cmp #16
+                bcs @stop_incr
                 inc threshold
+@stop_incr
                 ldx weaponCurrentFrame
                 inx
                 cpx #WEAPON_FRAMES
