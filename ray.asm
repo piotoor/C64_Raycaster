@@ -252,11 +252,11 @@ cast_ray
                 adc calculatedAbsWallHitDist
                 tax
                 lda posMod16,x
-;                ldx rayTheta
-;                ldy reducedTheta,x
+                ldx rayTheta
+                ldy reducedTheta,x
 
-                ;clc
-                ;adc xOverTan_8,y
+                clc
+                adc xOverTan_8,y
                 jmp @x_end_door
 @x_minus_door                
                 ;lda posX
@@ -265,16 +265,18 @@ cast_ray
                 sbc #1
                 tax
                 lda posMod16,x
-;                ldx rayTheta
-;                ldy reducedTheta,x
+                ldx rayTheta
+                ldy reducedTheta,x
 
-                ;sec
-                ;sbc xOverTan_8,y
+                sec
+                sbc xOverTan_8,y
 @x_end_door   
                 ldy rayId
                 sta $428,y
                 tay
 
+                ldx threshold
+                stx $450
                 cpy threshold
                 bcc @continue_door
                 ldy f_8
@@ -287,17 +289,17 @@ cast_ray
                 lda texColumnOffset,y
                 sta texColumnOffsets,x
                 
-;                ldx rayTheta
-;                ldy reducedTheta_x2,x
+                ldx rayTheta
+                ldy mirrorReducedTheta_x2,x
 
-;                mxOverCosX8 rayDistDy_L,rayDistDy_H
-;                clc                     ; 
-;                lda rayCurrDistY_L      ; 
-;                adc rayDistDy_L         ; 
-;                sta rayCurrDistY_L      ; 
-;                lda rayCurrDistY_H      ; 
-;                adc rayDistDy_H         ; 
-;                sta rayCurrDistY_H      ; 
+                mxOverCosX8 rayDistDy_L,rayDistDy_H
+                clc                     ; 
+                lda rayCurrDistY_L      ; 
+                adc rayDistDy_L         ; 
+                sta rayCurrDistY_L      ; 
+                lda rayCurrDistY_H      ; 
+                adc rayDistDy_H         ; 
+                sta rayCurrDistY_H      ; 
 
 
                 clc
