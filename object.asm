@@ -116,9 +116,9 @@ objects_sprites_setup
                 rts
 
 ;;---------------------------------------------
-;; update_enemy
+;; update_objects
 ;;---------------------------------------------  
-update_enemy
+update_objects
                 lda objectFrameOffset
                 eor #%00000110
                 sta objectFrameOffset

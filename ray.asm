@@ -206,7 +206,7 @@ cast_ray
 
                 ldx rayId                       ; 
                 tya
-                sta $428,x
+                ;sta $428,x
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
 
@@ -272,19 +272,21 @@ cast_ray
                 sbc xOverTan_8,y
 @x_end_door   
                 ldy rayId
-                sta $428,y
-                tay
+                ;sta $428,y
+                ;tay
 
-                ldx threshold
-                stx $450
-                cpy threshold
+                ;ldx threshold
+                ;stx $450
+                cmp threshold
                 bcc @continue_door
-                ldy f_8
-                jmp @y_continue
+                        ldy f_8
+                        jmp @y_continue
 @continue_door
-                ;tax
-                ;ldy posMod16,x
-
+                clc
+                adc #16
+                sec
+                sbc threshold
+                tay
                 ldx rayId 
                 lda texColumnOffset,y
                 sta texColumnOffsets,x

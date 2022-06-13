@@ -53,7 +53,8 @@ irq
                 jsr draw_objects
 
                 jsr check_keyboard
-                jsr update_enemy
+                jsr update_objects
+                jsr update_doors
                 lda #0
                 sta synch
 frame_not_ready inc irq_ticks
@@ -128,6 +129,7 @@ setup
                 jsr irq_setup
                 jsr raycaster_setup
                 jsr sprites_setup
+                jsr doors_setup
                 rts
 
 ;;---------------------------------------------
@@ -194,3 +196,4 @@ incasm  sprites.asm
 incasm  weapons.asm
 incasm  lookuptables.asm
 incasm  object.asm
+incasm  doors.asm

@@ -1,6 +1,7 @@
 ROTATION_SPEED=#4
 ROTATION_SPEED_RUNNING=#6
-threshold=$2d
+
+
 ;;---------------------------------------------
 ;; check_keyboard
 ;;---------------------------------------------
@@ -79,11 +80,46 @@ check_keyboard
                 sta pra
                 lda prb
                 and #%00010000
-                bne @end_input
+                bne @space_pressed
                 jsr update_weapon
+
+@space_pressed  lda #%01111111
+                sta pra
+                lda prb
+                and #%00010000
+                bne @end_input
+                jsr handle_doors
 
 @end_input      rts
 
+
+;;---------------------------------------------
+;; handle_doors
+;;
+;; 0 = closed
+;; 1 = opening
+;; 2 = open
+;; 3 = closing
+;;---------------------------------------------
+handle_doors
+                lda doorState
+                cmp #DOOR_CLOSED
+                beq @door_closed
+                cmp #DOOR_OPEN
+                beq @door_open
+                rts
+@door_closed
+                lda #DOOR_OPENING
+                sta doorState
+                lda #DOOR_OPEN_TIME
+                sta stayOpenRemainingTime
+                rts
+@door_open
+                lda #DOOR_CLOSING
+                sta doorState
+                lda #0
+                sta stayOpenRemainingTime
+                rts
 
 ;;---------------------------------------------
 ;; rotate_right
@@ -155,6 +191,12 @@ strafe_left
 ;; strafe_right
 ;;---------------------------------------------
 strafe_right
+                
+                lda threshold
+                cmp #1
+                bcc @stop_incr
+                dec threshold
+@stop_incr
                 lda playerTheta
                 clc
                 adc #64
