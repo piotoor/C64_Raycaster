@@ -40,7 +40,21 @@ defm mxOverCosX16
         endm
 
 ;;---------------------------------------------
-;; lineStartRow target
+;; mxOverCosX8 target_L,target_H 
+;; special case
+;; x = 8
+;; theta in y   ; must be x2
+;;--------------------------------------------- 
+defm mxOverCosX8      
+        lda mxOverCos_8,y
+        sta /1
+        iny
+        lda mxOverCos_8,y
+        sta /2
+        endm
+
+;;---------------------------------------------
+;; lineStartRow
 ;; dist in a
 ;; theta in x   ; must be x2
 ;; 
@@ -64,6 +78,8 @@ defm lineStartRow
         lda lineStartRowLut,y
         sta rayStart,x
         endm
+
+
 
 ;;---------------------------------------------
 ;; perpDistance
@@ -101,6 +117,18 @@ defm xOverTan
         
         lda (E_16),y
         endm
+
+
+;;;---------------------------------------------
+;;; xOverTanX8
+;;; x = 8        
+;;; theta in x
+;;;
+;;; result in a
+;;;--------------------------------------------- 
+;defm xOverTanX8
+;        lda xOverTan_8,x
+;        endm
 
 ;;---------------------------------------------
 ;; atan

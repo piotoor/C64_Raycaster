@@ -113,6 +113,8 @@ irq_setup
 ;; setup
 ;;---------------------------------------------             
 setup
+                lda #0
+                sta threshold
                 lda #$36
                 sta $0001      ; Turn Off BASIC ROM
 

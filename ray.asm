@@ -127,8 +127,9 @@ cast_ray
                                 sta gameMapOffset
                                 
                                 lda game_map,x          ; 
-                                bne @final_res_b        ; 
-
+                                beq @y_continue 
+                                jmp @y_hit              ; 
+@y_continue
                                 clc                     ; if not hit
                                 lda rayCurrDistY_L      ; increase rayCurrDistY
                                 adc rayDistDy_L         ; 
@@ -147,8 +148,9 @@ cast_ray
                                 sta gameMapOffset
 
                                 lda game_map,x          ;
-                                bne @final_res_a        ;
-
+                                beq @x_continue
+                                jmp @x_hit              ;
+@x_continue
                                 clc                     ; if not hit
                                 lda rayCurrDistX_L      ; increase rayCurrDistX
                                 adc rayDistDx_L         ; 
@@ -161,28 +163,22 @@ cast_ray
                                 jmp @loop
 
 ; vertical gridline hit
-@final_res_b    
+@y_hit    
+
+                cmp #21
+                beq @y_hit_door                
                 ;sta textureMapCode             ; save texture code
                 ;lda textureMapCode             ; subtract 1 to get dark version of the texture
                 sec                             ;
                 sbc #1                          ;
                 ldy rayId                       ;
                 sta rayTextureId,y              ; store texture id
-        
-                ;ldy rayId               ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
-                
 
-                asl rayCurrDistY_L      ; coputing vertical line starting point
-                                        ; bit 7 -> 0
-                lda #0                  ;
-                adc #0                  ;
-                aso rayCurrDistY_H      ; asl rayCurrDistY_H
-                                        ; ora rayCurrDistY_H
-                lineStartRow            ;
+
+        
 
                 lda absWallHitYDistX2           ; calculating absWallHitDist
-                
+                clc
                 ldx stepYCnt
                 adc yTimesSquareSizeX2,x        ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
@@ -206,19 +202,127 @@ cast_ray
 @x_end   
                 tax                             ; calculate offset in texture to
                 ldy posMod16,x                  ; the start of vertical strip hit by the ray
+
                 ldx rayId                       ; 
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
+
+
+
+                clc
+                ldy rayId               ; absolute difference between rayTheta and
+                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                
+
+                asl rayCurrDistY_L      ; coputing vertical line starting point
+                                        ; bit 7 -> 0
+                lda #0                  ;
+                adc #0                  ;
+                aso rayCurrDistY_H      ; asl rayCurrDistY_H
+                                        ; ora rayCurrDistY_H
+                lineStartRow            ;
+                rts
+; ----------------------
+@y_hit_door
+                sty f_8
+                sec                             ;
+                sbc #1                          ;
+                ldy rayId                       ;
+                sta rayTextureId,y              ; store texture id
+
+                lda absWallHitYDistX2           ; calculating absWallHitDist
+                clc
+                ldx stepYCnt
+                adc yTimesSquareSizeX2,x        ; initial absWallHitYDistX2 + 
+                ldx rayTheta                    ; SquareSizeX2 * num of y-steps
+                ldy reducedTheta,x              ; 
+                xOverTan                        ; 
+                sta calculatedAbsWallHitDist    ; 
+
+                ldx rayTheta                   ; add or subtract calculatedAbsWallHitDist
+                lda posX                        ; extracted from branch to save 1 byte
+                ldy xPlusTheta,x                ; to / from posX
+                beq @x_minus_door
+@x_plus_door                 
+                ;lda posX
+                clc
+                adc calculatedAbsWallHitDist
+                tax
+                lda posMod16,x
+;                ldx rayTheta
+;                ldy reducedTheta,x
+
+                ;clc
+                ;adc xOverTan_8,y
+                jmp @x_end_door
+@x_minus_door                
+                ;lda posX
+                sec
+                sbc calculatedAbsWallHitDist
+                tax
+                lda posMod16,x
+;                ldx rayTheta
+;                ldy reducedTheta,x
+
+                ;sec
+                ;sbc xOverTan_8,y
+@x_end_door   
+                tay
+
+                cpy threshold
+                bcc @continue_door
+                ldy f_8
+                jmp @y_continue
+@continue_door
+                ;tax
+                ;ldy posMod16,x
+
+                ldx rayId 
+                lda texColumnOffset,y
+                sta texColumnOffsets,x
+                
+;                ldx rayTheta
+;                ldy reducedTheta_x2,x
+
+;                mxOverCosX8 rayDistDy_L,rayDistDy_H
+;                clc                     ; 
+;                lda rayCurrDistY_L      ; 
+;                adc rayDistDy_L         ; 
+;                sta rayCurrDistY_L      ; 
+;                lda rayCurrDistY_H      ; 
+;                adc rayDistDy_H         ; 
+;                sta rayCurrDistY_H      ; 
+
+
+                clc
+                ldy rayId               ; absolute difference between rayTheta and
+                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                
+
+                asl rayCurrDistY_L      ; coputing vertical line starting point
+                                        ; bit 7 -> 0
+                lda #0                  ;
+                adc #0                  ;
+                aso rayCurrDistY_H      ; asl rayCurrDistY_H
+                                        ; ora rayCurrDistY_H
+                lineStartRow            ;
                 rts
 
 ; horizontal gridline hit
-@final_res_a    
+@x_hit    
+
                 ;sta textureMapCode              ; save texture code
                 ;lda textureMapCode              ; add 1 to get light version of the texture
                 clc                             ;
                 adc #1                          ;
                 ldx rayId                       ;
                 sta rayTextureId,x              ; store texture id
+
+                cmp #21
+                bne @continue_x
+        
+
+@continue_x
 
                 lda absWallHitXDistX2           ; calculating absWallHitDist
                 clc
@@ -227,16 +331,7 @@ cast_ray
                 ldy mirrorReducedTheta,x        ; 
                 xOverTan                        ;
                 sta calculatedAbsWallHitDist    ;
-                ldy rayId                ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
-                
-                asl rayCurrDistX_L      ; computing vertical line starting point
-                ;asl                     ; bit 7 -> 0
-                lda #0                  ;
-                adc #0                  ;
-                aso rayCurrDistX_H      ; asl rayCurrDistX_H
-                                        ; ora rayCurrDistX_H
-                lineStartRow            ;
+
 
                 ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
                 lda yPlusTheta,x                ; to / from posY
@@ -257,6 +352,20 @@ cast_ray
                 ldx rayId                       ;                            
                 lda texColumnOffset,y           ;
                 sta texColumnOffsets,x          ;
+
+
+
+                ;clc
+                ldy rayId                ; absolute difference between rayTheta and
+                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                
+                asl rayCurrDistX_L      ; computing vertical line starting point
+                ;asl                     ; bit 7 -> 0
+                lda #0                  ;
+                adc #0                  ;
+                aso rayCurrDistX_H      ; asl rayCurrDistX_H
+                                        ; ora rayCurrDistX_H
+                lineStartRow            ;
                 rts
 
 

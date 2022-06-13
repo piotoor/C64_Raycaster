@@ -54,6 +54,7 @@ weapons_sprites_setup
 ;; update_weapon
 ;;---------------------------------------------
 update_weapon  
+                inc threshold
                 ldx weaponCurrentFrame
                 inx
                 cpx #WEAPON_FRAMES

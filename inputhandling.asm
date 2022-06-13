@@ -1,6 +1,6 @@
 ROTATION_SPEED=#4
 ROTATION_SPEED_RUNNING=#6
-
+threshold=$2d
 ;;---------------------------------------------
 ;; check_keyboard
 ;;---------------------------------------------
