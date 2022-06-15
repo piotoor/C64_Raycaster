@@ -88,38 +88,10 @@ check_keyboard
                 lda prb
                 and #%00010000
                 bne @end_input
-                jsr handle_doors
+                jsr handle_door_switch
 
 @end_input      rts
 
-
-;;---------------------------------------------
-;; handle_doors
-;;
-;; 0 = closed
-;; 1 = opening
-;; 2 = open
-;; 3 = closing
-;;---------------------------------------------
-handle_doors
-                lda doorState
-                cmp #DOOR_CLOSED
-                beq @door_closed
-                cmp #DOOR_OPEN
-                beq @door_open
-                rts
-@door_closed
-                lda #DOOR_OPENING
-                sta doorState
-                lda #DOOR_OPEN_TIME
-                sta stayOpenRemainingTime
-                rts
-@door_open
-                lda #DOOR_CLOSING
-                sta doorState
-                lda #0
-                sta stayOpenRemainingTime
-                rts
 
 ;;---------------------------------------------
 ;; rotate_right

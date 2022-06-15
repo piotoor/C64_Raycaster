@@ -19,7 +19,8 @@ OBJECT_SPRITE_STRETCHING_THRESHOLD=#19
 ;; Raycasting is done there, in two steps
 ;;---------------------------------------------
 compute_frame   
-                
+                lda #-1
+                sta doorInSight
                 lda playerTheta
                 clc
                 adc HALF_FOV

@@ -681,3 +681,20 @@ lsr_lsr         byte 0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7
 ; luts contain masking sprite frame indices
 regularSpriteMaskIdx    byte 0, 2, -1, 4, 11, 13, 18, 21
 stretchedSpriteMaskIdx  byte 0,1,0,2,0,0,0,3,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,0,8,0,0,0,9,0,0,0,0,0,0,0,10,11,12,0,13,0,0,0,14,15,16,0,17,18,19,20,21
+
+; doorSwitchLocations
+; 
+; 1 - doors can be switched from this map offset
+; 0 - can't'
+;
+; computed dynamically based on game_map
+; 
+doorSwitchLocations     bytes 256
+
+; doorMap
+; 
+; contains doors' ids = [0, 4)
+; 
+; computed dynamically based on game_map
+; wastes space in order to simplify addressing
+doorMap     bytes 256

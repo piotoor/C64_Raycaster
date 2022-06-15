@@ -114,8 +114,6 @@ irq_setup
 ;; setup
 ;;---------------------------------------------             
 setup
-                lda #0
-                sta threshold
                 lda #$36
                 sta $0001      ; Turn Off BASIC ROM
 
@@ -129,6 +127,7 @@ setup
                 jsr irq_setup
                 jsr raycaster_setup
                 jsr sprites_setup
+                jsr map_setup
                 jsr doors_setup
                 rts
 
