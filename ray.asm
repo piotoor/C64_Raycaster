@@ -276,6 +276,10 @@ cast_ray
                 adc calculatedAbsWallHitDist
                 tax
                 lda posMod16,x
+
+                ldx rayId
+                sta $478,x
+
                 ldx rayTheta
                 ldy reducedTheta,x
 
@@ -289,16 +293,31 @@ cast_ray
                 sbc #1
                 tax
                 lda posMod16,x
+
+
+                ldx rayId
+                sta $478,x
+
                 ldx rayTheta
                 ldy reducedTheta,x
 
                 sec
                 sbc xOverTan_8,y
 @x_end_door   
+                ldx rayId
+                sta $428,x
+                ldy rayTheta
+                lda mirrorReducedTheta,y
+                sta $450,x
+                lda $428,x
+
+
                 ldy currentDoorId
                 ;sta $428,y
                 ;tay
 
+
+        
                 ;ldx threshold
                 ;stx $450
                 cmp doorThresholds,y
@@ -432,6 +451,8 @@ cast_ray
                 adc yTimesSquareSizeX2,y        ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
                 ldy mirrorReducedTheta,x              ; 
+
+
                 xOverTan                        ; 
                 sta calculatedAbsWallHitDist    ; 
 
@@ -445,6 +466,10 @@ cast_ray
                 adc calculatedAbsWallHitDist
                 tax
                 lda posMod16,x
+
+                ldx rayId
+                sta $478,x
+
                 ldx rayTheta
                 ldy mirrorReducedTheta,x
                 ;ldy reducedTheta,x
@@ -456,19 +481,37 @@ cast_ray
                 ;lda posX
                 sec
                 sbc calculatedAbsWallHitDist
-                sbc #1
-                tax
-                lda posMod16,x
+
                 ldx rayTheta
+                ;sec
+                ;sbc #1
+                tay
+                dey
+                         ;
+
+                lda posMod16,y
+                
+                ldy rayId
+                sta $478,y
+
+                
                 ldy mirrorReducedTheta,x
                 ;ldy reducedTheta,x
 
                 sec
                 sbc xOverTan_8,y
 @y_end_door   
+                
+                ldx rayId
+                sta $428,x
+                ldy rayTheta
+                lda mirrorReducedTheta,y
+                sta $450,x
+                lda $428,x
+                
                 ldy currentDoorId
-                ;sta $428,y
-                ;tay
+                
+                
 
 
                 cmp doorThresholds,y

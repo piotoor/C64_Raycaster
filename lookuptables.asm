@@ -698,3 +698,9 @@ doorSwitchLocations     bytes 256
 ; computed dynamically based on game_map
 ; wastes space in order to simplify addressing
 doorMap     bytes 256
+
+
+;; posMod16 theta=32 workaround for doors
+;posMod16Theta32PlusWrkrnd       byte 
+
+;posMod16Theta32MinusWrkrnd      byte

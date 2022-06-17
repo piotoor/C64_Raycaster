@@ -7,10 +7,16 @@
 ;doorMapOffset=$30
 
 ; doors arrays (4 doors at one map)
+;doorThresholds=$c715
+;doorStates=$c719
+;doorTimers=$c71d
+;doorMapOffsets=$c722
+
+; doors arrays (8 doors at one map)
 doorThresholds=$c715
-doorStates=$c719
-doorTimers=$c71d
-doorMapOffsets=$c722
+doorStates=$c71d
+doorTimers=$c725
+doorMapOffsets=$c72d
 ; what door player's looking at
 doorInSight=$2d
 
@@ -22,7 +28,7 @@ DOOR_OPEN=#2
 DOOR_CLOSING=#3
 MAX_DOOR_THRESHOLD=#16
 MIN_DOOR_THRESHOLD=#0
-NUM_OF_DOORS=#4
+NUM_OF_DOORS=#8
 DOOR_TEXTURE_ID=#17
 
 ;;---------------------------------------------
@@ -54,7 +60,7 @@ doors_setup
 ;;---------------------------------------------
 handle_door_switch
                 ldx doorInSight
-                stx $428
+                ;stx $428
                 cpx #-1
                 beq @end
                 
@@ -65,7 +71,7 @@ handle_door_switch
                 adc posToMapCoords,y
                 tay
                 lda doorSwitchLocations,y
-                sta $429
+                ;sta $429
                 beq @end
                 
 
@@ -102,13 +108,13 @@ update_doors
                 
                 ldx #NUM_OF_DOORS-1 ; door id
 @loop
-                        stx $460
-                        lda doorThresholds,x
-                        sta $450,x
-                        lda doorStates,x
-                        sta $478,x
-                        lda doorTimers,x
-                        sta $4a0,x
+;                        stx $460
+;                        lda doorThresholds,x
+;                        sta $450,x
+;                        lda doorStates,x
+;                        sta $478,x
+;                        lda doorTimers,x
+;                        sta $4a0,x
 
                         lda doorStates,x
                         cmp #DOOR_OPENING
