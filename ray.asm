@@ -209,7 +209,7 @@ cast_ray
                 sbc #1
 @x_end   
                 tax                             ; calculate offset in texture to
-                ldy posMod16,x                  ; the start of vertical strip hit by the ray
+                ldy mod16,x                  ; the start of vertical strip hit by the ray
 
                 ldx rayId                       ; 
                 tya
@@ -275,7 +275,7 @@ cast_ray
                 clc
                 adc calculatedAbsWallHitDist
                 tax
-                lda posMod16,x
+                lda mod16,x
 
                 ldx rayId
                 sta $478,x
@@ -290,9 +290,9 @@ cast_ray
                 ;lda posX
                 sec
                 sbc calculatedAbsWallHitDist
-                sbc #1
+                ;sbc #1
                 tax
-                lda posMod16,x
+                lda mod16,x
 
 
                 ldx rayId
@@ -400,7 +400,7 @@ cast_ray
 @y_end   
 
                 tax                             ; calculate offset in texture to
-                ldy posMod16,x                  ; the start of vertical strip hit by the ray
+                ldy mod16,x                  ; the start of vertical strip hit by the ray
                 ldx rayId                       ;                            
                 lda texColumnOffset,y           ;
                 sta texColumnOffsets,x          ;
@@ -461,43 +461,50 @@ cast_ray
                 ldy yPlusTheta,x                ; to / from posX
                 beq @y_minus_door
 @y_plus_door                 
-                ;lda posX
-                clc
+                ;lda posY
                 adc calculatedAbsWallHitDist
                 tax
-                lda posMod16,x
 
-                ldx rayId
-                sta $478,x
+                
+                ldy gameMapOffset               
+                lda posToMapCoords,y
+                clc
+                adc #1
+                cmp posToMapCoords,x
+                bne @no_compensation_ypl
+                dex     
+@no_compensation_ypl
 
+
+                lda mod16,x
+                ldx rayId               ; debug
+                sta $478,x              ; debug
                 ldx rayTheta
                 ldy mirrorReducedTheta,x
-                ;ldy reducedTheta,x
-
                 clc
                 adc xOverTan_8,y
                 jmp @y_end_door
 @y_minus_door                
-                ;lda posX
+                ;lda posY
                 sec
                 sbc calculatedAbsWallHitDist
+                tax
+                 
 
+                ldy gameMapOffset               
+                lda posToMapCoords,y
+                clc
+                adc #1
+                cmp posToMapCoords,x
+                bne @no_compensation_ymin
+                dex     
+@no_compensation_ymin       
+
+                lda mod16,x
+                ldy rayId               ; debug
+                sta $478,y              ; debug
                 ldx rayTheta
-                ;sec
-                ;sbc #1
-                tay
-                dey
-                         ;
-
-                lda posMod16,y
-                
-                ldy rayId
-                sta $478,y
-
-                
                 ldy mirrorReducedTheta,x
-                ;ldy reducedTheta,x
-
                 sec
                 sbc xOverTan_8,y
 @y_end_door   
@@ -554,6 +561,7 @@ cast_ray
                                         ; ora rayCurrDistY_H
                 lineStartRow            ;
                 rts
+
 
 
 
