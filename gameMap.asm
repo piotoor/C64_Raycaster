@@ -67,19 +67,25 @@ compute_doorMapOffsets_and_gameMap
 ;;---------------------------------------------
 ;; compute_doorSwitchLocations
 ;;---------------------------------------------
+currDoorId=$2f
 compute_doorSwitchLocations
                 ldx #0
+                stx currDoorId
 @loop
+                ;lda #-1
+                ;sta doorSwitchLocations,x
                 lda game_map,x
                 cmp #DOOR_TEXTURE_ID
                 bne @continue
                 
                 dex
-                inc doorSwitchLocations,x       ; L
+                lda currDoorId
+                sta doorSwitchLocations,x       ; L
                 inx
                 inx
-                inc doorSwitchLocations,x       ; R
+                sta doorSwitchLocations,x       ; R
                 dex
+                
                 
                 txa     
                 tay     ; saved x in y
@@ -87,16 +93,19 @@ compute_doorSwitchLocations
                 sec
                 sbc #16
                 tax
-                inc doorSwitchLocations,x       ; U
+                lda currDoorId
+                sta doorSwitchLocations,x       ; U
                 
+                txa
                 clc
                 adc #32
                 tax
-                inc doorSwitchLocations,x       ; D
+                lda currDoorId
+                sta doorSwitchLocations,x       ; D
                 tya
                 tax     ; restored x
 
-
+                inc currDoorId
 @continue
                 inx
                 bne @loop
@@ -105,7 +114,7 @@ compute_doorSwitchLocations
 ;                ldx #0
 ;@loop2
 ;                lda doorSwitchLocations,x
-;                sta $450,x
+;                sta $4c8,x
 ;                inx
 ;                bne @loop2
 

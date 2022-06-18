@@ -3,7 +3,6 @@
 ;                        ; 1 = opening
 ;                        ; 2 = open
 ;                        ; 3 = closing
-;stayOpenRemainingTime=$2f
 ;doorMapOffset=$30
 
 ; doors arrays (4 doors at one map)
@@ -72,7 +71,8 @@ handle_door_switch
                 tay
                 lda doorSwitchLocations,y
                 ;sta $429
-                beq @end
+                cmp doorInSight
+                bne @end
                 
 
                 lda doorStates,x
