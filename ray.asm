@@ -275,8 +275,19 @@ cast_ray
                 clc
                 adc calculatedAbsWallHitDist
                 tax
-                lda mod16,x
 
+
+                ldy gameMapOffset               
+                lda mod16,y
+                clc
+                adc #1
+                cmp posToMapCoords,x
+                bne @no_compensation_xpl
+                dex     
+@no_compensation_xpl
+
+
+                lda mod16,x
                 ldx rayId
                 sta $478,x
 
@@ -292,9 +303,20 @@ cast_ray
                 sbc calculatedAbsWallHitDist
                 ;sbc #1
                 tax
+
+
+                ldy gameMapOffset               
+                lda mod16,y
+                clc
+                adc #1
+                cmp posToMapCoords,x
+                bne @no_compensation_xmin
+                dex     
+@no_compensation_xmin
+
+
+
                 lda mod16,x
-
-
                 ldx rayId
                 sta $478,x
 
@@ -499,6 +521,7 @@ cast_ray
                 bne @no_compensation_ymin
                 dex     
 @no_compensation_ymin       
+
 
                 lda mod16,x
                 ldy rayId               ; debug
