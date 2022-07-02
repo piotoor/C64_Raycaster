@@ -18,6 +18,8 @@ doorTimers=$c725
 doorMapOffsets=$c72d
 ; what door player's looking at
 doorInSight=$2d
+doorRequiredKeys=$c735          ; check with playerState
+doorRequiredTriggers=$c73d
 
 
 DOOR_OPEN_TIME=#40
@@ -49,6 +51,8 @@ doors_setup
         sta doorInSight
         rts
 
+
+; handle_door_trigger - just like switch, but for triggers only
 ;;---------------------------------------------
 ;; handle_door_switch
 ;;

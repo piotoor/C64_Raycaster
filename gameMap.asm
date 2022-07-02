@@ -40,14 +40,14 @@ game_map        byte 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
 ;; Computes doorSwitchLocations and doorMap LUTs
 ;;---------------------------------------------   
 map_setup
-                jsr compute_doorMapOffsets_and_gameMap
+                jsr compute_doorMapOffsets_and_doorMap
                 jsr compute_doorSwitchLocations
                 rts
 
 ;;---------------------------------------------
-;; compute_doorMapOffsets_and_gameMap
+;; compute_doorMapOffsets_and_doorMap
 ;;---------------------------------------------
-compute_doorMapOffsets_and_gameMap
+compute_doorMapOffsets_and_doorMap
                 ldy #0   ; keeps door id
                 ldx #0 ; could be optimized and start not on the map border
 @loop

@@ -5,10 +5,12 @@ tmpPosX=$05
 tmpPosY=$06
 playerState=$7f
 ;00000000
-;       |
-;       +- run
-;
-;
+;   |||||
+;   ||||+- run
+;   |||+-- red key
+;   ||+--- blue key
+;   |+---- yellow key
+;   +----- no key (always set to 1 - optimization)
 
 ;;---------------------------------------------
 ;; player_setup
@@ -22,6 +24,6 @@ player_setup
                 sta posY
                 lda #0
                 sta playerTheta
-                lda #0
+                lda #%00010000
                 sta playerState
                 rts
