@@ -24,8 +24,6 @@ irq_ticks=$73
 ;;---------------------------------------------
 main            
                 jsr setup
-                lda #0
-                sta synch
 @mainloop
                         lda synch
                         bne @continue
@@ -50,23 +48,24 @@ irq
                 jsr draw_objects
                 lda #SCREEN_FRAME_COLOR
                 sta $D020               ; frame color
-
                 jsr check_keyboard
                 jsr update_objects
                 jsr update_doors
 
                 lda #0
                 sta synch
-frame_not_ready inc irq_ticks
-                lda irq_ticks
-                cmp #50
+
+frame_not_ready 
+                dec irq_ticks
                 bne @end
-@update_fps     lda main_ticks
+@update_fps     
+                lda main_ticks
                 sta $400
                 
                 lda #0
-                sta irq_ticks
                 sta main_ticks
+                lda #50
+                sta irq_ticks
 @end            
 
 ;                ldx #0
@@ -119,6 +118,9 @@ setup
 
                 lda #0
                 sta main_ticks
+                sta synch
+
+                lda #50
                 sta irq_ticks
                 
                 jsr player_setup
