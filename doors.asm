@@ -121,7 +121,7 @@ doors_setup_map_specific
                 sta doorRequiredKeyMasks,y
                 jmp @end_door_trigger_type
 @yellow_key
-                lda #PLAYER_STATE_YELLOW_KEY_MASK
+                lda #PLAYER_STATE_GREEN_KEY_MASK
                 sta doorRequiredKeyMasks,y
                 jmp @end_door_trigger_type
 @no_key

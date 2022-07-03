@@ -15,6 +15,7 @@ check_keyboard
                 and #%11111110  ;
                 sta playerState ; 
 
+
 @rshift_pressed lda #%10111111
                 sta pra
                 lda prb
@@ -87,12 +88,76 @@ check_keyboard
                 sta pra
                 lda prb
                 and #%00010000
-                bne @end_input
+                ;bne @end_input
+                bne @p_pressed; debug
                 jsr handle_door_switch
+
+
+@p_pressed      lda #%11011111
+                sta pra
+                lda prb
+                and #%00000010
+                bne @o_pressed
+                ;bne @p_pressed; debug
+                jsr toggle_red_key
+
+@o_pressed      lda #%11101111
+                sta pra
+                lda prb
+                and #%01000000
+                bne @i_pressed
+                ;bne @p_pressed; debug
+                jsr toggle_blue_key
+
+@i_pressed      lda #%11101111
+                sta pra
+                lda prb
+                and #%00000010
+                bne @end_input
+                ;bne @p_pressed; debug
+                jsr toggle_green_key
 
 @end_input      rts
 
 
+;;---------------------------------------------
+;; toggle_red_key
+;;---------------------------------------------
+toggle_red_key
+                lda playerState
+                eor #%00000010
+                sta playerState
+                
+                and #%00000010
+                sta $427
+
+                rts
+
+;;---------------------------------------------
+;; toggle_blue_key
+;;---------------------------------------------
+toggle_blue_key
+                lda playerState
+                eor #%00000100
+                sta playerState
+                
+                and #%00000100
+                sta $426
+
+                rts
+
+;;---------------------------------------------
+;; toggle_green_key
+;;---------------------------------------------
+toggle_green_key
+                lda playerState
+                eor #%00001000
+                sta playerState
+                
+                and #%00001000
+                sta $425
+
+                rts
 ;;---------------------------------------------
 ;; rotate_right
 ;;---------------------------------------------
