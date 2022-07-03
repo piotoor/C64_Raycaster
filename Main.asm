@@ -127,7 +127,6 @@ setup
                 jsr irq_setup
                 jsr raycaster_setup
                 jsr sprites_setup
-                jsr map_setup
                 jsr doors_setup
                 rts
 

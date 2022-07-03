@@ -718,3 +718,5 @@ doorSwitchLocations     byte 255,255,255,255,255,255,255,255,255,255,255,255,255
 ; computed dynamically based on game_map
 ; wastes space in order to simplify addressing
 doorMap     bytes 256
+
+

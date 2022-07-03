@@ -171,9 +171,9 @@ cast_ray
 ;; vertical gridline hit
 ;;---------------------------------------------
 @y_hit    
-
-                cmp #DOOR_TEXTURE_ID
-                beq @y_hit_door                
+                clc
+                cmp #DOOR_MAP_ID_START
+                bcs @y_hit_door                
                 ;sta textureMapCode             ; save texture code
                 ;lda textureMapCode             ; subtract 1 to get dark version of the texture
                 sec                             ;
@@ -388,8 +388,9 @@ cast_ray
 ;; horizontal gridline hit
 ;;---------------------------------------------
 @x_hit    
-                cmp #DOOR_TEXTURE_ID
-                beq @x_hit_door 
+                clc
+                cmp #DOOR_MAP_ID_START
+                bcs @x_hit_door 
                 ;sta textureMapCode              ; save texture code
                 ;lda textureMapCode              ; add 1 to get light version of the texture
                 clc                             ;
