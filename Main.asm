@@ -119,7 +119,6 @@ setup
                 lda #0
                 sta main_ticks
                 sta synch
-
                 lda #50
                 sta irq_ticks
                 
@@ -139,9 +138,8 @@ raycaster_setup
                 lda #0
                 ldx #SCREEN_WIDTH -1
 @loop           
-                sta rayStart,x
+                        sta rayStart,x
                 dex
-
                 bpl @loop
 
 ; virual rays used to simplify enemy sprite visibility calculations at screen borders
