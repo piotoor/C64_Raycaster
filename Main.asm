@@ -13,6 +13,7 @@ DEFAULT_SCREEN_CHARACTER=#$A0
 BG_COLOR=#1
 
 SPRITES_MEMORY_START=$2000
+SCREEN_FRAME_COLOR=#14
 
 pra=$dc00       ; CIA#1 (Port Register A)
 prb=$dc01       ; CIA#1 (Port Register B)
@@ -51,9 +52,12 @@ irq
                 jsr draw_front_buffer
 
                 jsr draw_objects
+                lda #SCREEN_FRAME_COLOR
+                sta $D020               ; frame color
 
                 jsr check_keyboard
                 jsr update_objects
+
                 jsr update_doors
                 lda #0
                 sta synch

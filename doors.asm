@@ -238,7 +238,7 @@ handle_door_switch
 @door_closed
                 lda playerState                 ; check if player has the required key
                 and doorRequiredKeyMasks,x      ;
-                beq @end                        ;
+                beq @no_required_key            ;
 
                 lda #DOOR_OPENING
                 
@@ -253,6 +253,11 @@ handle_door_switch
 ;                sta doorTimers,x
 
 @end
+                rts
+
+@no_required_key
+                lda #2
+                sta $D020
                 rts
 
 ;;---------------------------------------------
