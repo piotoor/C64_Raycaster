@@ -155,8 +155,6 @@ currDoorId=$2f
                 ldx #0
                 stx currDoorId
 @loop
-                ;lda #-1
-                ;sta doorSwitchLocations,x
                 lda game_map,x
                 clc
                 cmp #DOOR_MAP_ID_START
@@ -217,7 +215,6 @@ currDoorId=$2f
 ;;---------------------------------------------
 handle_door_switch
                 ldx doorInSight
-                ;stx $428
                 cpx #-1
                 beq @end
                 
@@ -228,7 +225,6 @@ handle_door_switch
                 adc posToMapCoords,y
                 tay
                 lda doorSwitchLocations,y
-                ;sta $429
                 cmp doorInSight
                 bne @end
                 
@@ -245,7 +241,7 @@ handle_door_switch
                 beq @end                        ;
 
                 lda #DOOR_OPENING
-                ;sta $42a
+                
                 sta doorStates,x
                 lda #DOOR_OPEN_TIME
                 sta doorTimers,x
@@ -263,21 +259,9 @@ handle_door_switch
 ;; update_doors
 ;;---------------------------------------------
 update_doors
- ;               lda threshold
-;                sta $428
-;                lda stayOpenRemainingTime
-;                sta $429
                 
                 ldx #NUM_OF_DOORS-1 ; door id
 @loop
-;                        stx $460
-;                        lda doorThresholds,x
-;                        sta $450,x
-;                        lda doorStates,x
-;                        sta $478,x
-;                        lda doorTimers,x
-;                        sta $4a0,x
-
                         lda doorStates,x
                         cmp #DOOR_OPENING
                         beq @door_opening
@@ -287,12 +271,6 @@ update_doors
                         beq @decrease_timer
                         jmp @end
 @door_opening   
-                        ;ldy doorThresholds,x
-;                        dey
-;                        tya
-;                        sta doorThresholds,x
-                        ;lda #1
-                        ;sta $42b
                         dec doorThresholds,x
                         beq @door_open
                         jmp @end
@@ -308,10 +286,6 @@ update_doors
                         lda doorMapIds,x
                         sta game_map,y
 
-                        ;ldy doorThresholds,x
-;                        iny
-;                        tya
-;                        sta doorThresholds,x
                         inc doorThresholds,x
                         lda doorThresholds,x
                         cmp #MAX_DOOR_THRESHOLD
@@ -320,12 +294,10 @@ update_doors
 @door_closed    
                         lda #DOOR_CLOSED
                         sta doorStates,x
-                        ;dec threshold
                         jmp @end
 @decrease_timer
                         dec doorTimers,x
                         dec doorTimers,x ; twice, to distinguish between one-time and multi-time doors
-                        ;lda doorTimers,x
                         bne @end
                         lda #DOOR_CLOSING
                         sta doorStates,x

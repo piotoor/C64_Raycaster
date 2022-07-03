@@ -288,8 +288,6 @@ cast_ray
 
 
                 lda mod16,x
-                ldx rayId
-                sta $478,x
 
                 ldx rayTheta
                 ldy reducedTheta,x
@@ -301,7 +299,7 @@ cast_ray
                 ;lda posX
                 sec
                 sbc calculatedAbsWallHitDist
-                ;sbc #1
+                
                 tax
 
 
@@ -313,35 +311,14 @@ cast_ray
                 bne @no_compensation_xmin
                 dex     
 @no_compensation_xmin
-
-
-
                 lda mod16,x
-                ldx rayId
-                sta $478,x
-
                 ldx rayTheta
                 ldy reducedTheta,x
 
                 sec
                 sbc xOverTan_8,y
 @x_end_door   
-                ldx rayId
-                sta $428,x
-                ldy rayTheta
-                lda mirrorReducedTheta,y
-                sta $450,x
-                lda $428,x
-
-
                 ldy currentDoorId
-                ;sta $428,y
-                ;tay
-
-
-        
-                ;ldx threshold
-                ;stx $450
                 cmp doorThresholds,y
                 bcc @continue_door
                         ldy f_8
@@ -469,8 +446,6 @@ cast_ray
 
                 lda absWallHitXDistX2           ; calculating absWallHitDist
                 clc
-                ;ldx stepYCnt
-                ;ldx f_8
                 adc yTimesSquareSizeX2,y        ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
                 ldy mirrorReducedTheta,x              ; 
@@ -497,11 +472,7 @@ cast_ray
                 bne @no_compensation_ypl
                 dex     
 @no_compensation_ypl
-
-
                 lda mod16,x
-                ldx rayId               ; debug
-                sta $478,x              ; debug
                 ldx rayTheta
                 ldy mirrorReducedTheta,x
                 clc
@@ -522,29 +493,14 @@ cast_ray
                 bne @no_compensation_ymin
                 dex     
 @no_compensation_ymin       
-
-
                 lda mod16,x
-                ldy rayId               ; debug
-                sta $478,y              ; debug
                 ldx rayTheta
                 ldy mirrorReducedTheta,x
                 sec
                 sbc xOverTan_8,y
 @y_end_door   
-                
-                ldx rayId
-                sta $428,x
-                ldy rayTheta
-                lda mirrorReducedTheta,y
-                sta $450,x
-                lda $428,x
-                
+                              
                 ldy currentDoorId
-                
-                
-
-
                 cmp doorThresholds,y
                 bcc @continue_door_
                         ldy f_8
