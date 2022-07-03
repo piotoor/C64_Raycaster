@@ -117,7 +117,7 @@ doors_setup_map_specific
                         sta doorRequiredKeyMasks,y
                         jmp @end_door_trigger_type                       
 @trigger_door
-                        clc
+                        ;sec carry already set (bcs)
                         sbc #TRIGGER_DOOR_MAP_ID_START
                         lsr
                         lsr
@@ -154,8 +154,8 @@ currDoorId=$2f
                         sta doorSwitchLocations,x       ; R
                         dex
                         
-                        txa     
-                        tay     ; saved x in y
+                        txa                             ;
+                        tay                             ; saved x in y
 
                         sec
                         sbc #16
@@ -168,8 +168,9 @@ currDoorId=$2f
                         tax
                         lda currDoorId
                         sta doorSwitchLocations,x       ; D
-                        tya
-                        tax     ; restored x
+
+                        tya                             ;
+                        tax                             ; restored x
 
                         inc currDoorId
 @continue
@@ -220,7 +221,6 @@ handle_door_switch
                 beq @no_required_key            ;
 
                 lda #DOOR_OPENING
-                
                 sta doorStates,x
                 lda #DOOR_OPEN_TIME
                 sta doorTimers,x

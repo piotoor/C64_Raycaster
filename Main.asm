@@ -15,11 +15,6 @@ BG_COLOR=#1
 SPRITES_MEMORY_START=$2000
 SCREEN_FRAME_COLOR=#14
 
-pra=$dc00       ; CIA#1 (Port Register A)
-prb=$dc01       ; CIA#1 (Port Register B)
-ddra=$dc02      ; CIA#1 (Data Direction Register A)
-ddrb=$dc03      ; CIA#1 (Data Direction Register B)
-
 synch=$71       
 main_ticks=$72
 irq_ticks=$73
@@ -32,14 +27,14 @@ main
                 lda #0
                 sta synch
 @mainloop
-                lda synch
-                bne @continue
-                jsr compute_frame
-                jsr compute_objects
-                jsr draw_back_buffer
-                inc main_ticks
-                lda #1
-                sta synch
+                        lda synch
+                        bne @continue
+                        jsr compute_frame
+                        jsr compute_objects
+                        jsr draw_back_buffer
+                        inc main_ticks
+                        lda #1
+                        sta synch
 @continue       jmp @mainloop
                 
 ;;---------------------------------------------
@@ -47,18 +42,19 @@ main
 ;;---------------------------------------------
 irq             
                 dec $d019               ; acknowledge IRQ / clear register for next interrupt
+
                 lda synch
                 beq frame_not_ready
-                jsr draw_front_buffer
 
+                jsr draw_front_buffer
                 jsr draw_objects
                 lda #SCREEN_FRAME_COLOR
                 sta $D020               ; frame color
 
                 jsr check_keyboard
                 jsr update_objects
-
                 jsr update_doors
+
                 lda #0
                 sta synch
 frame_not_ready inc irq_ticks
