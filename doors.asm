@@ -72,64 +72,62 @@ doors_setup_map_specific
                 ldy #0          ; keeps door id
                 ldx #0          ; could be optimized and start not on the map border
 @loop
-                lda game_map,x
-                clc
-                cmp #DOOR_MAP_ID_START
-                bcc @continue
-                sta doorMapIds,y
-                cmp #65
-                beq @red_key
-                cmp #81
-                beq @red_key
+                        lda game_map,x
+                        clc
+                        cmp #DOOR_MAP_ID_START
+                        bcc @continue
+                        sta doorMapIds,y
 
-                cmp #69
-                beq @blue_key
-                cmp #85
-                beq @blue_key
+                        cmp #65
+                        beq @red_key
+                        cmp #81
+                        beq @red_key
 
-                cmp #73
-                beq @yellow_key
-                cmp #89
-                beq @yellow_key
+                        cmp #69
+                        beq @blue_key
+                        cmp #85
+                        beq @blue_key
 
-                cmp #77
-                beq @no_key
-                cmp #93
-                beq @no_key
-                
-                cmp #TRIGGER_DOOR_MAP_ID_START
-                bcs @trigger_door
+                        cmp #73
+                        beq @yellow_key
+                        cmp #89
+                        beq @yellow_key
 
+                        cmp #77
+                        beq @no_key
+                        cmp #93
+                        beq @no_key
+                        
+                        cmp #TRIGGER_DOOR_MAP_ID_START
+                        bcs @trigger_door
 @red_key
-                lda #PLAYER_STATE_RED_KEY_MASK
-                sta doorRequiredKeyMasks,y
-                jmp @end_door_trigger_type
+                        lda #PLAYER_STATE_RED_KEY_MASK
+                        sta doorRequiredKeyMasks,y
+                        jmp @end_door_trigger_type
 @blue_key
-                lda #PLAYER_STATE_BLUE_KEY_MASK
-                sta doorRequiredKeyMasks,y
-                jmp @end_door_trigger_type
+                        lda #PLAYER_STATE_BLUE_KEY_MASK
+                        sta doorRequiredKeyMasks,y
+                        jmp @end_door_trigger_type
 @yellow_key
-                lda #PLAYER_STATE_GREEN_KEY_MASK
-                sta doorRequiredKeyMasks,y
-                jmp @end_door_trigger_type
+                        lda #PLAYER_STATE_GREEN_KEY_MASK
+                        sta doorRequiredKeyMasks,y
+                        jmp @end_door_trigger_type
 @no_key
-                lda #PLAYER_STATE_NO_KEY_MASK
-                sta doorRequiredKeyMasks,y
-                jmp @end_door_trigger_type
-                
+                        lda #PLAYER_STATE_NO_KEY_MASK
+                        sta doorRequiredKeyMasks,y
+                        jmp @end_door_trigger_type                       
 @trigger_door
-                clc
-                sbc #TRIGGER_DOOR_MAP_ID_START
-                lsr
-                lsr
-                sta doorRequiredTriggers,y
-
+                        clc
+                        sbc #TRIGGER_DOOR_MAP_ID_START
+                        lsr
+                        lsr
+                        sta doorRequiredTriggers,y
 @end_door_trigger_type
-                txa
-                sta doorMapOffsets,y
-                tya
-                sta doorMap,x
-                iny
+                        txa
+                        sta doorMapOffsets,y
+                        tya
+                        sta doorMap,x
+                        iny
 @continue
                 inx
                 bne @loop
@@ -143,39 +141,37 @@ currDoorId=$2f
                 ldx #0
                 stx currDoorId
 @loop
-                lda game_map,x
-                clc
-                cmp #DOOR_MAP_ID_START
-                bcc @continue
-                
-                dex
-                lda currDoorId
-                sta doorSwitchLocations,x       ; L
-                inx
-                inx
-                sta doorSwitchLocations,x       ; R
-                dex
-                
-                
-                txa     
-                tay     ; saved x in y
+                        lda game_map,x
+                        clc
+                        cmp #DOOR_MAP_ID_START
+                        bcc @continue
+                        
+                        dex
+                        lda currDoorId
+                        sta doorSwitchLocations,x       ; L
+                        inx
+                        inx
+                        sta doorSwitchLocations,x       ; R
+                        dex
+                        
+                        txa     
+                        tay     ; saved x in y
 
-                sec
-                sbc #16
-                tax
-                lda currDoorId
-                sta doorSwitchLocations,x       ; U
-                
-                txa
-                clc
-                adc #32
-                tax
-                lda currDoorId
-                sta doorSwitchLocations,x       ; D
-                tya
-                tax     ; restored x
+                        sec
+                        sbc #16
+                        tax
+                        lda currDoorId
+                        sta doorSwitchLocations,x       ; U
+                        txa
+                        clc
+                        adc #32
+                        tax
+                        lda currDoorId
+                        sta doorSwitchLocations,x       ; D
+                        tya
+                        tax     ; restored x
 
-                inc currDoorId
+                        inc currDoorId
 @continue
                 inx
                 bne @loop
@@ -187,12 +183,8 @@ currDoorId=$2f
 ;                sta $4c8,x
 ;                inx
 ;                bne @loop2
-
                 rts
 
-
-
-; handle_door_trigger - just like switch, but for triggers only, with different TRIGGERED_DOOR_OPEN_TIME
 ;;---------------------------------------------
 ;; handle_door_switch
 ;;
@@ -216,7 +208,6 @@ handle_door_switch
                 cmp doorInSight
                 bne @end
                 
-
                 lda doorStates,x
                 cmp #DOOR_CLOSED
                 beq @door_closed
