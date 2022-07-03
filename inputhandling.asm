@@ -98,7 +98,6 @@ check_keyboard
                 lda prb
                 and #%00000010
                 bne @o_pressed
-                ;bne @p_pressed; debug
                 jsr toggle_red_key
 
 @o_pressed      lda #%11101111
@@ -106,7 +105,6 @@ check_keyboard
                 lda prb
                 and #%01000000
                 bne @i_pressed
-                ;bne @p_pressed; debug
                 jsr toggle_blue_key
 
 @i_pressed      lda #%11101111
@@ -114,7 +112,6 @@ check_keyboard
                 lda prb
                 and #%00000010
                 bne @end_input
-                ;bne @p_pressed; debug
                 jsr toggle_green_key
 
 @end_input      rts
@@ -130,7 +127,6 @@ toggle_red_key
                 
                 and #%00000010
                 sta $427
-
                 rts
 
 ;;---------------------------------------------
@@ -143,7 +139,6 @@ toggle_blue_key
                 
                 and #%00000100
                 sta $426
-
                 rts
 
 ;;---------------------------------------------
@@ -156,7 +151,6 @@ toggle_green_key
                 
                 and #%00001000
                 sta $425
-
                 rts
 ;;---------------------------------------------
 ;; rotate_right

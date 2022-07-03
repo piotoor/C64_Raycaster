@@ -1,11 +1,6 @@
-
 objectRayTheta=$85
 objectRayThetaRed=$84
 deltaTheta=$89
-
-            ; in case of more enemies, 
-                                ; 1 - render, 
-                                ; 0 - don't, it's out of sight
 objectRayThetaQuadrant=$7c       ; 0 - quadrant iii
                                 ; 2 - quadrant iv
                                 ; 4 - quadrant ii
@@ -18,9 +13,6 @@ QUADRANT_IV=#1
 
 objectPlyPosDeltaX=$87
 objectPlyPosDeltaY=$88
-
-
-
 
 objectId=$26
 ; object arrays (3 object at a given time)

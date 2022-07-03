@@ -31,6 +31,8 @@ game_map        byte  9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
 ;  97, 101, 105, 109, 113, 117, 121, 125 - triggered doors
 ; 129, 133, 137, 141, 145, 149, 153, 157 - triggered doors
 ;
+; trigger_id = (map_id - 97) << 2
+
 ; increment = 4 in order to easily produce (add or subtract 1 to get light or dark version) 
 ; indices (0, 2, 4 etc.) for the texturesVect
 ;

@@ -701,4 +701,3 @@ doorSwitchLocations     byte 255,255,255,255,255,255,255,255,255,255,255,255,255
 ; wastes space in order to simplify addressing
 doorMap     bytes 256
 
-

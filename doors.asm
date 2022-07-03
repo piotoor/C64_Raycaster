@@ -1,27 +1,14 @@
-;threshold=$2d
-;doorState=$2e           ; 0 = closed
-;                        ; 1 = opening
-;                        ; 2 = open
-;                        ; 3 = closing
-;doorMapOffset=$30
-
-; doors arrays (4 doors at one map)
-;doorThresholds=$c715
-;doorStates=$c719
-;doorTimers=$c71d
-;doorMapOffsets=$c722
-
 ; doors arrays (8 doors at one map)
 doorThresholds=$c715
 doorStates=$c71d
 doorTimers=$c725
 doorMapOffsets=$c72d
-; what door player's looking at
-doorInSight=$2d
-doorRequiredKeyMasks=$c735          ; check with playerState
+doorRequiredKeyMasks=$c735
 doorRequiredTriggers=$c73d
 doorMapIds=$c745
 
+; what door player's looking at
+doorInSight=$2d
 
 DOOR_OPEN_TIME=#80
 TRIGGERED_DOOR_OPEN_TIME=#79
@@ -51,6 +38,7 @@ doors_setup
 ;; - doorStates
 ;; - doorThresholds
 ;; - doorTimers
+;; - doorInSight
 ;;---------------------------------------------
 doors_setup_general
         ldx #NUM_OF_DOORS-1 ; door id
@@ -245,13 +233,6 @@ handle_door_switch
                 sta doorStates,x
                 lda #DOOR_OPEN_TIME
                 sta doorTimers,x
-                rts
-;@door_open
-;                lda #DOOR_CLOSING
-;                sta doorStates,x
-;                lda #0
-;                sta doorTimers,x
-
 @end
                 rts
 
