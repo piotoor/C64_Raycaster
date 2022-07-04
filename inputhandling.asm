@@ -1,5 +1,11 @@
+pra=$dc00       ; CIA#1 (Port Register A)
+prb=$dc01       ; CIA#1 (Port Register B)
+ddra=$dc02      ; CIA#1 (Data Direction Register A)
+ddrb=$dc03      ; CIA#1 (Data Direction Register B)
+
 ROTATION_SPEED=#4
 ROTATION_SPEED_RUNNING=#6
+
 
 ;;---------------------------------------------
 ;; check_keyboard
@@ -13,6 +19,7 @@ check_keyboard
                 lda playerState ; disable running (bit 0)
                 and #%11111110  ;
                 sta playerState ; 
+
 
 @rshift_pressed lda #%10111111
                 sta pra
@@ -79,12 +86,77 @@ check_keyboard
                 sta pra
                 lda prb
                 and #%00010000
-                bne @end_input
+                bne @space_pressed
                 jsr update_weapon
+
+@space_pressed  lda #%01111111
+                sta pra
+                lda prb
+                and #%00010000
+                ;bne @end_input
+                bne @p_pressed; debug
+                jsr handle_door_switch
+
+
+@p_pressed      lda #%11011111
+                sta pra
+                lda prb
+                and #%00000010
+                bne @o_pressed
+                jsr toggle_red_key
+
+@o_pressed      lda #%11101111
+                sta pra
+                lda prb
+                and #%01000000
+                bne @i_pressed
+                jsr toggle_blue_key
+
+@i_pressed      lda #%11101111
+                sta pra
+                lda prb
+                and #%00000010
+                bne @end_input
+                jsr toggle_green_key
 
 @end_input      rts
 
 
+;;---------------------------------------------
+;; toggle_red_key
+;;---------------------------------------------
+toggle_red_key
+                lda playerState
+                eor #%00000010
+                sta playerState
+                
+                and #%00000010
+                sta $427
+                rts
+
+;;---------------------------------------------
+;; toggle_blue_key
+;;---------------------------------------------
+toggle_blue_key
+                lda playerState
+                eor #%00000100
+                sta playerState
+                
+                and #%00000100
+                sta $426
+                rts
+
+;;---------------------------------------------
+;; toggle_green_key
+;;---------------------------------------------
+toggle_green_key
+                lda playerState
+                eor #%00001000
+                sta playerState
+                
+                and #%00001000
+                sta $425
+                rts
 ;;---------------------------------------------
 ;; rotate_right
 ;;---------------------------------------------
@@ -120,188 +192,57 @@ rotate_left
                 sbc ROTATION_SPEED
                 sta playerTheta
                 rts
-
+                
 ;;---------------------------------------------
 ;; move_forward
 ;;---------------------------------------------
-move_forward    
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
+move_forward           
                 lda playerTheta
                 tay
-                
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX12,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX12,y
-                sta posY
-                
-                jmp @endif
-@not_running
-                lda playerTheta
-                tay
-                
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX6,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX6,y
-                sta posY                
-@endif
-                
-                tay
-                lda posCoordsToOffset,y
-                ldy posX
-                clc
-                adc posToMapCoords,y
-                tax
-                lda game_map,x
-                beq @end
-                        lda tmpPosX
-                        sta posX
-                        lda tmpPosY
-                        sta posY
-@end             rts
+
+                jmp move_common
 
 ;;---------------------------------------------
 ;; move_back
 ;;---------------------------------------------
 move_back       
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
                 lda playerTheta
-                tay
-                
-                lda posX
-                sta tmpPosX
-                sec
-                sbc cosX12,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                sec
-                sbc sinX12,y
-                sta posY
-                
-                jmp @endif
-@not_running
-                lda playerTheta
-                tay
-                
-                lda posX
-                sta tmpPosX
-                sec
-                sbc cosX6,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                sec
-                sbc sinX6,y
-                sta posY                
-@endif
-                
-                tay
-                lda posCoordsToOffset,y
-                ldy posX
                 clc
-                adc posToMapCoords,y
-                tax
-                lda game_map,x
-                beq @end
-                        lda tmpPosX
-                        sta posX
-                        lda tmpPosY
-                        sta posY
-@end             rts
+                adc #128
+                tay
+                
+                jmp move_common
 ;;---------------------------------------------
 ;; strafe_left
 ;;---------------------------------------------
 strafe_left
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
                 lda playerTheta
                 sec
                 sbc #64
                 tay
                 
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX12,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX12,y
-                sta posY
-                
-                jmp @endif
-@not_running
-                lda playerTheta
-                sec
-                sbc #64
-                tay
-                
-                lda posX
-                sta tmpPosX
-                clc
-                adc cosX6,y
-                sta posX
-                
-                lda posY
-                sta tmpPosY
-                clc
-                adc sinX6,y
-                sta posY                
-@endif
-                
-                tay
-                lda posCoordsToOffset,y
-                ldy posX
-                clc
-                adc posToMapCoords,y
-                tax
-                lda game_map,x
-                beq @end
-                        lda tmpPosX
-                        sta posX
-                        lda tmpPosY
-                        sta posY
-@end             rts
+                jmp move_common
 
 ;;---------------------------------------------
 ;; strafe_right
 ;;---------------------------------------------
 strafe_right
-                lda playerState
-                and #%00000001
-                beq @not_running        
-@running        
                 lda playerTheta
                 clc
                 adc #64
                 tay
                 
+                jmp move_common
+
+;;---------------------------------------------
+;; move_common
+;;---------------------------------------------
+move_common
+                lda playerState
+                and #%00000001
+                beq @not_running        
+                
+@running      
                 lda posX
                 sta tmpPosX
                 clc
@@ -316,11 +257,6 @@ strafe_right
                 
                 jmp @endif
 @not_running
-                lda playerTheta
-                clc
-                adc #64
-                tay
-                
                 lda posX
                 sta tmpPosX
                 clc
@@ -333,7 +269,7 @@ strafe_right
                 adc sinX6,y
                 sta posY                
 @endif
-                
+
                 tay
                 lda posCoordsToOffset,y
                 ldy posX
@@ -346,27 +282,5 @@ strafe_right
                         sta posX
                         lda tmpPosY
                         sta posY
-@end             rts
+@end            rts
 
-
-;;---------------------------------------------
-;; update_weapon
-;;---------------------------------------------
-update_weapon
-                             
-                inc $07f8
-                inc $07f9
-                inc weaponCurrentFrame
-                lda weaponCurrentFrame
-
-                cmp #WEAPON_FRAMES
-                bne @endif
-                lda #WEAPON_SPRITE_PTR
-                sta $07f8
-                lda #WEAPON_SPRITE_PTR+2
-                sta $07f9
-                lda #0
-                sta weaponCurrentFrame
-               
-@endif
-                rts
