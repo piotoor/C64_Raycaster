@@ -128,7 +128,7 @@ setup
                 jsr raycaster_setup
                 jsr sprites_setup
                 jsr doors_setup
-                rts
+                ;rts
 
 ;;---------------------------------------------
 ;; raycaster_setup

@@ -59,7 +59,7 @@ sprites_setup
                 jsr common_sprites_setup
                 jsr weapons_sprites_setup
                 jsr objects_sprites_setup
-                rts
+                ;rts
 
 
 ;;---------------------------------------------
