@@ -48,7 +48,7 @@ backBuffer=$C800
 currentDoorId=$2e
 
 CEIL_FLOOR_COLOR=#0
-
+MIDDLE_RAY=#20
 
 ;;---------------------------------------------
 ;; init_ray_params
@@ -119,51 +119,53 @@ cast_ray
                         cmp rayCurrDistX_H
                         bcc @y_lt_x
                         bne @y_ge_x
-                                lda rayCurrDistY_L
-                                cmp rayCurrDistX_L
+                        lda rayCurrDistY_L
+                        cmp rayCurrDistX_L
                         bcs @y_ge_x
+
+
 @y_lt_x                        
-                                lda gameMapOffset       
-                                clc
-                                adc stepY
-                                tax
-                                sta gameMapOffset
-                                
-                                lda game_map,x          ; 
-                                beq @y_continue 
-                                jmp @y_hit              ; 
+                        lda gameMapOffset       
+                        clc
+                        adc stepY
+                        tax
+                        sta gameMapOffset
+                        
+                        lda game_map,x          ; 
+                        beq @y_continue 
+                        jmp @y_hit              ; 
 @y_continue
-                                clc                     ; if not hit
-                                lda rayCurrDistY_L      ; increase rayCurrDistY
-                                adc rayDistDy_L         ; 
-                                sta rayCurrDistY_L      ; 
-                                lda rayCurrDistY_H      ; 
-                                adc rayDistDy_H         ; 
-                                sta rayCurrDistY_H      ; 
+                        clc                     ; if not hit
+                        lda rayCurrDistY_L      ; increase rayCurrDistY
+                        adc rayDistDy_L         ; 
+                        sta rayCurrDistY_L      ; 
+                        lda rayCurrDistY_H      ; 
+                        adc rayDistDy_H         ; 
+                        sta rayCurrDistY_H      ; 
 
-                                inc stepYCnt            ; counts number of y steps
-                                jmp @loop    
+                        inc stepYCnt            ; counts number of y steps
+                jmp @loop    
 @y_ge_x                         
-                                lda gameMapOffset
-                                clc
-                                adc stepX
-                                tax
-                                sta gameMapOffset
+                        lda gameMapOffset
+                        clc
+                        adc stepX
+                        tax
+                        sta gameMapOffset
 
-                                lda game_map,x          ;
-                                beq @x_continue
-                                jmp @x_hit              ;
+                        lda game_map,x          ;
+                        beq @x_continue
+                        jmp @x_hit              ;
 @x_continue
-                                clc                     ; if not hit
-                                lda rayCurrDistX_L      ; increase rayCurrDistX
-                                adc rayDistDx_L         ; 
-                                sta rayCurrDistX_L      ; 
-                                lda rayCurrDistX_H      ; 
-                                adc rayDistDx_H         ; 
-                                sta rayCurrDistX_H      ; 
-                                
-                                iny                     ; counts number of x steps
-                                jmp @loop
+                        clc                     ; if not hit
+                        lda rayCurrDistX_L      ; increase rayCurrDistX
+                        adc rayDistDx_L         ; 
+                        sta rayCurrDistX_L      ; 
+                        lda rayCurrDistX_H      ; 
+                        adc rayDistDx_H         ; 
+                        sta rayCurrDistX_H      ; 
+                        
+                        iny                     ; counts number of x steps
+                jmp @loop
 
 
 ;;---------------------------------------------
@@ -172,17 +174,13 @@ cast_ray
 ;;---------------------------------------------
 @y_hit    
                 clc
-                cmp #DOOR_MAP_ID_START
-                bcs @y_hit_door                
-                ;sta textureMapCode             ; save texture code
-                ;lda textureMapCode             ; subtract 1 to get dark version of the texture
+                cmp #DOOR_MAP_ID_START          ; check if ray hit a door
+                bcs @y_hit_door                 ;
+
                 sec                             ;
                 sbc #1                          ;
                 ldy rayId                       ;
                 sta rayTextureId,y              ; store texture id
-
-
-        
 
                 lda absWallHitYDistX2           ; calculating absWallHitDist
                 clc
@@ -193,7 +191,7 @@ cast_ray
                 xOverTan                        ; 
                 sta calculatedAbsWallHitDist    ; 
 
-                ldx rayTheta                   ; add or subtract calculatedAbsWallHitDist
+                ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
                 lda posX                        ; extracted from branch to save 1 byte
                 ldy xPlusTheta,x                ; to / from posX
                 beq @x_minus
@@ -209,19 +207,14 @@ cast_ray
                 sbc #1
 @x_end   
                 tax                             ; calculate offset in texture to
-                ldy mod16,x                  ; the start of vertical strip hit by the ray
-
+                ldy mod16,x                     ; the start of vertical strip hit by the ray
                 ldx rayId                       ; 
-                tya
-                ;sta $428,x
                 lda texColumnOffset,y           ; 
                 sta texColumnOffsets,x          ; 
 
-
-
                 clc
                 ldy rayId               ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                ldx absThetaDistX2,y    ; playerTheta x2 (indexes word vector)
                 
 
                 asl rayCurrDistY_L      ; coputing vertical line starting point
@@ -245,17 +238,15 @@ cast_ray
                 ldx rayId                       ;
                 sta rayTextureId,x              ; store texture id
 
-
                 ldy gameMapOffset
                 lda doorMap,y
                 sta currentDoorId
 
-                cpx #20; todo to constant MIDDLE_RAY
-                bne @continue
-                lda currentDoorId
-                sta doorInSight 
+                cpx #MIDDLE_RAY                 ; save what door player's looking at
+                bne @continue                   ; 
+                lda currentDoorId               ; 
+                sta doorInSight                 ; 
 @continue
-
 
                 lda absWallHitYDistX2           ; calculating absWallHitDist
                 clc
@@ -266,7 +257,7 @@ cast_ray
                 xOverTan                        ; 
                 sta calculatedAbsWallHitDist    ; 
 
-                ldx rayTheta                   ; add or subtract calculatedAbsWallHitDist
+                ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
                 lda posX                        ; extracted from branch to save 1 byte
                 ldy xPlusTheta,x                ; to / from posX
                 beq @x_minus_door
@@ -276,7 +267,6 @@ cast_ray
                 adc calculatedAbsWallHitDist
                 tax
 
-
                 ldy gameMapOffset               
                 lda mod16,y
                 clc
@@ -285,13 +275,9 @@ cast_ray
                 bne @no_compensation_xpl
                 dex     
 @no_compensation_xpl
-
-
                 lda mod16,x
-
                 ldx rayTheta
                 ldy reducedTheta,x
-
                 clc
                 adc xOverTan_8,y
                 jmp @x_end_door
@@ -299,9 +285,7 @@ cast_ray
                 ;lda posX
                 sec
                 sbc calculatedAbsWallHitDist
-                
                 tax
-
 
                 ldy gameMapOffset               
                 lda mod16,y
@@ -314,17 +298,16 @@ cast_ray
                 lda mod16,x
                 ldx rayTheta
                 ldy reducedTheta,x
-
                 sec
                 sbc xOverTan_8,y
 @x_end_door   
                 ldy currentDoorId
                 cmp doorThresholds,y
                 bcc @continue_door
-                        ldy f_8
-                        jmp @y_continue
+                ldy f_8
+                jmp @y_continue
 @continue_door
-                clc
+                ;clc carry clear after bcc
                 adc #16
                 sec
                 sbc doorThresholds,y
@@ -345,12 +328,10 @@ cast_ray
                 adc rayDistDy_H         ; 
                 sta rayCurrDistY_H      ; 
 
-
                 clc
                 ldy rayId               ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                ldx absThetaDistX2,y    ; playerTheta x2 (indexes word vector)
                 
-
                 asl rayCurrDistY_L      ; coputing vertical line starting point
                                         ; bit 7 -> 0
                 lda #0                  ;
@@ -366,10 +347,9 @@ cast_ray
 ;;---------------------------------------------
 @x_hit    
                 clc
-                cmp #DOOR_MAP_ID_START
-                bcs @x_hit_door 
-                ;sta textureMapCode              ; save texture code
-                ;lda textureMapCode              ; add 1 to get light version of the texture
+                cmp #DOOR_MAP_ID_START          ; check if ray hit a door
+                bcs @x_hit_door                 ;
+
                 clc                             ;
                 adc #1                          ;
                 ldx rayId                       ;
@@ -400,24 +380,22 @@ cast_ray
 @y_end   
 
                 tax                             ; calculate offset in texture to
-                ldy mod16,x                  ; the start of vertical strip hit by the ray
+                ldy mod16,x                     ; the start of vertical strip hit by the ray
                 ldx rayId                       ;                            
                 lda texColumnOffset,y           ;
                 sta texColumnOffsets,x          ;
 
 
-
-                ;clc
-                ldy rayId                ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                ldy rayId                       ; absolute difference between rayTheta and
+                ldx absThetaDistX2,y            ; playerTheta x2 (indexes word vector)
                 
-                asl rayCurrDistX_L      ; computing vertical line starting point
-                ;asl                     ; bit 7 -> 0
-                lda #0                  ;
-                adc #0                  ;
-                aso rayCurrDistX_H      ; asl rayCurrDistX_H
-                                        ; ora rayCurrDistX_H
-                lineStartRow            ;
+                asl rayCurrDistX_L              ; computing vertical line starting point
+                ;asl                            ; bit 7 -> 0
+                lda #0                          ;
+                adc #0                          ;
+                aso rayCurrDistX_H              ; asl rayCurrDistX_H
+                                                ; ora rayCurrDistX_H
+                lineStartRow                    ;
                 rts
 
 ;;---------------------------------------------
@@ -436,10 +414,10 @@ cast_ray
                 lda doorMap,y
                 sta currentDoorId
 
-                cpx #20; todo to constant MIDDLE_RAY
-                bne @continue_
-                lda currentDoorId
-                sta doorInSight 
+                cpx #MIDDLE_RAY                 ; save what door player's looking at
+                bne @continue_                  ;
+                lda currentDoorId               ;
+                sta doorInSight                 ;
 @continue_
 
                 ldy f_8
@@ -448,14 +426,12 @@ cast_ray
                 clc
                 adc yTimesSquareSizeX2,y        ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
-                ldy mirrorReducedTheta,x              ; 
-
-
+                ldy mirrorReducedTheta,x        ; 
                 xOverTan                        ; 
                 sta calculatedAbsWallHitDist    ; 
 
-                ldx rayTheta                   ; add or subtract calculatedAbsWallHitDist
-                lda posY                       ; extracted from branch to save 1 byte
+                ldx rayTheta                    ; add or subtract calculatedAbsWallHitDist
+                lda posY                        ; extracted from branch to save 1 byte
                 ldy yPlusTheta,x                ; to / from posX
                 beq @y_minus_door
 @y_plus_door                 
@@ -463,7 +439,6 @@ cast_ray
                 adc calculatedAbsWallHitDist
                 tax
 
-                
                 ldy gameMapOffset               
                 lda posToMapCoords,y
                 clc
@@ -484,7 +459,6 @@ cast_ray
                 sbc calculatedAbsWallHitDist
                 tax
                  
-
                 ldy gameMapOffset               
                 lda posToMapCoords,y
                 clc
@@ -503,10 +477,10 @@ cast_ray
                 ldy currentDoorId
                 cmp doorThresholds,y
                 bcc @continue_door_
-                        ldy f_8
-                        jmp @x_continue
+                ldy f_8
+                jmp @x_continue
 @continue_door_
-                clc
+                ;clc carry clear after bcc
                 adc #16
                 sec
                 sbc doorThresholds,y
@@ -527,12 +501,10 @@ cast_ray
                 adc rayDistDx_H         ; 
                 sta rayCurrDistX_H      ; 
 
-
                 clc
                 ldy rayId               ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y     ; playerTheta x2 (indexes word vector)
+                ldx absThetaDistX2,y    ; playerTheta x2 (indexes word vector)
                 
-
                 asl rayCurrDistX_L      ; coputing vertical line starting point
                                         ; bit 7 -> 0
                 lda #0                  ;
@@ -541,7 +513,3 @@ cast_ray
                                         ; ora rayCurrDistY_H
                 lineStartRow            ;
                 rts
-
-
-
-
