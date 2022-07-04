@@ -209,7 +209,7 @@ calculate_sprites_pos_and_size
                 lda currObjectPerpDist
                 cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
                 bcc @stretch_object_sprite_
-                
+@destretch_object_sprite_
                         lda SPRITES_STRETCH_Y_ADDRESS           ;
                         and spriteDataBitMask                   ; destretching
                         sta SPRITES_STRETCH_Y_ADDRESS           ;
@@ -242,7 +242,8 @@ calculate_sprites_pos_and_size
                         ora objectSpriteXd10bitsCurr
                         sta SPRITES_X_COORD_BIT_8_ADDRESS
                         
-                        jmp @endif_
+                        rts
+
 @stretch_object_sprite_
                         lda SPRITES_STRETCH_Y_ADDRESS           ;
                         ora spriteDataBitMaskNeg                ; stretching
@@ -275,10 +276,8 @@ calculate_sprites_pos_and_size
                         and spriteDataBitMask
                         ora objectSpriteXd10bitsCurr
                         sta SPRITES_X_COORD_BIT_8_ADDRESS
-@endif_
 
-
-                rts
+                        rts
 
 ;;---------------------------------------------
 ;; draw_objects
