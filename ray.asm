@@ -126,7 +126,7 @@ cast_ray
 
 @y_lt_x                        
                         lda gameMapOffset       
-                        clc
+                        ;clc carry clear after bcc
                         adc stepY
                         tax
                         sta gameMapOffset
@@ -177,8 +177,9 @@ cast_ray
                 cmp #DOOR_MAP_ID_START          ; check if ray hit a door
                 bcs @y_hit_door                 ;
 
-                sec                             ;
-                sbc #1                          ;
+                ;sec                            ;
+                ;sbc #1                         ;
+                sbc #0                          ; trick to avoid sec when carry is clear (sbc #(x - 1))
                 ldy rayId                       ;
                 sta rayTextureId,y              ; store texture id
 
@@ -233,7 +234,7 @@ cast_ray
 @y_hit_door
                 sty f_8
 
-                sec                             ;
+                ;sec                            ; carry set after bcs @y_hit_door
                 sbc #1                          ;
                 ldx rayId                       ;
                 sta rayTextureId,x              ; store texture id
@@ -350,7 +351,7 @@ cast_ray
                 cmp #DOOR_MAP_ID_START          ; check if ray hit a door
                 bcs @x_hit_door                 ;
 
-                clc                             ;
+                ;clc                            ; carry is clear, bcs not taken
                 adc #1                          ;
                 ldx rayId                       ;
                 sta rayTextureId,x              ; store texture id
@@ -405,8 +406,10 @@ cast_ray
 @x_hit_door
                 sty f_8
 
-                clc                             ;
-                adc #1                          ;
+                ;clc                            ;
+                ;adc #1                         ; trick to avoid clc when carry is set
+                                                ; 
+                adc #0                          ; adding 0 to use carry
                 ldx rayId                       ;
                 sta rayTextureId,x              ; store texture id
 
