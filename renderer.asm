@@ -2,7 +2,6 @@ prevTextureId=$78
 rayStartX=$7b
 currTexColumnOffset=$7d
 
-
 spriteDataBitMask=$27
 spriteDataBitMaskNeg=$2c
 spriteDataOffset=$83

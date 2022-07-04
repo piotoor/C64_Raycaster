@@ -43,17 +43,16 @@ irq
 
                 lda synch
                 beq frame_not_ready
+                        jsr draw_front_buffer
+                        jsr draw_objects
+                        lda #SCREEN_FRAME_COLOR
+                        sta $D020               ; frame color
+                        jsr check_keyboard
+                        jsr update_objects
+                        jsr update_doors
 
-                jsr draw_front_buffer
-                jsr draw_objects
-                lda #SCREEN_FRAME_COLOR
-                sta $D020               ; frame color
-                jsr check_keyboard
-                jsr update_objects
-                jsr update_doors
-
-                lda #0
-                sta synch
+                        lda #0
+                        sta synch
 
 frame_not_ready 
                 dec irq_ticks
