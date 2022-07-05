@@ -344,11 +344,10 @@ draw_back_buffer
                         ldy rayTextureId,x
                         cpy prevTextureId               ; if current column uses the same texture as previous one
                         beq @same_texture               ; don't reload
-                        lda texturesVect,y              ; 
+                        lda texturesVectL,y             ; 
                         sta texture_L                   ; 
                         sty prevTextureId               ;
-                        iny                             ; 
-                        lda texturesVect,y              ; 
+                        lda texturesVectH,y             ; 
                         sta texture_H                   ;
 @same_texture
                         ; update upper part pointer

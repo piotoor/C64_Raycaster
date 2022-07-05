@@ -19,8 +19,8 @@ DOOR_CLOSING=#3
 MAX_DOOR_THRESHOLD=#17
 MIN_DOOR_THRESHOLD=#0
 NUM_OF_DOORS=#8
-DOOR_MAP_ID_START=#65
-TRIGGER_DOOR_MAP_ID_START=#97
+DOOR_MAP_ID_START=#33
+TRIGGER_DOOR_MAP_ID_START=#49
 
 
 ;;---------------------------------------------
@@ -78,24 +78,24 @@ doors_setup_map_specific
                         bcc @continue
                         sta doorMapIds,y
 
-                        cmp #65
+                        cmp #33
                         beq @red_key
-                        cmp #81
+                        cmp #41
                         beq @red_key
 
-                        cmp #69
+                        cmp #35
                         beq @blue_key
-                        cmp #85
+                        cmp #43
                         beq @blue_key
 
-                        cmp #73
+                        cmp #37
                         beq @yellow_key
-                        cmp #89
+                        cmp #45
                         beq @yellow_key
 
-                        cmp #77
+                        cmp #39
                         beq @no_key
-                        cmp #93
+                        cmp #47
                         beq @no_key
                         
                         cmp #TRIGGER_DOOR_MAP_ID_START

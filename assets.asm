@@ -347,55 +347,59 @@ wall_23 ; c64 no-key light
                 byte 1,1,1,1,1,1,1,1,15,15,1,1,1
                 byte 1,1,1,1,1,1,1,1,15,1,1,1,1    
 
+texturesVectL
+        byte <wall_0,<wall_1,<wall_2,<wall_3,<wall_4,<wall_5,<wall_6,<wall_7,<wall_8,<wall_9,<wall_10,<wall_11,<wall_12,<wall_13,<wall_14,<wall_15,<wall_0,<wall_1,<wall_2,<wall_3,<wall_4,<wall_5,<wall_6,<wall_7,<wall_8,<wall_9,<wall_10,<wall_11,<wall_12,<wall_13,<wall_14,<wall_15,<wall_16,<wall_17,<wall_18,<wall_19,<wall_20,<wall_21,<wall_22,<wall_23,<wall_16,<wall_17,<wall_18,<wall_19,<wall_20,<wall_21,<wall_22,<wall_23
+texturesVectH
+        byte >wall_0,>wall_1,>wall_2,>wall_3,>wall_4,>wall_5,>wall_6,>wall_7,>wall_8,>wall_9,>wall_10,>wall_11,>wall_12,>wall_13,>wall_14,>wall_15,>wall_0,>wall_1,>wall_2,>wall_3,>wall_4,>wall_5,>wall_6,>wall_7,>wall_8,>wall_9,>wall_10,>wall_11,>wall_12,>wall_13,>wall_14,>wall_15,>wall_16,>wall_17,>wall_18,>wall_19,>wall_20,>wall_21,>wall_22,>wall_23,>wall_16,>wall_17,>wall_18,>wall_19,>wall_20,>wall_21,>wall_22,>wall_23
 
-texturesVect
-        word wall_0     ; regular walls
-        word wall_1
-        word wall_2
-        word wall_3
-        word wall_4
-        word wall_5
-        word wall_6
-        word wall_7
-        word wall_8
-        word wall_9
-        word wall_10
-        word wall_11
-        word wall_12
-        word wall_13
-        word wall_14
-        word wall_15
+;texturesVect
+;        word wall_0     ; regular walls
+;        word wall_1
+;        word wall_2
+;        word wall_3
+;        word wall_4
+;        word wall_5
+;        word wall_6
+;        word wall_7
+;        word wall_8
+;        word wall_9
+;        word wall_10
+;        word wall_11
+;        word wall_12
+;        word wall_13
+;        word wall_14
+;        word wall_15
 
-        word wall_0     ; pillars walls
-        word wall_1
-        word wall_2
-        word wall_3
-        word wall_4
-        word wall_5
-        word wall_6
-        word wall_7
-        word wall_8
-        word wall_9
-        word wall_10
-        word wall_11
-        word wall_12
-        word wall_13
-        word wall_14
-        word wall_15       
+;        word wall_0     ; pillars walls
+;        word wall_1
+;        word wall_2
+;        word wall_3
+;        word wall_4
+;        word wall_5
+;        word wall_6
+;        word wall_7
+;        word wall_8
+;        word wall_9
+;        word wall_10
+;        word wall_11
+;        word wall_12
+;        word wall_13
+;        word wall_14
+;        word wall_15       
 
-        word wall_16     ; regular doors
-        word wall_17
-        word wall_18
-        word wall_19
-        word wall_20
-        word wall_21
-        word wall_22
-        word wall_23
-        word wall_16
-        word wall_17
-        word wall_18
-        word wall_19
-        word wall_20
-        word wall_21
-        word wall_22
-        word wall_23 
+;        word wall_16     ; regular doors
+;        word wall_17
+;        word wall_18
+;        word wall_19
+;        word wall_20
+;        word wall_21
+;        word wall_22
+;        word wall_23
+;        word wall_16
+;        word wall_17
+;        word wall_18
+;        word wall_19
+;        word wall_20
+;        word wall_21
+;        word wall_22
+;        word wall_23 

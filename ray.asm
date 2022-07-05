@@ -354,7 +354,7 @@ cast_ray
                 bcs @x_hit_door                 ;
 
                 ;clc                            ; carry is clear, bcs not taken
-                adc #1                          ;
+                ;adc #1                         ; no need to adc, new map_id system
                 ldx rayId                       ;
                 sta rayTextureId,x              ; store texture id
 
@@ -411,7 +411,7 @@ cast_ray
                 ;clc                            ;
                 ;adc #1                         ; trick to avoid clc when carry is set
                                                 ; 
-                adc #0                          ; adding 0 to use carry
+                ;adc #0                         ; no need to add. new mapId system
                 ldx rayId                       ;
                 sta rayTextureId,x              ; store texture id
 
