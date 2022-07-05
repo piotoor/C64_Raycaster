@@ -186,11 +186,11 @@ incbin  enemy2.spd,3
 incasm  assets.asm
 
 incasm  player.asm
+incasm  weapons.asm
 incasm  inputhandling.asm
 incasm  ray.asm
 incasm  object_ray.asm
 incasm  sprites.asm
-incasm  weapons.asm
 incasm  lookuptables.asm
 incasm  object.asm
 incasm  doors.asm

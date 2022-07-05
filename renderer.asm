@@ -28,11 +28,14 @@ compute_frame
                 ldx #SCREEN_WIDTH -1
                 stx rayId
 @loop                   
-                        jsr init_ray_params
+                        ;jsr init_ray_params
+                        incasm init_ray_params.asm
                         jsr cast_ray
                         dec rayTheta
                 dec rayId 
-                bpl @loop
+                bmi @end
+                jmp @loop
+@end
                 rts
 
 
@@ -283,16 +286,6 @@ calculate_sprites_pos_and_size
 ;; draw_objects
 ;;---------------------------------------------
 draw_objects       
-;                lda minPerpDist
-;                sta $478
-;                lda maxPerpDist
-;                sta $479
-
-;                lda minPerpId
-;                sta $4a0
-;                lda maxPerpId
-;                sta $4a1
-
                 lda #%00000011
                 sta SPRITES_ENABLE_ADDRESS
 
