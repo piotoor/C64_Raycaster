@@ -27,8 +27,8 @@ rayDistDy=$63
 rayDistDy_L=$63
 rayDistDy_H=$64
 
-absWallHitXDistX2=$67
-absWallHitYDistX2=$68
+absWallHitXDist=$67
+absWallHitYDist=$68
 
 calculatedAbsWallHitDist=$79
 ;textureMapCode=$7A             FREE MEM
@@ -65,18 +65,19 @@ init_ray_params
                 lda xPlusTheta,x
                 beq @x_minus
 @x_plus                 
-                        lda plusThetaInitCoordX2,y      ; x2 to index word array
-                        sta absWallHitXDistX2           ; x2 to index word array
+                        lda plusThetaInitCoord,y      ; x2 to index word array
+                        sta absWallHitXDist           ; x2 to index word array
                         ldy #1
                         sty stepX
                 jmp @x_end
 @x_minus                
-                        lda minusThetaInitCoordX2,y     ; x2 to index word array
-                        sta absWallHitXDistX2           ; x2 to index word array
+                        lda minusThetaInitCoord,y     ; x2 to index word array
+                        sta absWallHitXDist           ; x2 to index word array
                         ldy #-1
                         sty stepX
 @x_end          
                 ldy reducedTheta_x2,x
+                
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
 
                 ldy posY
@@ -84,26 +85,27 @@ init_ray_params
                 lda yPlusTheta,x
                 beq @y_minus
 @y_plus                 
-                        lda plusThetaInitCoordX2,y
-                        sta absWallHitYDistX2
+                        lda plusThetaInitCoord,y
+                        sta absWallHitYDist
                         ldy #MAP_HEIGHT
                         sty stepY
                 jmp @y_end
 @y_minus                
-                        lda minusThetaInitCoordX2,y
-                        sta absWallHitYDistX2
+                        lda minusThetaInitCoord,y
+                        sta absWallHitYDist
                         ldy #-16
                         sty stepY
 @y_end          
                 ldy mirrorReducedTheta_x2,x
+                
                 mxOverCos rayCurrDistY_L,rayCurrDistY_H
 
                 
                 ldx rayTheta
-                ldy reducedTheta_x2,x 
+                ldy reducedTheta,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 
-                ldy mirrorReducedTheta_x2,x
+                ldy mirrorReducedTheta,x
                 mxOverCosX16 rayDistDy_L,rayDistDy_H 
 
                 rts
@@ -183,10 +185,10 @@ cast_ray
                 ldy rayId                       ;
                 sta rayTextureId,y              ; store texture id
 
-                lda absWallHitYDistX2           ; calculating absWallHitDist
+                lda absWallHitYDist             ; calculating absWallHitDist
                 clc
                 ldx stepYCnt
-                adc yTimesSquareSizeX2,x        ; initial absWallHitYDistX2 + 
+                adc yTimesSquareSize,x          ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
                 ldy reducedTheta,x              ; 
                 xOverTan                        ; 
@@ -215,7 +217,7 @@ cast_ray
 
                 clc
                 ldy rayId               ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y    ; playerTheta x2 (indexes word vector)
+                ldx absThetaDist,y    ; 
                 
 
                 asl rayCurrDistY_L      ; coputing vertical line starting point
@@ -249,10 +251,10 @@ cast_ray
                 sta doorInSight                 ; 
 @continue
 
-                lda absWallHitYDistX2           ; calculating absWallHitDist
+                lda absWallHitYDist             ; calculating absWallHitDist
                 clc
                 ldx stepYCnt
-                adc yTimesSquareSizeX2,x        ; initial absWallHitYDistX2 + 
+                adc yTimesSquareSize,x          ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
                 ldy reducedTheta,x              ; 
                 xOverTan                        ; 
@@ -318,7 +320,7 @@ cast_ray
                 sta texColumnOffsets,x
                 
                 ldx rayTheta
-                ldy mirrorReducedTheta_x2,x
+                ldy mirrorReducedTheta,x
 
                 mxOverCosX8 rayDistDy_L,rayDistDy_H
                 clc                     ; 
@@ -331,7 +333,7 @@ cast_ray
 
                 clc
                 ldy rayId               ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y    ; playerTheta x2 (indexes word vector)
+                ldx absThetaDist,y    ; 
                 
                 asl rayCurrDistY_L      ; coputing vertical line starting point
                                         ; bit 7 -> 0
@@ -357,9 +359,9 @@ cast_ray
                 sta rayTextureId,x              ; store texture id
 
 
-                lda absWallHitXDistX2           ; calculating absWallHitDist
+                lda absWallHitXDist             ; calculating absWallHitDist
                 clc
-                adc yTimesSquareSizeX2,y        ; initial absWallHitXDistX2 + 
+                adc yTimesSquareSize,y          ; initial absWallHitXDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of x-steps
                 ldy mirrorReducedTheta,x        ; 
                 xOverTan                        ;
@@ -388,7 +390,7 @@ cast_ray
 
 
                 ldy rayId                       ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y            ; playerTheta x2 (indexes word vector)
+                ldx absThetaDist,y            ; 
                 
                 asl rayCurrDistX_L              ; computing vertical line starting point
                 ;asl                            ; bit 7 -> 0
@@ -425,9 +427,9 @@ cast_ray
 
                 ldy f_8
 
-                lda absWallHitXDistX2           ; calculating absWallHitDist
+                lda absWallHitXDist             ; calculating absWallHitDist
                 clc
-                adc yTimesSquareSizeX2,y        ; initial absWallHitYDistX2 + 
+                adc yTimesSquareSize,y          ; initial absWallHitYDistX2 + 
                 ldx rayTheta                    ; SquareSizeX2 * num of y-steps
                 ldy mirrorReducedTheta,x        ; 
                 xOverTan                        ; 
@@ -493,7 +495,7 @@ cast_ray
                 sta texColumnOffsets,x
                 
                 ldx rayTheta
-                ldy reducedTheta_x2,x
+                ldy reducedTheta,x
 
                 mxOverCosX8 rayDistDx_L,rayDistDx_H
                 clc                     ; 
@@ -506,7 +508,7 @@ cast_ray
 
                 clc
                 ldy rayId               ; absolute difference between rayTheta and
-                ldx absThetaDistX2,y    ; playerTheta x2 (indexes word vector)
+                ldx absThetaDist,y    ; 
                 
                 asl rayCurrDistX_L      ; coputing vertical line starting point
                                         ; bit 7 -> 0
@@ -516,3 +518,8 @@ cast_ray
                                         ; ora rayCurrDistY_H
                 lineStartRow            ;
                 rts
+
+
+
+
+

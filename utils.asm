@@ -7,14 +7,13 @@ g_8=$77
 ;;---------------------------------------------
 ;; mxOverCos target_L,target_H 
 ;; x in a
-;; theta in y   ; must be x2
+;; theta in y
 ;;--------------------------------------------- 
 defm mxOverCos 
         tax
-        lda mxOverCosVect,x
+        lda mxOverCosVectL,x
         sta E_16_L
-        inx
-        lda mxOverCosVect,x
+        lda mxOverCosVectH,x
         sta E_16_H
         
         lda (E_16),y
@@ -29,13 +28,12 @@ defm mxOverCos
 ;; mxOverCosX16 target_L,target_H 
 ;; special case
 ;; x = 16
-;; theta in y   ; must be x2
+;; theta in y
 ;;--------------------------------------------- 
 defm mxOverCosX16        
-        lda mxOverCos_16,y
+        lda mxOverCos_16_L,y
         sta /1
-        iny
-        lda mxOverCos_16,y
+        lda mxOverCos_16_H,y
         sta /2
         endm
 
@@ -46,26 +44,24 @@ defm mxOverCosX16
 ;; theta in y   ; must be x2
 ;;--------------------------------------------- 
 defm mxOverCosX8      
-        lda mxOverCos_8,y
+        lda mxOverCos_8_L,y
         sta /1
-        iny
-        lda mxOverCos_8,y
+        lda mxOverCos_8_H,y
         sta /2
         endm
 
 ;;---------------------------------------------
 ;; lineStartRow
 ;; dist in a
-;; theta in x   ; must be x2
+;; theta in x
 ;; 
 ;; returns line height with fisheye distortion correction
 ;; result in a
 ;;--------------------------------------------- 
 defm lineStartRow 
-        ldy perpDistanceVect,x
+        ldy perpDistanceVectL,x
         sty E_16_L
-        inx
-        ldy perpDistanceVect,x
+        ldy perpDistanceVectH,x
         sty E_16_H
         
         tay
@@ -84,16 +80,15 @@ defm lineStartRow
 ;;---------------------------------------------
 ;; perpDistance
 ;; dist in a
-;; theta in x   ; must be x2
+;; theta in x
 ;;
 ;; returns perpendicular distance (/2)
 ;; result in a
 ;;--------------------------------------------- 
 defm perpDistance 
-        ldy perpDistanceVect,x
+        ldy perpDistanceVectL,x
         sty E_16_L
-        inx
-        ldy perpDistanceVect,x
+        ldy perpDistanceVectH,x
         sty E_16_H
         
         tay
@@ -102,17 +97,16 @@ defm perpDistance
 
 ;;---------------------------------------------
 ;; xOverTan
-;; x in a       ; must be x2
+;; x in a
 ;; theta in y
 ;;
 ;; result in a
 ;;--------------------------------------------- 
 defm xOverTan 
         tax
-        lda xOverTanVect,x
+        lda xOverTanVectL,x
         sta E_16_L
-        inx
-        lda xOverTanVect,x
+        lda xOverTanVectH,x
         sta E_16_H
         
         lda (E_16),y
@@ -132,16 +126,15 @@ defm xOverTan
 
 ;;---------------------------------------------
 ;; atan
-;; x in x       ; must be x2
+;; x in x
 ;; y in y
 ;;
 ;; result in a
 ;;--------------------------------------------- 
 defm atan 
-        lda atanVect,x
+        lda atanVectL,x
         sta E_16_L
-        inx
-        lda atanVect,x
+        lda atanVectH,x
         sta E_16_H
         
         lda (E_16),y
@@ -151,17 +144,16 @@ defm atan
 ;;---------------------------------------------
 ;; fullObjectRayTheta
 ;; 
-;; quadrant in x        must be x2
+;; quadrant in x
 ;; theta in a
 ;;
 ;; returns full object ray angle 
 ;; result in a
 ;;--------------------------------------------- 
 defm fullObjectRayTheta
-        ldy fullObjectRayThetaVect,x
+        ldy fullObjectRayThetaVectL,x
         sty E_16_L
-        inx
-        ldy fullObjectRayThetaVect,x
+        ldy fullObjectRayThetaVectH,x
         sty E_16_H
         
         tay

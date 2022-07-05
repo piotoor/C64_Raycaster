@@ -30,24 +30,41 @@ mxOverCos_14    word 896,896,897,898,900,903,906,909,914,918,924,930,936,944,952
 mxOverCos_15    word 960,960,961,963,965,967,971,974,979,984,990,996,1003,1011,1020,1029,1039,1050,1062,1075,1089,1103,1119,1136,1155,1174,1195,1218,1242,1268,1296,1326,1358,1392,1430,1470,1513,1560,1612,1667,1728,1794,1867,1948,2037,2135,2245,2369,2509,2667,2850,3060,3307,3599,3951,4382,4921,5615,6543,7842,9794,13050,16383,16383,16383
 mxOverCos_16    word 1024,1024,1025,1027,1029,1032,1035,1039,1044,1050,1056,1062,1070,1078,1088,1098,1108,1120,1133,1146,1161,1177,1194,1212,1232,1252,1275,1299,1325,1352,1382,1414,1448,1485,1525,1568,1614,1664,1719,1778,1843,1914,1992,2078,2172,2278,2395,2527,2676,2845,3040,3264,3528,3839,4214,4674,5249,5990,6979,8365,10447,13920,16383,16383,16383
 
-mxOverCosVect
-        word    mxOverCos_0
-        word    mxOverCos_1
-        word    mxOverCos_2
-        word    mxOverCos_3
-        word    mxOverCos_4
-        word    mxOverCos_5
-        word    mxOverCos_6
-        word    mxOverCos_7
-        word    mxOverCos_8
-        word    mxOverCos_9
-        word    mxOverCos_10
-        word    mxOverCos_11
-        word    mxOverCos_12
-        word    mxOverCos_13
-        word    mxOverCos_14
-        word    mxOverCos_15
-        word    mxOverCos_16
+mxOverCos_8_L
+        byte 0,0,1,1,2,4,6,8,10,13,16,19,23,27,32,37,42,48,54,61,69,76,85,94,104,114,125,137,150,164,179,195,212,231,250,16,39,64,91,121,154,189,228,15,62,115,174,239,58,143,240,96,228,128,59,33,64,179,161,87,104,48,195,255,255
+mxOverCos_8_H
+        byte 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,4,4,4,4,4,5,5,5,6,6,7,8,9,10,11,13,16,20,27,40,63,63
+
+mxOverCos_16_L
+        byte 0,0,1,3,5,8,11,15,20,26,32,38,46,54,64,74,84,96,109,122,137,153,170,188,208,228,251,19,45,72,102,134,168,205,245,32,78,128,183,242,51,122,200,30,124,230,91,223,116,29,224,192,200,255,118,66,129,102,67,173,207,96,255,255,255
+mxOverCos_16_H
+        byte 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,6,6,6,6,6,7,7,7,8,8,8,9,9,10,11,11,12,13,14,16,18,20,23,27,32,40,54,63,63,63
+
+mxOverCosVectL
+        byte    <mxOverCos_0,<mxOverCos_1,<mxOverCos_2,<mxOverCos_3,<mxOverCos_4,<mxOverCos_5,<mxOverCos_6,<mxOverCos_7,<mxOverCos_8,<mxOverCos_9,<mxOverCos_10,<mxOverCos_11,<mxOverCos_12,<mxOverCos_13,<mxOverCos_14,<mxOverCos_15,<mxOverCos_16
+
+mxOverCosVectH
+        byte    >mxOverCos_0,>mxOverCos_1,>mxOverCos_2,>mxOverCos_3,>mxOverCos_4,>mxOverCos_5,>mxOverCos_6,>mxOverCos_7,>mxOverCos_8,>mxOverCos_9,>mxOverCos_10,>mxOverCos_11,>mxOverCos_12,>mxOverCos_13,>mxOverCos_14,>mxOverCos_15,>mxOverCos_16
+
+
+;mxOverCosVect
+;        word    mxOverCos_0
+;        word    mxOverCos_1
+;        word    mxOverCos_2
+;        word    mxOverCos_3
+;        word    mxOverCos_4
+;        word    mxOverCos_5
+;        word    mxOverCos_6
+;        word    mxOverCos_7
+;        word    mxOverCos_8
+;        word    mxOverCos_9
+;        word    mxOverCos_10
+;        word    mxOverCos_11
+;        word    mxOverCos_12
+;        word    mxOverCos_13
+;        word    mxOverCos_14
+;        word    mxOverCos_15
+;        word    mxOverCos_16
 
 ; perpDistance[theta][dist]
 ;
@@ -80,31 +97,37 @@ perpDistance_20 byte 0,1,2,3,4,4,5,6,7,8,9,10,11,11,12,13,14,15,16,17,18,19,19,2
 perpDistance_21 byte 0,1,2,3,3,4,5,6,7,8,9,10,10,11,12,13,14,15,16,17,17,18,19,20,21,22,23,23,24,25,26,27,28,29,30,30,31,32,33,34,35,36,37,37,38,39,40,41,42,43,44,44,45,46,47,48,49,50,50,51,52,53,54,55,56,57,57,58,59,60,61,62,63,64,64,65,66,67,68,69,70,70,71,72,73,74,75,76,77,77,78,79,80,81,82,83,84,84,85,86,87,88,89,90,90,91,92,93,94,95,96,97,97,98,99,100,101,102,103,104,104,105,106,107,108,109,110,111,111,112,113,114,115,116,117,117,118,119,120,121,122,123,124,124,125,126,127,128,129,130,131,131,132,133,134,135,136,137,137,138,139,140,141,142,143,144,144,145,146,147,148,149,150,151,151,152,153,154,155,156,157,157,158,159,160,161,162,163,164,164,165,166,167,168,169,170,171,171,172,173,174,175,176,177,177,178,179,180,181,182,183,184,184,185,186,187,188,189,190,191,191,192,193,194,195,196,197,198,198,199,200,201,202,203,204,204,205,206,207,208,209,210,211,211,212,213,214,215,216,217,218,218,219,220,221,222
 perpDistance_22 byte 0,1,2,3,3,4,5,6,7,8,9,9,10,11,12,13,14,15,15,16,17,18,19,20,21,21,22,23,24,25,26,27,27,28,29,30,31,32,33,33,34,35,36,37,38,39,39,40,41,42,43,44,45,45,46,47,48,49,50,51,51,52,53,54,55,56,57,57,58,59,60,61,62,63,63,64,65,66,67,68,69,69,70,71,72,73,74,75,75,76,77,78,79,80,81,81,82,83,84,85,86,87,87,88,89,90,91,92,93,93,94,95,96,97,98,99,99,100,101,102,103,104,105,106,106,107,108,109,110,111,112,112,113,114,115,116,117,118,118,119,120,121,122,123,124,124,125,126,127,128,129,130,130,131,132,133,134,135,136,136,137,138,139,140,141,142,142,143,144,145,146,147,148,148,149,150,151,152,153,154,154,155,156,157,158,159,160,160,161,162,163,164,165,166,166,167,168,169,170,171,172,172,173,174,175,176,177,178,178,179,180,181,182,183,184,184,185,186,187,188,189,190,190,191,192,193,194,195,196,196,197,198,199,200,201,202,202,203,204,205,206,207,208,208,209,210,211,212,213,214,214,215,216,217,218,219
 perpDistance_23 byte 0,1,2,3,3,4,5,6,7,8,8,9,10,11,12,13,14,14,15,16,17,18,19,19,20,21,22,23,24,25,25,26,27,28,29,30,30,31,32,33,34,35,35,36,37,38,39,40,41,41,42,43,44,45,46,46,47,48,49,50,51,52,52,53,54,55,56,57,57,58,59,60,61,62,63,63,64,65,66,67,68,68,69,70,71,72,73,74,74,75,76,77,78,79,79,80,81,82,83,84,84,85,86,87,88,89,90,90,91,92,93,94,95,95,96,97,98,99,100,101,101,102,103,104,105,106,106,107,108,109,110,111,112,112,113,114,115,116,117,117,118,119,120,121,122,123,123,124,125,126,127,128,128,129,130,131,132,133,133,134,135,136,137,138,139,139,140,141,142,143,144,144,145,146,147,148,149,150,150,151,152,153,154,155,155,156,157,158,159,160,161,161,162,163,164,165,166,166,167,168,169,170,171,172,172,173,174,175,176,177,177,178,179,180,181,182,182,183,184,185,186,187,188,188,189,190,191,192,193,193,194,195,196,197,198,199,199,200,201,202,203,204,204,205,206,207,208,209,210,210,211,212,213,214,215,215
-perpDistanceVect        
-        word perpDistance_0
-        word perpDistance_1
-        word perpDistance_2
-        word perpDistance_3
-        word perpDistance_4
-        word perpDistance_5
-        word perpDistance_6
-        word perpDistance_7
-        word perpDistance_8
-        word perpDistance_9
-        word perpDistance_10
-        word perpDistance_11
-        word perpDistance_12
-        word perpDistance_13
-        word perpDistance_14
-        word perpDistance_15
-        word perpDistance_16
-        word perpDistance_17
-        word perpDistance_18
-        word perpDistance_19
-        word perpDistance_20
-        word perpDistance_21
-        word perpDistance_22
-        word perpDistance_23
+
+perpDistanceVectL
+        byte <perpDistance_0,<perpDistance_1,<perpDistance_2,<perpDistance_3,<perpDistance_4,<perpDistance_5,<perpDistance_6,<perpDistance_7,<perpDistance_8,<perpDistance_9,<perpDistance_10,<perpDistance_11,<perpDistance_12,<perpDistance_13,<perpDistance_14,<perpDistance_15,<perpDistance_16,<perpDistance_17,<perpDistance_18,<perpDistance_19,<perpDistance_20,<perpDistance_21,<perpDistance_22,<perpDistance_23
+perpDistanceVectH
+        byte >perpDistance_0,>perpDistance_1,>perpDistance_2,>perpDistance_3,>perpDistance_4,>perpDistance_5,>perpDistance_6,>perpDistance_7,>perpDistance_8,>perpDistance_9,>perpDistance_10,>perpDistance_11,>perpDistance_12,>perpDistance_13,>perpDistance_14,>perpDistance_15,>perpDistance_16,>perpDistance_17,>perpDistance_18,>perpDistance_19,>perpDistance_20,>perpDistance_21,>perpDistance_22,>perpDistance_23
+
+;perpDistanceVect        
+;        word perpDistance_0
+;        word perpDistance_1
+;        word perpDistance_2
+;        word perpDistance_3
+;        word perpDistance_4
+;        word perpDistance_5
+;        word perpDistance_6
+;        word perpDistance_7
+;        word perpDistance_8
+;        word perpDistance_9
+;        word perpDistance_10
+;        word perpDistance_11
+;        word perpDistance_12
+;        word perpDistance_13
+;        word perpDistance_14
+;        word perpDistance_15
+;        word perpDistance_16
+;        word perpDistance_17
+;        word perpDistance_18
+;        word perpDistance_19
+;        word perpDistance_20
+;        word perpDistance_21
+;        word perpDistance_22
+;        word perpDistance_23
 
 ; lineStartRowLut[perpDist]
 lineStartRowLut byte 0,0,0,0,0,0,0,0,0,0,0,1,2,3,3,4,4,5,5,6,6,6,7,7,7,7,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12
@@ -249,136 +272,141 @@ xOverTan_126    byte 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
 xOverTan_127    byte 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,252,238,224,212,201,190,180,171,163,155,147,140,133,127,121,115,110,104,99,94,89,85,80,76,72,68,64,60,56,53,49,45,42,39,35,32,29,25,22,19,16,13,9,6,3,0
 xOverTan_128    byte 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,254,239,226,214,202,192,182,173,164,156,148,141,134,128,122,116,110,105,100,95,90,86,81,77,73,68,64,61,57,53,49,46,42,39,35,32,29,25,22,19,16,13,9,6,3,0
 
-xOverTanVect
-        word xOverTan_0
-        word xOverTan_1
-        word xOverTan_2
-        word xOverTan_3
-        word xOverTan_4
-        word xOverTan_5
-        word xOverTan_6
-        word xOverTan_7
-        word xOverTan_8
-        word xOverTan_9
-        word xOverTan_10
-        word xOverTan_11
-        word xOverTan_12
-        word xOverTan_13
-        word xOverTan_14
-        word xOverTan_15
-        word xOverTan_16
-        word xOverTan_17
-        word xOverTan_18
-        word xOverTan_19
-        word xOverTan_20
-        word xOverTan_21
-        word xOverTan_22
-        word xOverTan_23
-        word xOverTan_24
-        word xOverTan_25
-        word xOverTan_26
-        word xOverTan_27
-        word xOverTan_28
-        word xOverTan_29
-        word xOverTan_30
-        word xOverTan_31
-        word xOverTan_32
-        word xOverTan_33
-        word xOverTan_34
-        word xOverTan_35
-        word xOverTan_36
-        word xOverTan_37
-        word xOverTan_38
-        word xOverTan_39
-        word xOverTan_40
-        word xOverTan_41
-        word xOverTan_42
-        word xOverTan_43
-        word xOverTan_44
-        word xOverTan_45
-        word xOverTan_46
-        word xOverTan_47
-        word xOverTan_48
-        word xOverTan_49
-        word xOverTan_50
-        word xOverTan_51
-        word xOverTan_52
-        word xOverTan_53
-        word xOverTan_54
-        word xOverTan_55
-        word xOverTan_56
-        word xOverTan_57
-        word xOverTan_58
-        word xOverTan_59
-        word xOverTan_60
-        word xOverTan_61
-        word xOverTan_62
-        word xOverTan_63
-        word xOverTan_64
-        word xOverTan_65
-        word xOverTan_66
-        word xOverTan_67
-        word xOverTan_68
-        word xOverTan_69
-        word xOverTan_70
-        word xOverTan_71
-        word xOverTan_72
-        word xOverTan_73
-        word xOverTan_74
-        word xOverTan_75
-        word xOverTan_76
-        word xOverTan_77
-        word xOverTan_78
-        word xOverTan_79
-        word xOverTan_80
-        word xOverTan_81
-        word xOverTan_82
-        word xOverTan_83
-        word xOverTan_84
-        word xOverTan_85
-        word xOverTan_86
-        word xOverTan_87
-        word xOverTan_88
-        word xOverTan_89
-        word xOverTan_90
-        word xOverTan_91
-        word xOverTan_92
-        word xOverTan_93
-        word xOverTan_94
-        word xOverTan_95
-        word xOverTan_96
-        word xOverTan_97
-        word xOverTan_98
-        word xOverTan_99
-        word xOverTan_100
-        word xOverTan_101
-        word xOverTan_102
-        word xOverTan_103
-        word xOverTan_104
-        word xOverTan_105
-        word xOverTan_106
-        word xOverTan_107
-        word xOverTan_108
-        word xOverTan_109
-        word xOverTan_110
-        word xOverTan_111
-        word xOverTan_112
-        word xOverTan_113
-        word xOverTan_114
-        word xOverTan_115
-        word xOverTan_116
-        word xOverTan_117
-        word xOverTan_118
-        word xOverTan_119
-        word xOverTan_120
-        word xOverTan_121
-        word xOverTan_122
-        word xOverTan_123
-        word xOverTan_124
-        word xOverTan_125
-        word xOverTan_126
-        word xOverTan_127
-        word xOverTan_128
+
+xOverTanVectL   
+        byte <xOverTan_0,<xOverTan_1,<xOverTan_2,<xOverTan_3,<xOverTan_4,<xOverTan_5,<xOverTan_6,<xOverTan_7,<xOverTan_8,<xOverTan_9,<xOverTan_10,<xOverTan_11,<xOverTan_12,<xOverTan_13,<xOverTan_14,<xOverTan_15,<xOverTan_16,<xOverTan_17,<xOverTan_18,<xOverTan_19,<xOverTan_20,<xOverTan_21,<xOverTan_22,<xOverTan_23,<xOverTan_24,<xOverTan_25,<xOverTan_26,<xOverTan_27,<xOverTan_28,<xOverTan_29,<xOverTan_30,<xOverTan_31,<xOverTan_32,<xOverTan_33,<xOverTan_34,<xOverTan_35,<xOverTan_36,<xOverTan_37,<xOverTan_38,<xOverTan_39,<xOverTan_40,<xOverTan_41,<xOverTan_42,<xOverTan_43,<xOverTan_44,<xOverTan_45,<xOverTan_46,<xOverTan_47,<xOverTan_48,<xOverTan_49,<xOverTan_50,<xOverTan_51,<xOverTan_52,<xOverTan_53,<xOverTan_54,<xOverTan_55,<xOverTan_56,<xOverTan_57,<xOverTan_58,<xOverTan_59,<xOverTan_60,<xOverTan_61,<xOverTan_62,<xOverTan_63,<xOverTan_64,<xOverTan_65,<xOverTan_66,<xOverTan_67,<xOverTan_68,<xOverTan_69,<xOverTan_70,<xOverTan_71,<xOverTan_72,<xOverTan_73,<xOverTan_74,<xOverTan_75,<xOverTan_76,<xOverTan_77,<xOverTan_78,<xOverTan_79,<xOverTan_80,<xOverTan_81,<xOverTan_82,<xOverTan_83,<xOverTan_84,<xOverTan_85,<xOverTan_86,<xOverTan_87,<xOverTan_88,<xOverTan_89,<xOverTan_90,<xOverTan_91,<xOverTan_92,<xOverTan_93,<xOverTan_94,<xOverTan_95,<xOverTan_96,<xOverTan_97,<xOverTan_98,<xOverTan_99,<xOverTan_100,<xOverTan_101,<xOverTan_102,<xOverTan_103,<xOverTan_104,<xOverTan_105,<xOverTan_106,<xOverTan_107,<xOverTan_108,<xOverTan_109,<xOverTan_110,<xOverTan_111,<xOverTan_112,<xOverTan_113,<xOverTan_114,<xOverTan_115,<xOverTan_116,<xOverTan_117,<xOverTan_118,<xOverTan_119,<xOverTan_120,<xOverTan_121,<xOverTan_122,<xOverTan_123,<xOverTan_124,<xOverTan_125,<xOverTan_126,<xOverTan_127,<xOverTan_128
+xOverTanVectH   
+        byte >xOverTan_0,>xOverTan_1,>xOverTan_2,>xOverTan_3,>xOverTan_4,>xOverTan_5,>xOverTan_6,>xOverTan_7,>xOverTan_8,>xOverTan_9,>xOverTan_10,>xOverTan_11,>xOverTan_12,>xOverTan_13,>xOverTan_14,>xOverTan_15,>xOverTan_16,>xOverTan_17,>xOverTan_18,>xOverTan_19,>xOverTan_20,>xOverTan_21,>xOverTan_22,>xOverTan_23,>xOverTan_24,>xOverTan_25,>xOverTan_26,>xOverTan_27,>xOverTan_28,>xOverTan_29,>xOverTan_30,>xOverTan_31,>xOverTan_32,>xOverTan_33,>xOverTan_34,>xOverTan_35,>xOverTan_36,>xOverTan_37,>xOverTan_38,>xOverTan_39,>xOverTan_40,>xOverTan_41,>xOverTan_42,>xOverTan_43,>xOverTan_44,>xOverTan_45,>xOverTan_46,>xOverTan_47,>xOverTan_48,>xOverTan_49,>xOverTan_50,>xOverTan_51,>xOverTan_52,>xOverTan_53,>xOverTan_54,>xOverTan_55,>xOverTan_56,>xOverTan_57,>xOverTan_58,>xOverTan_59,>xOverTan_60,>xOverTan_61,>xOverTan_62,>xOverTan_63,>xOverTan_64,>xOverTan_65,>xOverTan_66,>xOverTan_67,>xOverTan_68,>xOverTan_69,>xOverTan_70,>xOverTan_71,>xOverTan_72,>xOverTan_73,>xOverTan_74,>xOverTan_75,>xOverTan_76,>xOverTan_77,>xOverTan_78,>xOverTan_79,>xOverTan_80,>xOverTan_81,>xOverTan_82,>xOverTan_83,>xOverTan_84,>xOverTan_85,>xOverTan_86,>xOverTan_87,>xOverTan_88,>xOverTan_89,>xOverTan_90,>xOverTan_91,>xOverTan_92,>xOverTan_93,>xOverTan_94,>xOverTan_95,>xOverTan_96,>xOverTan_97,>xOverTan_98,>xOverTan_99,>xOverTan_100,>xOverTan_101,>xOverTan_102,>xOverTan_103,>xOverTan_104,>xOverTan_105,>xOverTan_106,>xOverTan_107,>xOverTan_108,>xOverTan_109,>xOverTan_110,>xOverTan_111,>xOverTan_112,>xOverTan_113,>xOverTan_114,>xOverTan_115,>xOverTan_116,>xOverTan_117,>xOverTan_118,>xOverTan_119,>xOverTan_120,>xOverTan_121,>xOverTan_122,>xOverTan_123,>xOverTan_124,>xOverTan_125,>xOverTan_126,>xOverTan_127,>xOverTan_128
+;xOverTanVect
+;        word xOverTan_0
+;        word xOverTan_1
+;        word xOverTan_2
+;        word xOverTan_3
+;        word xOverTan_4
+;        word xOverTan_5
+;        word xOverTan_6
+;        word xOverTan_7
+;        word xOverTan_8
+;        word xOverTan_9
+;        word xOverTan_10
+;        word xOverTan_11
+;        word xOverTan_12
+;        word xOverTan_13
+;        word xOverTan_14
+;        word xOverTan_15
+;        word xOverTan_16
+;        word xOverTan_17
+;        word xOverTan_18
+;        word xOverTan_19
+;        word xOverTan_20
+;        word xOverTan_21
+;        word xOverTan_22
+;        word xOverTan_23
+;        word xOverTan_24
+;        word xOverTan_25
+;        word xOverTan_26
+;        word xOverTan_27
+;        word xOverTan_28
+;        word xOverTan_29
+;        word xOverTan_30
+;        word xOverTan_31
+;        word xOverTan_32
+;        word xOverTan_33
+;        word xOverTan_34
+;        word xOverTan_35
+;        word xOverTan_36
+;        word xOverTan_37
+;        word xOverTan_38
+;        word xOverTan_39
+;        word xOverTan_40
+;        word xOverTan_41
+;        word xOverTan_42
+;        word xOverTan_43
+;        word xOverTan_44
+;        word xOverTan_45
+;        word xOverTan_46
+;        word xOverTan_47
+;        word xOverTan_48
+;        word xOverTan_49
+;        word xOverTan_50
+;        word xOverTan_51
+;        word xOverTan_52
+;        word xOverTan_53
+;        word xOverTan_54
+;        word xOverTan_55
+;        word xOverTan_56
+;        word xOverTan_57
+;        word xOverTan_58
+;        word xOverTan_59
+;        word xOverTan_60
+;        word xOverTan_61
+;        word xOverTan_62
+;        word xOverTan_63
+;        word xOverTan_64
+;        word xOverTan_65
+;        word xOverTan_66
+;        word xOverTan_67
+;        word xOverTan_68
+;        word xOverTan_69
+;        word xOverTan_70
+;        word xOverTan_71
+;        word xOverTan_72
+;        word xOverTan_73
+;        word xOverTan_74
+;        word xOverTan_75
+;        word xOverTan_76
+;        word xOverTan_77
+;        word xOverTan_78
+;        word xOverTan_79
+;        word xOverTan_80
+;        word xOverTan_81
+;        word xOverTan_82
+;        word xOverTan_83
+;        word xOverTan_84
+;        word xOverTan_85
+;        word xOverTan_86
+;        word xOverTan_87
+;        word xOverTan_88
+;        word xOverTan_89
+;        word xOverTan_90
+;        word xOverTan_91
+;        word xOverTan_92
+;        word xOverTan_93
+;        word xOverTan_94
+;        word xOverTan_95
+;        word xOverTan_96
+;        word xOverTan_97
+;        word xOverTan_98
+;        word xOverTan_99
+;        word xOverTan_100
+;        word xOverTan_101
+;        word xOverTan_102
+;        word xOverTan_103
+;        word xOverTan_104
+;        word xOverTan_105
+;        word xOverTan_106
+;        word xOverTan_107
+;        word xOverTan_108
+;        word xOverTan_109
+;        word xOverTan_110
+;        word xOverTan_111
+;        word xOverTan_112
+;        word xOverTan_113
+;        word xOverTan_114
+;        word xOverTan_115
+;        word xOverTan_116
+;        word xOverTan_117
+;        word xOverTan_118
+;        word xOverTan_119
+;        word xOverTan_120
+;        word xOverTan_121
+;        word xOverTan_122
+;        word xOverTan_123
+;        word xOverTan_124
+;        word xOverTan_125
+;        word xOverTan_126
+;        word xOverTan_127
+;        word xOverTan_128
 
 
 ; atan(y/x)
@@ -452,72 +480,77 @@ atan_62 byte 0,1,1,2,3,3,4,5,5,6,7,7,8,8,9,10,10,11,12,12,13,13,14,14,15,16,16,1
 atan_63 byte 0,1,1,2,3,3,4,5,5,6,6,7,8,8,9,10,10,11,11,12,13,13,14,14,15,15,16,16,17,18,18,19,19,20,20,21,21,22,22,23,23,24,24,24,25,25,26,26,27,27,27,28,28,28,29,29,30,30,30,31,31,31,32,32,32
 atan_64 byte 0,1,1,2,3,3,4,4,5,6,6,7,8,8,9,9,10,11,11,12,12,13,13,14,15,15,16,16,17,17,18,18,19,19,20,20,21,21,22,22,23,23,24,24,25,25,25,26,26,27,27,27,28,28,29,29,29,30,30,30,31,31,31,32,32
 
-atanVect
-        word atan_0
-        word atan_1
-        word atan_2
-        word atan_3
-        word atan_4
-        word atan_5
-        word atan_6
-        word atan_7
-        word atan_8
-        word atan_9
-        word atan_10
-        word atan_11
-        word atan_12
-        word atan_13
-        word atan_14
-        word atan_15
-        word atan_16
-        word atan_17
-        word atan_18
-        word atan_19
-        word atan_20
-        word atan_21
-        word atan_22
-        word atan_23
-        word atan_24
-        word atan_25
-        word atan_26
-        word atan_27
-        word atan_28
-        word atan_29
-        word atan_30
-        word atan_31
-        word atan_32
-        word atan_33
-        word atan_34
-        word atan_35
-        word atan_36
-        word atan_37
-        word atan_38
-        word atan_39
-        word atan_40
-        word atan_41
-        word atan_42
-        word atan_43
-        word atan_44
-        word atan_45
-        word atan_46
-        word atan_47
-        word atan_48
-        word atan_49
-        word atan_50
-        word atan_51
-        word atan_52
-        word atan_53
-        word atan_54
-        word atan_55
-        word atan_56
-        word atan_57
-        word atan_58
-        word atan_59
-        word atan_60
-        word atan_61
-        word atan_62
-        word atan_63
-        word atan_64
+atanVectL
+        byte <atan_0,<atan_1,<atan_2,<atan_3,<atan_4,<atan_5,<atan_6,<atan_7,<atan_8,<atan_9,<atan_10,<atan_11,<atan_12,<atan_13,<atan_14,<atan_15,<atan_16,<atan_17,<atan_18,<atan_19,<atan_20,<atan_21,<atan_22,<atan_23,<atan_24,<atan_25,<atan_26,<atan_27,<atan_28,<atan_29,<atan_30,<atan_31,<atan_32,<atan_33,<atan_34,<atan_35,<atan_36,<atan_37,<atan_38,<atan_39,<atan_40,<atan_41,<atan_42,<atan_43,<atan_44,<atan_45,<atan_46,<atan_47,<atan_48,<atan_49,<atan_50,<atan_51,<atan_52,<atan_53,<atan_54,<atan_55,<atan_56,<atan_57,<atan_58,<atan_59,<atan_60,<atan_61,<atan_62,<atan_63,<atan_64
+atanVectH
+        byte >atan_0,>atan_1,>atan_2,>atan_3,>atan_4,>atan_5,>atan_6,>atan_7,>atan_8,>atan_9,>atan_10,>atan_11,>atan_12,>atan_13,>atan_14,>atan_15,>atan_16,>atan_17,>atan_18,>atan_19,>atan_20,>atan_21,>atan_22,>atan_23,>atan_24,>atan_25,>atan_26,>atan_27,>atan_28,>atan_29,>atan_30,>atan_31,>atan_32,>atan_33,>atan_34,>atan_35,>atan_36,>atan_37,>atan_38,>atan_39,>atan_40,>atan_41,>atan_42,>atan_43,>atan_44,>atan_45,>atan_46,>atan_47,>atan_48,>atan_49,>atan_50,>atan_51,>atan_52,>atan_53,>atan_54,>atan_55,>atan_56,>atan_57,>atan_58,>atan_59,>atan_60,>atan_61,>atan_62,>atan_63,>atan_64
+
+;atanVect
+;        word atan_0
+;        word atan_1
+;        word atan_2
+;        word atan_3
+;        word atan_4
+;        word atan_5
+;        word atan_6
+;        word atan_7
+;        word atan_8
+;        word atan_9
+;        word atan_10
+;        word atan_11
+;        word atan_12
+;        word atan_13
+;        word atan_14
+;        word atan_15
+;        word atan_16
+;        word atan_17
+;        word atan_18
+;        word atan_19
+;        word atan_20
+;        word atan_21
+;        word atan_22
+;        word atan_23
+;        word atan_24
+;        word atan_25
+;        word atan_26
+;        word atan_27
+;        word atan_28
+;        word atan_29
+;        word atan_30
+;        word atan_31
+;        word atan_32
+;        word atan_33
+;        word atan_34
+;        word atan_35
+;        word atan_36
+;        word atan_37
+;        word atan_38
+;        word atan_39
+;        word atan_40
+;        word atan_41
+;        word atan_42
+;        word atan_43
+;        word atan_44
+;        word atan_45
+;        word atan_46
+;        word atan_47
+;        word atan_48
+;        word atan_49
+;        word atan_50
+;        word atan_51
+;        word atan_52
+;        word atan_53
+;        word atan_54
+;        word atan_55
+;        word atan_56
+;        word atan_57
+;        word atan_58
+;        word atan_59
+;        word atan_60
+;        word atan_61
+;        word atan_62
+;        word atan_63
+;        word atan_64
 
 ; fun[theta]
 ;
@@ -562,8 +595,8 @@ mod16                byte 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,
 ; distance to the first grid line in + and - direction
 ;
 ; x = [0; 256)
-minusThetaInitCoordX2   byte 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30
-plusThetaInitCoordX2    byte 32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2
+minusThetaInitCoord     byte 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+plusThetaInitCoord      byte 16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1
 
 ; lut[screenCol]
 ;
@@ -577,6 +610,7 @@ backBuffUpperH          byte $c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8
 ; 
 ; Absolute distance between player's angle and ray angle
 absThetaDistX2          byte 40,38,36,34,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
+absThetaDist            byte 20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
 
 ; texColumnOffset[i]
 ; offset to the beginning of a given texture vertical strip
@@ -608,7 +642,7 @@ textureMappingCoords ; wasted RAM again
 ; points to the rightmost column
 ; y - screen col
 textureMappingOffsets   byte 0,14,28,42,56,70,84,98,112,126,140,154,168
-yTimesSquareSizeX2      byte 0,32,64,96,128,160,192,224,0,32,64,96,128,160,192,224
+yTimesSquareSize        byte 0,16,32,48,64,80,96,112,0,16,32,48,64,80,96,112
 
 ; objectSpriteScaleFrameIdx[objectPerpDistance]
 ;
@@ -658,11 +692,16 @@ fullObjectRayTheta_1    byte 0,255,254,253,252,251,250,249,248,247,246,245,244,2
 fullObjectRayTheta_2    byte 128,127,126,125,124,123,122,121,120,119,118,117,116,115,114,113,112,111,110,109,108,107,106,105,104,103,102,101,100,99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64
 fullObjectRayTheta_3    byte 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64
 
-fullObjectRayThetaVect
-        word fullObjectRayTheta_0
-        word fullObjectRayTheta_1
-        word fullObjectRayTheta_2
-        word fullObjectRayTheta_3
+;fullObjectRayThetaVect
+;        word fullObjectRayTheta_0
+;        word fullObjectRayTheta_1
+;        word fullObjectRayTheta_2
+;        word fullObjectRayTheta_3
+
+fullObjectRayThetaVectL
+        byte <fullObjectRayTheta_0,<fullObjectRayTheta_1,<fullObjectRayTheta_2,<fullObjectRayTheta_3
+fullObjectRayThetaVectH
+        byte >fullObjectRayTheta_0,>fullObjectRayTheta_1,>fullObjectRayTheta_2,>fullObjectRayTheta_3
 
 ; reduceDeltaThetaToHalfAngle[theta]
 ; 
@@ -670,9 +709,9 @@ fullObjectRayThetaVect
 ; returns 256 - theta if theta > 128
 reduceDeltaThetaToHalfAngle     byte 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,127,126,125,124,123,122,121,120,119,118,117,116,115,114,113,112,111,110,109,108,107,106,105,104,103,102,101,100,99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60,59,58,57,56,55,54,53,52,51,50,49,48,47,46,45,44,43,42,41,40,39,38,37,36,35,34,33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1
 
-; lsr_lsr_X2
+; lsr_lsr
 ; x = [0; 256)
-lsr_lsr_X2      byte 0,0,0,0,2,2,2,2,4,4,4,4,6,6,6,6,8,8,8,8,10,10,10,10,12,12,12,12,14,14,14,14,16,16,16,16,18,18,18,18,20,20,20,20,22,22,22,22,24,24,24,24,26,26,26,26,28,28,28,28,30,30,30,30,32,32,32,32,34,34,34,34,36,36,36,36,38,38,38,38,40,40,40,40,42,42,42,42,44,44,44,44,46,46,46,46,48,48,48,48,50,50,50,50,52,52,52,52,54,54,54,54,56,56,56,56,58,58,58,58,60,60,60,60,62,62,62,62,64,64,64,64,66,66,66,66,68,68,68,68,70,70,70,70,72,72,72,72,74,74,74,74,76,76,76,76,78,78,78,78,80,80,80,80,82,82,82,82,84,84,84,84,86,86,86,86,88,88,88,88,90,90,90,90,92,92,92,92,94,94,94,94,96,96,96,96,98,98,98,98,100,100,100,100,102,102,102,102,104,104,104,104,106,106,106,106,108,108,108,108,110,110,110,110,112,112,112,112,114,114,114,114,116,116,116,116,118,118,118,118,120,120,120,120,122,122,122,122,124,124,124,124,126,126,126,126
+;lsr_lsr_X2      byte 0,0,0,0,2,2,2,2,4,4,4,4,6,6,6,6,8,8,8,8,10,10,10,10,12,12,12,12,14,14,14,14,16,16,16,16,18,18,18,18,20,20,20,20,22,22,22,22,24,24,24,24,26,26,26,26,28,28,28,28,30,30,30,30,32,32,32,32,34,34,34,34,36,36,36,36,38,38,38,38,40,40,40,40,42,42,42,42,44,44,44,44,46,46,46,46,48,48,48,48,50,50,50,50,52,52,52,52,54,54,54,54,56,56,56,56,58,58,58,58,60,60,60,60,62,62,62,62,64,64,64,64,66,66,66,66,68,68,68,68,70,70,70,70,72,72,72,72,74,74,74,74,76,76,76,76,78,78,78,78,80,80,80,80,82,82,82,82,84,84,84,84,86,86,86,86,88,88,88,88,90,90,90,90,92,92,92,92,94,94,94,94,96,96,96,96,98,98,98,98,100,100,100,100,102,102,102,102,104,104,104,104,106,106,106,106,108,108,108,108,110,110,110,110,112,112,112,112,114,114,114,114,116,116,116,116,118,118,118,118,120,120,120,120,122,122,122,122,124,124,124,124,126,126,126,126
 lsr_lsr         byte 0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,15,16,16,16,16,17,17,17,17,18,18,18,18,19,19,19,19,20,20,20,20,21,21,21,21,22,22,22,22,23,23,23,23,24,24,24,24,25,25,25,25,26,26,26,26,27,27,27,27,28,28,28,28,29,29,29,29,30,30,30,30,31,31,31,31,32,32,32,32,33,33,33,33,34,34,34,34,35,35,35,35,36,36,36,36,37,37,37,37,38,38,38,38,39,39,39,39,40,40,40,40,41,41,41,41,42,42,42,42,43,43,43,43,44,44,44,44,45,45,45,45,46,46,46,46,47,47,47,47,48,48,48,48,49,49,49,49,50,50,50,50,51,51,51,51,52,52,52,52,53,53,53,53,54,54,54,54,55,55,55,55,56,56,56,56,57,57,57,57,58,58,58,58,59,59,59,59,60,60,60,60,61,61,61,61,62,62,62,62,63,63,63,63
    
 ; lut[bitmask]

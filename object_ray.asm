@@ -1,11 +1,7 @@
 objectRayTheta=$85
 objectRayThetaRed=$84
 deltaTheta=$89
-objectRayThetaQuadrant=$7c       ; 0 - quadrant iii
-                                ; 2 - quadrant iv
-                                ; 4 - quadrant ii
-                                ; 6 - quadrant i
-
+objectRayThetaQuadrant=$7c       
 QUADRANT_I=#3
 QUADRANT_II=#2
 QUADRANT_III=#0
@@ -52,7 +48,7 @@ init_object_ray_params
                 sta objectPlyPosDeltaX
                 
                 lda objectRayThetaQuadrant
-                ora #%00000010
+                ora #%00000001
                 sta objectRayThetaQuadrant
                 jmp @endif_x
 @posX_ge                                        ; enemyRay goes left
@@ -72,7 +68,7 @@ init_object_ray_params
                 sta objectPlyPosDeltaY
 
                 lda objectRayThetaQuadrant
-                ora #%00000100
+                ora #%00000010
                 sta objectRayThetaQuadrant
                 jmp @endif_y
 @posY_ge                                        ; enemyRay goes up
@@ -90,13 +86,13 @@ init_object_ray_params
 
                 lda lsr_lsr,y                   ;
                 ldy objectPlyPosDeltaX           ;
-                ldx lsr_lsr_X2,y                ;
+                ldx lsr_lsr,y                ;
                 tay                             ;
                 jmp @endif_atan                 ;
 
 @lt_64                                          ;
                 lda objectPlyPosDeltaX           ;
-                asl                             ;
+                                             ;
                 tax                             ;
                 
 @endif_atan     
@@ -165,21 +161,21 @@ init_object_ray_params
                 bcs @ge_32
 @lt_32
                 ldy objectPlyPosDeltaX
-                lda minusThetaInitCoordX2,y
+                lda minusThetaInitCoord,y
                 ldy reducedTheta_x2,x
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
                 ldx objectRayThetaRed
-                ldy reducedTheta_x2,x 
+                ldy reducedTheta,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 rts
 @ge_32
                 ldy objectPlyPosDeltaY
-                lda minusThetaInitCoordX2,y
+                lda minusThetaInitCoord,y
                 ldy mirrorReducedTheta_x2,x
                 mxOverCos rayCurrDistX_L,rayCurrDistX_H
 
                 ldx objectRayThetaRed
-                ldy mirrorReducedTheta_x2,x 
+                ldy mirrorReducedTheta,x 
                 mxOverCosX16 rayDistDx_L,rayDistDx_H 
                 rts
 
@@ -212,8 +208,7 @@ cast_object_ray
                 jmp @loop
 @endloop
 
-                lda deltaTheta
-                asl 
+                lda deltaTheta 
                 tax
                 
                 lda rayCurrDistX_L      ; dividing distance by 128
