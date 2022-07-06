@@ -34,7 +34,10 @@ main
                         lda #1
                         sta synch
 @continue       jmp @mainloop
-                
+    
+
+REG_SCREENCTL_1=$d011
+REG_RASTERLINE=$d012            
 ;;---------------------------------------------
 ;; irq
 ;;---------------------------------------------
@@ -76,8 +79,35 @@ frame_not_ready
 ;                lda $d02a               ; enemy sprite color test
 ;                eor #%00000100
 ;                sta $d02a
+
+;                lda REG_SCREENCTL_1
+;                ora #08
+;                sta REG_SCREENCTL_1
+;                lda #249
+;                sta REG_RASTERLINE
+;                lda #<draw_status_bar
+;                ldx #>draw_status_bar
+;                sta $0314
+;                stx $0315
                 jmp $ea31               ; kernel irq routine
 
+;;;---------------------------------------------
+;;; draw_status_bar
+;;;---------------------------------------------             
+;draw_status_bar
+;                dec $d019
+
+;                lda REG_SCREENCTL_1
+;                and #247
+;                sta REG_SCREENCTL_1
+;                lda #252
+;                sta REG_RASTERLINE
+;                lda #<irq
+;                ldx #>irq
+;                sta $0314
+;                stx $0315
+
+;                jmp $ea31
 ;;---------------------------------------------
 ;; irq_setup
 ;;---------------------------------------------             
@@ -94,16 +124,16 @@ irq_setup
                 sta $d01a   ; rasterbeam irq %00000001)
 
                 lda #<irq   ; set custom irq routine address
-                ldx #>irq 
+                ldx #>irq
                 sta $0314   
                 stx $0315   
 
-                lda #$ff    
-                sta $d012
+                lda #249  
+                sta REG_RASTERLINE
 
-                lda $d011
+                lda REG_SCREENCTL_1
                 and #$7f
-                sta $d011
+                sta REG_SCREENCTL_1
 
                 cli
                 rts
