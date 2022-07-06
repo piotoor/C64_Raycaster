@@ -55,6 +55,9 @@ compute_objects
                 ldx #MAX_NUM_OF_OBJECTS-1
                 stx objectId
 @loop                   
+                        ldx objectId
+                        lda objectAlive,x
+                        beq @skip_object
                         jsr init_object_ray_params
 
                         ldx objectId
@@ -292,6 +295,9 @@ draw_objects
                 ldx #MAX_NUM_OF_OBJECTS-1
                 stx objectId
 @loop                   
+                        ldx objectId
+                        lda objectAlive,x
+                        beq @skip_object
                         lda objectInFOV,x
                         beq @skip_object
 

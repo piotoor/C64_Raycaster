@@ -132,6 +132,11 @@ toggle_red_key
                 
                 and #%00000010
                 sta $427
+
+                ldx #0
+                lda objectAlive,x
+                eor #1
+                sta objectAlive,x
                 rts
 
 ;;---------------------------------------------
