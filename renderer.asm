@@ -330,6 +330,8 @@ draw_objects
 ;; Lower part is just a mirror.
 ;;---------------------------------------------
 draw_back_buffer 
+                lda #$c9
+                sta E_16_H
                 lda #-1
                 sta prevTextureId
                 ldx #SCREEN_WIDTH -1
@@ -346,8 +348,13 @@ draw_back_buffer
                         ; update upper part pointer
                         lda backBuffUpperL,x
                         sta E_16_L
-                        lda backBuffUpperH,x
-                        sta E_16_H
+
+                        cpx #MIDDLE_RAY-1
+                        bne @back_buffer_h_unchanged
+                        ;lda backBuffUpperH,x
+                        ;sta E_16_H
+                        dec E_16_H
+@back_buffer_h_unchanged
 
                         lda #CEIL_FLOOR_COLOR   
                         ldy rayStart,x
