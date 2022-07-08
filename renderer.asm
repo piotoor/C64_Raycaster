@@ -150,8 +150,8 @@ prepare_masking_sprite
                 clc
                 tax
                 lda regularSpriteMaskIdx,x
-                ldx objectId
-                sta $430,x
+                ;ldx objectId
+                ;sta $430,x
                 adc #MASKING_SPRITE_PTR
                 ldy maskingSpriteDataOffset
                 sta SPRITES_PTR_ADDRESS_START,y
@@ -340,10 +340,10 @@ draw_objects
                         adc objectSpriteScaleFrameIdx,y
                         ldy spriteDataOffset
                         sta SPRITES_PTR_ADDRESS_START,y
-                        ldx objectId
-                        sta $478,x
-                        lda objectRayId,x
-                        sta $450,x
+                        ;ldx objectId
+                        ;sta $478,x
+                        ;lda objectRayId,x
+                        ;sta $450,x
 
                         jsr calculate_sprites_pos_and_size
                                 
