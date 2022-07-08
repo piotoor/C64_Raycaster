@@ -68,7 +68,7 @@ objects_setup
 
 MASKING_SPRITE_COLOR=#0
 MASKING_SPRITE_ANIM_FRAMES=#22
-OBJECT_SPRITE_ANIM_FRAMES=#6
+;OBJECT_SPRITE_ANIM_FRAMES=#6
 
 MASKING_SPRITE_PTR=#WEAPON_SPRITE_PTR+#WEAPON_SPRITE_ANIM_FRAMES
 OBJECT_SPRITE_PTR=#MASKING_SPRITE_PTR+#MASKING_SPRITE_ANIM_FRAMES
@@ -150,8 +150,8 @@ objects_sprites_setup
 ;; update_objects
 ;;---------------------------------------------  
 update_objects
-                lda objectFrameOffset
-                eor #%00001001
-                sta objectFrameOffset
+;                lda objectFrameOffset
+;                eor #%00001001
+;                sta objectFrameOffset
                 rts
 
