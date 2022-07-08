@@ -1,6 +1,7 @@
 prevTextureId=$78
 rayStartX=$7b
 currTexColumnOffset=$7d
+currObjectSpriteScaleFrameIdx=$7a
 
 spriteDataBitMask=$27
 spriteDataBitMaskNeg=$2c
@@ -228,12 +229,20 @@ calculate_sprites_pos_and_size
                         tay
                         
                         lda objectSpriteX,x
-                        ldx #140
+                        ;ldx #140
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
                         iny
                         iny
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
-                        txa 
+                        ;txa 
+
+                        ldx objectId
+                        sty f_8
+                        ldy objectPosLevel,x
+                        ldx currObjectSpriteScaleFrameIdx
+                        stx $428
+                        normalSpriteScalingY
+                        ldy f_8
                         sta SPRITES_COORD_Y_ADDRESS_START,y     ; sprite
                         dey
                         dey 
@@ -263,12 +272,20 @@ calculate_sprites_pos_and_size
                         tay
 
                         lda stretchedObjectSpriteX,x
-                        ldx #130
+                        ;ldx #130
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
                         iny
                         iny
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
-                        txa 
+                        ;txa 
+
+                        ldx objectId
+                        sty f_8
+                        ldy objectPosLevel,x
+                        ldx currObjectSpriteScaleFrameIdx
+                        stx $428
+                        stretchedSpriteScalingY
+                        ldy f_8
                         sta SPRITES_COORD_Y_ADDRESS_START,y     ; sprite
                         dey
                         dey 
@@ -311,13 +328,16 @@ draw_objects
                         sta SPRITES_COLOR_ADDRESS_START,y
                         jsr prepare_masking_sprite                        
 
-                        ldx currObjectPerpDist
+                        ldy currObjectPerpDist
+                        lda objectSpriteScaleFrameIdx,y
+                        sta currObjectSpriteScaleFrameIdx
+                        
                         lda #OBJECT_SPRITE_PTR
                         clc
                         adc objectFrameOffset
-                        adc objectSpriteScaleFrameIdx,x         
+                        adc objectSpriteScaleFrameIdx,y
                         ldy spriteDataOffset
-                        sta SPRITES_PTR_ADDRESS_START,y         
+                        sta SPRITES_PTR_ADDRESS_START,y
 
                         jsr calculate_sprites_pos_and_size
                                 

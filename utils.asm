@@ -197,3 +197,36 @@ defm stretchedObjectSpriteXd010
         tay
         lda (E_16),y 
         endm
+
+
+;;---------------------------------------------
+;; normalSpriteScalingY[scalingIdx][level]
+;; scalingIdx in x
+;; level in y
+;;
+;; result in a
+;;--------------------------------------------- 
+defm normalSpriteScalingY 
+        lda normalSpriteScalingYVectL,x
+        sta E_16_L
+        lda normalSpriteScalingYVectH,x
+        sta E_16_H
+        
+        lda (E_16),y
+        endm
+
+;;---------------------------------------------
+;; stretchedSpriteScalingY[scalingIdx][level]
+;; scalingIdx in x
+;; level in y
+;;
+;; result in a
+;;--------------------------------------------- 
+defm stretchedSpriteScalingY 
+        lda stretchedSpriteScalingYVectL,x
+        sta E_16_L
+        lda stretchedSpriteScalingYVectH,x
+        sta E_16_H
+        
+        lda (E_16),y
+        endm

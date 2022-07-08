@@ -13,35 +13,55 @@ objects_setup
                 
                 ldy #0
 
-                lda #64
+                lda #24
                 sta objectPosX,y
-                lda #96
+                lda #56
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
                 lda #2
                 sta objectSpriteColor,y
-             
+                lda #-1
+                sta objectMasterId,y
+                lda #0
+                sta objectPosLevel,y
+                lda #0
+                sta objectSpriteOffsetFromMaster,y
 
                 iny
-                lda #64
+                lda #24
                 sta objectPosX,y
-                lda #112
+                ;lda #112
+                lda #56
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
                 lda #3
                 sta objectSpriteColor,y
+                lda #0
+                sta objectMasterId,y
+                lda #2
+                sta objectPosLevel,y
+                lda #0
+                sta objectSpriteOffsetFromMaster,y                
 
                 iny
-                lda #96
+                ;lda #96
+                lda #24
                 sta objectPosX,y
-                lda #128
+                ;lda #128
+                lda #56
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
                 lda #6
                 sta objectSpriteColor,y
+                lda #0
+                sta objectMasterId,y
+                lda #4
+                sta objectPosLevel,y
+                lda #0
+                sta objectSpriteOffsetFromMaster,y
                                
                 rts
 
@@ -56,6 +76,17 @@ OBJECT_SPRITE_PTR=#MASKING_SPRITE_PTR+#MASKING_SPRITE_ANIM_FRAMES
 OBJECT_SPRITE_3_COLOR=#1
 OBJECT_SPRITE_5_COLOR=#3
 OBJECT_SPRITE_7_COLOR=#4
+
+;NORMAL_SPRITE_LEVEL_0_COORD_Y=#
+;STRETCHED_SPRITE_LEVEL_0_COORD_Y=#
+;NORMAL_SPRITE_LEVEL_1_COORD_Y=#
+;STRETCHED_SPRITE_LEVEL_1_COORD_Y=#
+;NORMAL_SPRITE_LEVEL_2_COORD_Y=#
+;STRETCHED_SPRITE_LEVEL_2_COORD_Y=#
+;NORMAL_SPRITE_LEVEL_3_COORD_Y=#
+;STRETCHED_SPRITE_LEVEL_3_COORD_Y=#
+;NORMAL_SPRITE_LEVEL_4_COORD_Y=#
+;STRETCHED_SPRITE_LEVEL_4_COORD_Y=#
 
 objectFrameOffset=$28; common for all for now
 ;;---------------------------------------------
@@ -93,10 +124,10 @@ objects_sprites_setup
                 lda #WEAPON_SPRITE_COLOR
                 sta objectSpriteColor,y
                 iny
-                ;lda #OBJECT_SPRITE_5_COLOR
+                lda #OBJECT_SPRITE_5_COLOR
                 sta objectSpriteColor,y
                 iny
-                ;lda #OBJECT_SPRITE_7_COLOR
+                lda #OBJECT_SPRITE_7_COLOR
                 sta objectSpriteColor,y
 ;                lda #OBJECT_SPRITE_3_COLOR
 ;                sta SPRITE_3_COLOR_ADDRESS
@@ -120,7 +151,7 @@ objects_sprites_setup
 ;;---------------------------------------------  
 update_objects
                 lda objectFrameOffset
-                eor #%00000110
+                eor #%00001001
                 sta objectFrameOffset
                 rts
 

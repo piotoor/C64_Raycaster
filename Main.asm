@@ -212,7 +212,7 @@ incasm  gameMap.asm
 *=SPRITES_MEMORY_START
 incbin  chaingun_hd.spd,3
 incbin  masking_sprite_xtd.spd,3
-incbin  enemy2.spd,3
+incbin  enemytest.spd,3
 incasm  assets.asm
 
 incasm  player.asm

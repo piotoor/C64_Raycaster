@@ -648,8 +648,8 @@ yTimesSquareSize        byte 0,16,32,48,64,80,96,112,0,16,32,48,64,80,96,112
 ;
 ; game object sprite animation frame id. Animation frames are used to simulate object scaling
 ;objectSpriteScaleFrameIdx byte 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
-objectSpriteScaleFrameIdx byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,0,0,0,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
-
+;objectSpriteScaleFrameIdx byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,0,0,0,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
+objectSpriteScaleFrameIdx byte 0,0,0,0,0,0,0,0,0,0,0,1,2,3,3,4,4,5,5,0,0,0,1,1,1,1,3,3,3,3,3,3,3,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8
 ; objectSpriteX[gameObjectRayId]
 ;
 ; game object sprite x-coord value
@@ -740,3 +740,38 @@ doorSwitchLocations     byte 255,255,255,255,255,255,255,255,255,255,255,255,255
 ; wastes space in order to simplify addressing
 doorMap     bytes 256
 
+
+; normalSpriteScalingY[scalingIdx][level]
+;
+; scalingIdx = {0, 1, 3, 5, 6, 7, 8}
+; level = [0; 5)
+normalSpriteScalingY_0  byte 140,151,161,172,182
+normalSpriteScalingY_1  byte 140,150,159,169,178
+normalSpriteScalingY_2
+normalSpriteScalingY_3  byte 140,148,155,163,170
+normalSpriteScalingY_4
+normalSpriteScalingY_5  byte 140,146,151,157,162
+normalSpriteScalingY_6  byte 140,145,149,154,158
+normalSpriteScalingY_7  byte 140,143,145,148,150
+normalSpriteScalingY_8  byte 140,142,143,145,146
+
+normalSpriteScalingYVectL
+        byte <normalSpriteScalingY_0,<normalSpriteScalingY_1,<normalSpriteScalingY_2,<normalSpriteScalingY_3,<normalSpriteScalingY_4,<normalSpriteScalingY_5,<normalSpriteScalingY_6,<normalSpriteScalingY_7,<normalSpriteScalingY_8
+normalSpriteScalingYVectH
+        byte >normalSpriteScalingY_0,>normalSpriteScalingY_1,>normalSpriteScalingY_2,>normalSpriteScalingY_3,>normalSpriteScalingY_4,>normalSpriteScalingY_5,>normalSpriteScalingY_6,>normalSpriteScalingY_7,>normalSpriteScalingY_8
+
+; stretchedSpriteScalingY[scalingIdx][level]
+;
+; scalingIdx = [0; 6)
+; level = [0; 5)
+stretchedSpriteScalingY_0       byte 129,150,171,192,213
+stretchedSpriteScalingY_1       byte 129,148,167,186,205
+stretchedSpriteScalingY_2       byte 129,146,163,180,197
+stretchedSpriteScalingY_3       byte 129,144,159,174,189
+stretchedSpriteScalingY_4       byte 129,142,155,168,181
+stretchedSpriteScalingY_5       byte 129,140,151,162,173
+
+stretchedSpriteScalingYVectL
+        byte <stretchedSpriteScalingY_0,<stretchedSpriteScalingY_1,<stretchedSpriteScalingY_2,<stretchedSpriteScalingY_3,<stretchedSpriteScalingY_4,<stretchedSpriteScalingY_5
+stretchedSpriteScalingYVectH
+        byte >stretchedSpriteScalingY_0,>stretchedSpriteScalingY_1,>stretchedSpriteScalingY_2,>stretchedSpriteScalingY_3,>stretchedSpriteScalingY_4,>stretchedSpriteScalingY_5

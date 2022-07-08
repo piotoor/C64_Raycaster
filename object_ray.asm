@@ -12,6 +12,9 @@ objectPlyPosDeltaY=$88
 
 objectId=$26
 ; object arrays (3 object at a given time)
+objectSpriteOffsetFromMaster=$c6f7
+objectMasterId=$c6fa
+objectPosLevel=$c6fd
 objectRayId=$c700
 objectPerpDistance=$c703
 objectPosX=$c706
