@@ -12,7 +12,7 @@ objectPlyPosDeltaY=$88
 
 objectId=$26
 ; object arrays (3 object at a given time)
-objectSpriteOffsetFromMaster=$c6f7
+objectRayIdOffsetFromMaster=$c6f7
 objectMasterId=$c6fa
 objectPosLevel=$c6fd
 objectRayId=$c700
@@ -225,6 +225,101 @@ cast_object_ray
                 sta objectPerpDistance,y
                 ;sta $428,y
                 
+                cmp maxPerpDist
+                bcs @curr_gt_max
+                jmp @minimum
+@curr_gt_max    sta maxPerpDist
+                ;ldy objectId
+                ;sty maxPerpId
+
+@minimum
+                
+                cmp minPerpDist
+                bcc @curr_lt_min
+                rts
+
+@curr_lt_min    sta minPerpDist
+                ;ldy objectId
+                ;sty minPerpId
+                rts
+
+;;---------------------------------------------
+;; cast_object_ray_slave
+;;---------------------------------------------
+cast_object_ray_slave
+                
+                ldx objectId
+                lda #0
+                sta objectInFOV,x
+                ldy objectMasterId,x
+
+                lda objectRayTheta
+                clc
+                adc objectRayIdOffsetFromMaster,x 
+                sta f_8                                 ; calculate slave object theta
+                                                        ; saves in e_8. Another slave would need the master's objectRayTheta intact
+
+
+                cmp playerTheta                  ; |playerTheta - enemyRayTheta|
+                bcs @enemy_ge_ply                ; TODO: to macro
+@enemy_lt_ply   lda playerTheta                  ;
+                sec                              ;
+                sbc f_8                          ;
+                                                 ;
+                jmp @endif                       ;
+@enemy_ge_ply   ;sec                             ; already set after bcs
+                sbc playerTheta                  ;
+                                                 ;
+@endif                                           ;
+                tax                              ;
+                lda reduceDeltaThetaToHalfAngle,x;
+                sta deltaTheta                   ;
+                
+
+
+                ; short circuit
+                lda deltaTheta
+                cmp #24                         ; if deltaTheta >= 24
+                bcc @continue                   ; don't render enemy.
+                rts                             ; 
+        
+@continue       ;inc renderObjectsFlags            ; for now. With more enemies, it should set relevant bit flag                                      
+                ldx objectId
+                inc objectInFOV,x
+
+                ;lda objectInFOV,x
+                ;sta $450,x
+
+                adc playerTheta                 ; calculating enemyRayId
+                ;clc                            ; could be negative, when to the left
+                ;adc deltaTheta                 ; of the left-most rayId
+                cmp f_8                         ; clc clear after bcc
+                beq @to_the_right
+@to_the_left    lda #20
+                sec
+                sbc deltaTheta
+                jmp @ray_id_end
+@to_the_right   lda #20
+                clc                            
+                adc deltaTheta
+@ray_id_end
+                ;ldy objectId objectId is still in x
+                sta objectRayId,x
+                ;sta $450,y       
+
+
+
+
+
+                lda objectInFOV,x
+                bne @object_in_FOV
+                rts
+@object_in_FOV
+
+                ldy objectMasterId,x
+                lda objectPerpDistance,y
+                sta objectPerpDistance,x
+
                 cmp maxPerpDist
                 bcs @curr_gt_max
                 jmp @minimum

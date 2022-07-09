@@ -11,7 +11,7 @@ ENEMY_SIZE=#8
 ;;---------------------------------------------             
 objects_setup
                 
-                ldy #0
+                ldy #2
 
                 lda #24
                 sta objectPosX,y
@@ -26,9 +26,13 @@ objects_setup
                 lda #0
                 sta objectPosLevel,y
                 lda #0
-                sta objectSpriteOffsetFromMaster,y
+                sta objectRayIdOffsetFromMaster,y
+                lda #0
+                sta objectInFOV,y
+                lda #100                                ; workaround to the bug with slave sprites appearing on the screen at start
+                sta objectRayId,y
 
-                iny
+                dey
                 lda #24
                 sta objectPosX,y
                 ;lda #112
@@ -38,14 +42,16 @@ objects_setup
                 sta objectAlive,y
                 lda #3
                 sta objectSpriteColor,y
-                lda #0
-                sta objectMasterId,y
                 lda #2
+                sta objectMasterId,y
+                lda #1
                 sta objectPosLevel,y
+                lda #2
+                sta objectRayIdOffsetFromMaster,y    
                 lda #0
-                sta objectSpriteOffsetFromMaster,y                
+                sta objectInFOV,y            
 
-                iny
+                dey
                 ;lda #96
                 lda #24
                 sta objectPosX,y
@@ -56,12 +62,14 @@ objects_setup
                 sta objectAlive,y
                 lda #6
                 sta objectSpriteColor,y
-                lda #0
+                lda #2
                 sta objectMasterId,y
                 lda #4
                 sta objectPosLevel,y
                 lda #0
-                sta objectSpriteOffsetFromMaster,y
+                sta objectRayIdOffsetFromMaster,y
+                lda #0
+                sta objectInFOV,y
                                
                 rts
 
@@ -121,7 +129,8 @@ objects_sprites_setup
 
                 ldy #0
                 ;lda #OBJECT_SPRITE_3_COLOR
-                lda #WEAPON_SPRITE_COLOR
+                ;lda #WEAPON_SPRITE_COLOR
+                lda #1
                 sta objectSpriteColor,y
                 iny
                 lda #OBJECT_SPRITE_5_COLOR
@@ -154,4 +163,5 @@ update_objects
 ;                eor #%00001001
 ;                sta objectFrameOffset
                 rts
+
 
