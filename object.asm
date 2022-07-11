@@ -24,9 +24,9 @@ objects_setup
                 lda #-1
                 sta objectMasterId,y
                 lda #0
-                sta objectPosLevel,y
-                lda #0
-                sta objectRayIdOffsetFromMaster,y
+                sta objectSpriteRow,y
+                lda #1
+                sta objectSpriteCol,y
                 lda #0
                 sta objectInFOV,y
                 lda #100                                ; workaround to the bug with slave sprites appearing on the screen at start
@@ -45,9 +45,9 @@ objects_setup
                 lda #2
                 sta objectMasterId,y
                 lda #1
-                sta objectPosLevel,y
-                lda #2
-                sta objectRayIdOffsetFromMaster,y    
+                sta objectSpriteRow,y
+                lda #0
+                sta objectSpriteCol,y    
                 lda #0
                 sta objectInFOV,y            
 
@@ -64,10 +64,10 @@ objects_setup
                 sta objectSpriteColor,y
                 lda #2
                 sta objectMasterId,y
-                lda #4
-                sta objectPosLevel,y
-                lda #0
-                sta objectRayIdOffsetFromMaster,y
+                lda #1
+                sta objectSpriteRow,y
+                lda #2
+                sta objectSpriteCol,y
                 lda #0
                 sta objectInFOV,y
                                
@@ -163,5 +163,6 @@ update_objects
 ;                eor #%00001001
 ;                sta objectFrameOffset
                 rts
+
 
 

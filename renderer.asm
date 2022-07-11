@@ -254,7 +254,9 @@ calculate_sprites_pos_and_size
                 ldx currObjectRayId
                 lda currObjectPerpDist
                 cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
-                bcc @stretch_object_sprite_
+                ;bcc @stretch_object_sprite_
+                bcs @destretch_object_sprite_
+                jmp @stretch_object_sprite_
 @destretch_object_sprite_
                         lda SPRITES_STRETCH_Y_ADDRESS           ;
                         and spriteDataBitMask                   ; destretching
@@ -274,10 +276,29 @@ calculate_sprites_pos_and_size
                         iny
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
                         ;txa 
+                        sty f_8
+                        ;-------------------------- if slave
+                        ldx objectId
+                        ldy objectSpriteCol,x
+                        sty g_8
+
+                        lda objectPerpDistance,x
+                        tay
+                        ldx objectSpriteScaleFrameIdx,y
+                        ldy g_8
+                        normalSpriteScalingOffsetX
+                        clc
+                        asl spriteDataOffset ;;??????????
+                        ldy spriteDataOffset    
+                        
+                        adc SPRITES_COORD_X_ADDRESS_START,y
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+                        
+                        ;-------------------------- endif
 
                         ldx objectId
-                        sty f_8
-                        ldy objectPosLevel,x
+                        
+                        ldy objectSpriteRow,x
                         ldx currObjectSpriteScaleFrameIdx
                         stx $428
                         normalSpriteScalingY
@@ -320,9 +341,33 @@ calculate_sprites_pos_and_size
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
                         ;txa 
 
-                        ldx objectId
                         sty f_8
-                        ldy objectPosLevel,x
+                        ;-------------------------- if slave
+                        ldx objectId
+                        ldy objectSpriteCol,x
+                        sty g_8
+
+                        lda objectPerpDistance,x
+                        tay
+                        ldx objectSpriteScaleFrameIdx,y
+                        ldy g_8
+                        stretchedSpriteScalingOffsetX
+                        clc
+                        asl spriteDataOffset ;;??????????
+                        ldy spriteDataOffset    
+                        
+                        adc SPRITES_COORD_X_ADDRESS_START,y
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+                        
+                        ;-------------------------- endif
+
+
+
+
+
+                        ldx objectId
+                        
+                        ldy objectSpriteRow,x
                         ldx currObjectSpriteScaleFrameIdx
                         stx $428
                         stretchedSpriteScalingY
@@ -2001,6 +2046,7 @@ draw_front_buffer
                 sta $da07
 
                 rts
+
 
 
 

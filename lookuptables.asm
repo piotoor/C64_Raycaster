@@ -741,10 +741,10 @@ doorSwitchLocations     byte 255,255,255,255,255,255,255,255,255,255,255,255,255
 doorMap     bytes 256
 
 
-; normalSpriteScalingY[scalingIdx][level]
+; normalSpriteScalingY[scalingIdx][objectSpriteRow]
 ;
 ; scalingIdx = {0, 1, 3, 5, 6, 7, 8}
-; level = [0; 5)
+; objectSpriteRow = [0; 5)
 normalSpriteScalingY_0  byte 140,151,161,172,182
 normalSpriteScalingY_1  byte 140,150,159,169,178
 normalSpriteScalingY_2
@@ -760,10 +760,10 @@ normalSpriteScalingYVectL
 normalSpriteScalingYVectH
         byte >normalSpriteScalingY_0,>normalSpriteScalingY_1,>normalSpriteScalingY_2,>normalSpriteScalingY_3,>normalSpriteScalingY_4,>normalSpriteScalingY_5,>normalSpriteScalingY_6,>normalSpriteScalingY_7,>normalSpriteScalingY_8
 
-; stretchedSpriteScalingY[scalingIdx][level]
+; stretchedSpriteScalingY[scalingIdx][objectSpriteRow]
 ;
 ; scalingIdx = [0; 6)
-; level = [0; 5)
+; objectSpriteRow = [0; 5)
 stretchedSpriteScalingY_0       byte 129,150,171,192,213
 stretchedSpriteScalingY_1       byte 129,148,167,186,205
 stretchedSpriteScalingY_2       byte 129,146,163,180,197
@@ -778,3 +778,72 @@ stretchedSpriteScalingYVectH
 
 
 ;isSlaveObjectInFOV      byte 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1
+
+; lut[scalingIdx][objectSpriteCol]
+;
+; scalingIdx = [0; 6)                           normal sprite
+; scalingIdx = {0, 1, 3, 5, 6, 7, 8}            stretched sprite
+; objectSpriteCol = [-1; 1]
+
+stretchedSpriteScalingOffsetX_0      byte 0,0,0
+stretchedSpriteScalingOffsetX_1      byte 0,0,0
+stretchedSpriteScalingOffsetX_2      byte -3,0,3
+stretchedSpriteScalingOffsetX_3      byte -3,0,3
+stretchedSpriteScalingOffsetX_4      byte -5,0,5
+stretchedSpriteScalingOffsetX_5      byte -5,0,5
+
+stretchedSpriteScalingOffsetXL
+        byte <stretchedSpriteScalingOffsetX_0,<stretchedSpriteScalingOffsetX_1,<stretchedSpriteScalingOffsetX_2,<stretchedSpriteScalingOffsetX_3,<stretchedSpriteScalingOffsetX_4,<stretchedSpriteScalingOffsetX_5
+stretchedSpriteScalingOffsetXH
+        byte >stretchedSpriteScalingOffsetX_0,>stretchedSpriteScalingOffsetX_1,>stretchedSpriteScalingOffsetX_2,>stretchedSpriteScalingOffsetX_3,>stretchedSpriteScalingOffsetX_4,>stretchedSpriteScalingOffsetX_5
+
+
+normalSpriteScalingOffsetX_0    byte 0,0,0
+normalSpriteScalingOffsetX_1    byte 0,0,0
+normalSpriteScalingOffsetX_2
+;normalSpriteScalingOffsetX_3    byte -5,0,5            ; original
+normalSpriteScalingOffsetX_3    byte -4,0,4             ; manually tweaked (max offset = 4)
+normalSpriteScalingOffsetX_4
+normalSpriteScalingOffsetX_5    byte -3,0,3
+normalSpriteScalingOffsetX_6    byte 0,0,0
+normalSpriteScalingOffsetX_7    byte -5,0,5
+normalSpriteScalingOffsetX_8    byte -5,0,5
+
+normalSpriteScalingOffsetXL
+        byte <normalSpriteScalingOffsetX_0,<normalSpriteScalingOffsetX_1,<normalSpriteScalingOffsetX_2,<normalSpriteScalingOffsetX_3,<normalSpriteScalingOffsetX_4,<normalSpriteScalingOffsetX_5,<normalSpriteScalingOffsetX_6,<normalSpriteScalingOffsetX_7,<normalSpriteScalingOffsetX_8
+normalSpriteScalingOffsetXH
+        byte >normalSpriteScalingOffsetX_0,>normalSpriteScalingOffsetX_1,>normalSpriteScalingOffsetX_2,>normalSpriteScalingOffsetX_3,>normalSpriteScalingOffsetX_4,>normalSpriteScalingOffsetX_5,>normalSpriteScalingOffsetX_6,>normalSpriteScalingOffsetX_7,>normalSpriteScalingOffsetX_8
+
+
+; lut[scalingIdx][objectSpriteCol]
+;
+; scalingIdx = [0; 6)                           normal sprite
+; scalingIdx = {0, 1, 3, 5, 6, 7, 8}            stretched sprite
+; objectSpriteCol = [-1; 1]
+stretchedSpriteScalingOffsetRayX_0      byte -4,0,4
+stretchedSpriteScalingOffsetRayX_1      byte -4,0,4
+stretchedSpriteScalingOffsetRayX_2      byte -3,0,3
+stretchedSpriteScalingOffsetRayX_3      byte -3,0,3
+stretchedSpriteScalingOffsetRayX_4      byte -2,0,2
+stretchedSpriteScalingOffsetRayX_5      byte -2,0,2
+
+stretchedSpriteScalingOffsetRayXL
+        byte <stretchedSpriteScalingOffsetRayX_0,<stretchedSpriteScalingOffsetRayX_1,<stretchedSpriteScalingOffsetRayX_2,<stretchedSpriteScalingOffsetRayX_3,<stretchedSpriteScalingOffsetRayX_4,<stretchedSpriteScalingOffsetRayX_5
+stretchedSpriteScalingOffsetRayXH
+        byte >stretchedSpriteScalingOffsetRayX_0,>stretchedSpriteScalingOffsetRayX_1,>stretchedSpriteScalingOffsetRayX_2,>stretchedSpriteScalingOffsetRayX_3,>stretchedSpriteScalingOffsetRayX_4,>stretchedSpriteScalingOffsetRayX_5
+
+
+normalSpriteScalingOffsetRayX_0 byte -2,0,2
+normalSpriteScalingOffsetRayX_1 byte -2,0,2
+normalSpriteScalingOffsetRayX_2
+normalSpriteScalingOffsetRayX_3 byte -1,0,1
+normalSpriteScalingOffsetRayX_4
+normalSpriteScalingOffsetRayX_5 byte -1,0,1
+normalSpriteScalingOffsetRayX_6 byte -1,0,1
+normalSpriteScalingOffsetRayX_7 byte 0,0,0
+normalSpriteScalingOffsetRayX_8 byte 0,0,0
+
+normalSpriteScalingOffsetRayXL
+        byte <normalSpriteScalingOffsetRayX_0,<normalSpriteScalingOffsetRayX_1,<normalSpriteScalingOffsetRayX_2,<normalSpriteScalingOffsetRayX_3,<normalSpriteScalingOffsetRayX_4,<normalSpriteScalingOffsetRayX_5,<normalSpriteScalingOffsetRayX_6,<normalSpriteScalingOffsetRayX_7,<normalSpriteScalingOffsetRayX_8
+normalSpriteScalingOffsetRayXH
+        byte >normalSpriteScalingOffsetRayX_0,>normalSpriteScalingOffsetRayX_1,>normalSpriteScalingOffsetRayX_2,>normalSpriteScalingOffsetRayX_3,>normalSpriteScalingOffsetRayX_4,>normalSpriteScalingOffsetRayX_5,>normalSpriteScalingOffsetRayX_6,>normalSpriteScalingOffsetRayX_7,>normalSpriteScalingOffsetRayX_8

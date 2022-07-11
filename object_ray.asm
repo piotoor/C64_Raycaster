@@ -12,9 +12,10 @@ objectPlyPosDeltaY=$88
 
 objectId=$26
 ; object arrays (3 object at a given time)
-objectRayIdOffsetFromMaster=$c6f7
-objectMasterId=$c6fa
-objectPosLevel=$c6fd
+
+objectMasterId=$c6f7
+objectSpriteRow=$c6fa
+objectSpriteCol=$c6fd
 objectRayId=$c700
 objectPerpDistance=$c703
 objectPosX=$c706
@@ -248,14 +249,31 @@ cast_object_ray
 ;;---------------------------------------------
 cast_object_ray_slave
                 
-                ldx objectId
+                ldy objectId
                 lda #0
-                sta objectInFOV,x
-                ldy objectMasterId,x
+                sta objectInFOV,y
+                ldx objectMasterId,y
+                ldy objectPerpDistance,x
+                ldx objectSpriteScaleFrameIdx,y
 
-                lda objectRayTheta
+                stx f_8 ; scalingIdx
+                ldx objectId
+                lda objectSpriteCol,x
+                cpy #OBJECT_SPRITE_STRETCHING_THRESHOLD
+                bcc @stretched_object
+@normal_object
+                ldx f_8
+                tay 
+                normalSpriteScalingOffsetRayX
+                jmp @endif_stretched
+
+@stretched_object
+                ldx f_8
+                tay
+                stretchedSpriteScalingOffsetRayX
+@endif_stretched
                 clc
-                adc objectRayIdOffsetFromMaster,x 
+                adc objectRayTheta
                 sta f_8                                 ; calculate slave object theta
                                                         ; saves in e_8. Another slave would need the master's objectRayTheta intact
 
@@ -306,9 +324,6 @@ cast_object_ray_slave
                 ;ldy objectId objectId is still in x
                 sta objectRayId,x
                 ;sta $450,y       
-
-
-
 
 
                 lda objectInFOV,x
