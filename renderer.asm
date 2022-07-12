@@ -429,7 +429,7 @@ calculate_sprites_pos_and_size
                         clc
                         adc g_8
                         sta SPRITES_COORD_X_ADDRESS_START,y
-                        bcs @toggle_x_coord_bit_8_s
+                        bcs @toggle_x_coord_bit_8_s_l
                         rts
                         
 @sprite_column_right_s
@@ -445,13 +445,36 @@ calculate_sprites_pos_and_size
                         sec
                         sbc g_8
                         sta SPRITES_COORD_X_ADDRESS_START,y
-                        bcc @toggle_x_coord_bit_8_s
+                        bcc @toggle_x_coord_bit_8_s_r
                         rts
-@sprite_column_end_s
-@toggle_x_coord_bit_8_s       
+;@sprite_column_end_s
+@toggle_x_coord_bit_8_s_r
 ;                        ldx objectId
 ;                        lda #1
 ;                        sta $4a0,x
+                        lda SPRITES_X_COORD_BIT_8_ADDRESS
+                        and spriteDataBitMaskNeg
+                        bne @no_sub
+@sub_8
+                        ldy spriteDataOffset
+                        lda SPRITES_COORD_X_ADDRESS_START,y
+                        sec
+                        sbc #8
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+@no_sub
+                        jmp @toggle_x_coord_bit_8_s
+@toggle_x_coord_bit_8_s_l
+                        lda SPRITES_X_COORD_BIT_8_ADDRESS
+                        and spriteDataBitMaskNeg
+                        beq @no_add
+@add_8
+                        ldy spriteDataOffset
+                        lda SPRITES_COORD_X_ADDRESS_START,y
+                        clc
+                        adc #8
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+@no_add
+@toggle_x_coord_bit_8_s                        
                         lda spriteDataBitMaskNeg
                         and #%10101000
                         eor SPRITES_X_COORD_BIT_8_ADDRESS

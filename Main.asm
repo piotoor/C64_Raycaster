@@ -52,7 +52,7 @@ irq
                         sta $D020               ; frame color
                         jsr check_keyboard
                         jsr update_objects
-                        ;jsr update_doors
+                        jsr update_doors
 
                         lda #0
                         sta synch
