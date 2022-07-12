@@ -131,7 +131,7 @@ init_object_ray_params
                 sta deltaTheta                   ;
                  
                 ; short circuit
-                cmp #24                         ; if deltaTheta >= 24
+                cmp #28                         ; if deltaTheta >= 24
                 bcc @continue                   ; don't render enemy.
                 rts                             ; 
         
@@ -254,6 +254,7 @@ cast_object_ray_slave
                 sta objectInFOV,y
                 ldx objectMasterId,y
                 ldy objectPerpDistance,x
+                ;sty currObjectPerpDist
                 ldx objectSpriteScaleFrameIdx,y
 
                 stx f_8 ; scalingIdx
@@ -323,13 +324,14 @@ cast_object_ray_slave
 @ray_id_end
                 ;ldy objectId objectId is still in x
                 sta objectRayId,x
+                
                 ;sta $450,y       
 
 
-                lda objectInFOV,x
-                bne @object_in_FOV
-                rts
-@object_in_FOV
+;                lda objectInFOV,x
+;                bne @object_in_FOV
+;                rts
+;@object_in_FOV
 
                 ldy objectMasterId,x
                 lda objectPerpDistance,y

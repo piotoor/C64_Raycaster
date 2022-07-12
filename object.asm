@@ -3,12 +3,15 @@
 ;enemyMapX=$87
 ;enemyMapY=$88
 ENEMY_SIZE=#8
-
+SPRITE_COLUMN_R=#0
+SPRITE_COLUMN_C=#1
+SPRITE_COLUMN_L=#2
+OBJECT_MASTER_ID=#-1
 ;;---------------------------------------------
 ;; objects_setup
 ;;
 ;; Loads objects' initial positions
-;;---------------------------------------------             
+;;---------------------------------------------    
 objects_setup
                 
                 ldy #2
@@ -21,17 +24,17 @@ objects_setup
                 sta objectAlive,y
                 lda #2
                 sta objectSpriteColor,y
-                lda #-1
+                lda #OBJECT_MASTER_ID
                 sta objectMasterId,y
                 lda #0
                 sta objectSpriteRow,y
-                lda #1
+                lda #SPRITE_COLUMN_C
                 sta objectSpriteCol,y
                 lda #0
                 sta objectInFOV,y
                 lda #100                                ; workaround to the bug with slave sprites appearing on the screen at start
                 sta objectRayId,y
-
+                
                 dey
                 lda #24
                 sta objectPosX,y
@@ -46,7 +49,7 @@ objects_setup
                 sta objectMasterId,y
                 lda #1
                 sta objectSpriteRow,y
-                lda #0
+                lda #SPRITE_COLUMN_L
                 sta objectSpriteCol,y    
                 lda #0
                 sta objectInFOV,y            
@@ -66,7 +69,7 @@ objects_setup
                 sta objectMasterId,y
                 lda #1
                 sta objectSpriteRow,y
-                lda #2
+                lda #SPRITE_COLUMN_R
                 sta objectSpriteCol,y
                 lda #0
                 sta objectInFOV,y

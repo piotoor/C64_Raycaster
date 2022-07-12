@@ -52,7 +52,7 @@ irq
                         sta $D020               ; frame color
                         jsr check_keyboard
                         jsr update_objects
-                        jsr update_doors
+                        ;jsr update_doors
 
                         lda #0
                         sta synch
@@ -171,19 +171,27 @@ raycaster_setup
                 dex
                 bpl @loop
 
-; virual rays used to simplify enemy sprite visibility calculations at screen borders
-; C5C8, C5C9, C5CA, C5CB (virtual rays 40, 41, 42, 43)
-; C69F, C69E, C69D, C69C (virtual rays -1, -2, -3, -4)
+; C5C8, C5C9, C5CA, C5CB, C5CC, C5CD, C5CE, C5CF (virtual rays 40, 41, 42, 43, 44, 45, 46, 47)
+; C69F, C69E, C69D, C69C, C69B, C69A, C699, C698 (virtual rays -1, -2, -3, -4, -5, -6, -7, -8)
                 lda #0
                 sta $C5C8
                 sta $C5C9
                 sta $C5CA
                 sta $C5CB
+                sta $C5CC
+                sta $C5CD
+                sta $C5CE
+                sta $C5CF
+
 
                 sta $C69F
                 sta $C69E
                 sta $C69D
                 sta $C69C
+                sta $C69B
+                sta $C69A
+                sta $C699
+                sta $C698
 
                 rts
                 

@@ -38,8 +38,8 @@ texColumnOffsets=$C550
 prevRayStart=$C578
 rayPerpDistance=$C5A0
 ; virual rays used to simplify enemy sprite visibility calculations at screen borders
-; C5C8, C5C9, C5CA, C5CB (virtual rays 40, 41, 42, 43)
-; C69F, C69E, C69D, C69C (virtual rays -1, -2, -3, -4)
+; C5C8, C5C9, C5CA, C5CB, C5CC, C5CD, C5CE, C5CF (virtual rays 40, 41, 42, 43, 44, 45, 46, 47)
+; C69F, C69E, C69D, C69C, C69B, C69A, C699, C698 (virtual rays -1, -2, -3, -4, -5, -6, -7, -8)
 ;
 backBuffer=$C800
 

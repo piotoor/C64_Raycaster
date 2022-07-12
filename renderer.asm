@@ -57,6 +57,8 @@ compute_objects
                 stx objectId
 @loop                   
                         ldx objectId
+                        lda objectRayId,x
+                        sta $478,x
                         lda objectAlive,x
                         beq @skip_object
 
@@ -67,6 +69,8 @@ compute_objects
                         jsr cast_object_ray_slave
                         jmp @skip_object
 @master_object
+                        ;lda #2
+                        ;sta f_8                         ; tmp to increase master's inFov
                         jsr init_object_ray_params
 
                         ldx objectId
@@ -250,9 +254,11 @@ prepare_masking_sprite
 ;; calculate_sprites_positions
 ;;---------------------------------------------
 calculate_sprites_pos_and_size
-
-                ldx currObjectRayId
+                ldx objectId
                 lda currObjectPerpDist
+                sta $4a0,x
+                ldx currObjectRayId
+                
                 cmp #OBJECT_SPRITE_STRETCHING_THRESHOLD
                 ;bcc @stretch_object_sprite_
                 bcs @destretch_object_sprite_
@@ -277,25 +283,6 @@ calculate_sprites_pos_and_size
                         sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
                         ;txa 
                         sty f_8
-                        ;-------------------------- if slave
-                        ldx objectId
-                        ldy objectSpriteCol,x
-                        sty g_8
-
-                        lda objectPerpDistance,x
-                        tay
-                        ldx objectSpriteScaleFrameIdx,y
-                        ldy g_8
-                        normalSpriteScalingOffsetX
-                        clc
-                        asl spriteDataOffset ;;??????????
-                        ldy spriteDataOffset    
-                        
-                        adc SPRITES_COORD_X_ADDRESS_START,y
-                        sta SPRITES_COORD_X_ADDRESS_START,y
-                        
-                        ;-------------------------- endif
-
                         ldx objectId
                         
                         ldy objectSpriteRow,x
@@ -318,6 +305,59 @@ calculate_sprites_pos_and_size
                         ora objectSpriteXd10bitsCurr
                         sta SPRITES_X_COORD_BIT_8_ADDRESS
                         
+
+                        ;-------------------------- if slave
+                        ldx objectId
+                        ldy objectSpriteCol,x
+                        sty g_8
+                        cpy #SPRITE_COLUMN_L
+                        beq @sprite_column_left
+                        cpy #SPRITE_COLUMN_R
+                        beq @sprite_column_right
+                        rts
+@sprite_column_left
+                        lda objectPerpDistance,x
+                        tay
+                        ldx objectSpriteScaleFrameIdx,y
+                        ldy g_8
+                        normalSpriteScalingOffsetX
+                        sta g_8
+                        asl spriteDataOffset ;;??????????
+                        ldy spriteDataOffset
+                        lda SPRITES_COORD_X_ADDRESS_START,y
+                        clc
+                        adc g_8
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+                        bcs @toggle_x_coord_bit_8
+                        rts
+                        
+@sprite_column_right
+                        lda objectPerpDistance,x
+                        tay
+                        ldx objectSpriteScaleFrameIdx,y
+                        ldy g_8
+                        normalSpriteScalingOffsetX
+                        sta g_8
+                        asl spriteDataOffset ;;??????????
+                        ldy spriteDataOffset
+                        lda SPRITES_COORD_X_ADDRESS_START,y
+                        sec
+                        sbc g_8
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+                        bcc @toggle_x_coord_bit_8
+                        rts
+@sprite_column_end
+@toggle_x_coord_bit_8       
+;                        ldx objectId
+;                        lda #1
+;                        sta $4a0,x
+                        lda spriteDataBitMaskNeg
+                        and #%10101000
+                        eor SPRITES_X_COORD_BIT_8_ADDRESS
+                        ;eor spriteDataBitMaskNeg
+                        ;sta $478
+                        sta SPRITES_X_COORD_BIT_8_ADDRESS
+;;                        ;-------------------------- endif
                         rts
 
 @stretch_object_sprite_
@@ -342,28 +382,6 @@ calculate_sprites_pos_and_size
                         ;txa 
 
                         sty f_8
-                        ;-------------------------- if slave
-                        ldx objectId
-                        ldy objectSpriteCol,x
-                        sty g_8
-
-                        lda objectPerpDistance,x
-                        tay
-                        ldx objectSpriteScaleFrameIdx,y
-                        ldy g_8
-                        stretchedSpriteScalingOffsetX
-                        clc
-                        asl spriteDataOffset ;;??????????
-                        ldy spriteDataOffset    
-                        
-                        adc SPRITES_COORD_X_ADDRESS_START,y
-                        sta SPRITES_COORD_X_ADDRESS_START,y
-                        
-                        ;-------------------------- endif
-
-
-
-
 
                         ldx objectId
                         
@@ -387,6 +405,60 @@ calculate_sprites_pos_and_size
                         ora objectSpriteXd10bitsCurr
                         sta SPRITES_X_COORD_BIT_8_ADDRESS
                         ;sta $450
+
+
+                        ;-------------------------- if slave
+                        ldx objectId
+                        ldy objectSpriteCol,x
+                        sty g_8
+                        cpy #SPRITE_COLUMN_L
+                        beq @sprite_column_left_s
+                        cpy #SPRITE_COLUMN_R
+                        beq @sprite_column_right_s
+                        rts
+@sprite_column_left_s
+                        lda objectPerpDistance,x
+                        tay
+                        ldx objectSpriteScaleFrameIdx,y
+                        ldy g_8
+                        stretchedSpriteScalingOffsetX
+                        sta g_8
+                        asl spriteDataOffset ;;??????????
+                        ldy spriteDataOffset
+                        lda SPRITES_COORD_X_ADDRESS_START,y
+                        clc
+                        adc g_8
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+                        bcs @toggle_x_coord_bit_8_s
+                        rts
+                        
+@sprite_column_right_s
+                        lda objectPerpDistance,x
+                        tay
+                        ldx objectSpriteScaleFrameIdx,y
+                        ldy g_8
+                        stretchedSpriteScalingOffsetX
+                        sta g_8
+                        asl spriteDataOffset ;;??????????
+                        ldy spriteDataOffset
+                        lda SPRITES_COORD_X_ADDRESS_START,y
+                        sec
+                        sbc g_8
+                        sta SPRITES_COORD_X_ADDRESS_START,y
+                        bcc @toggle_x_coord_bit_8_s
+                        rts
+@sprite_column_end_s
+@toggle_x_coord_bit_8_s       
+;                        ldx objectId
+;                        lda #1
+;                        sta $4a0,x
+                        lda spriteDataBitMaskNeg
+                        and #%10101000
+                        eor SPRITES_X_COORD_BIT_8_ADDRESS
+                        ;eor spriteDataBitMaskNeg
+                        ;sta $478
+                        sta SPRITES_X_COORD_BIT_8_ADDRESS
+;;                        ;-------------------------- endif
                         rts
 
 ;;---------------------------------------------

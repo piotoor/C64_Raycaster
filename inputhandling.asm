@@ -3,7 +3,8 @@ prb=$dc01       ; CIA#1 (Port Register B)
 ddra=$dc02      ; CIA#1 (Data Direction Register A)
 ddrb=$dc03      ; CIA#1 (Data Direction Register B)
 
-ROTATION_SPEED=#4
+;ROTATION_SPEED=#4
+ROTATION_SPEED=#1
 ROTATION_SPEED_RUNNING=#6
 
 
