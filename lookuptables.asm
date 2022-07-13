@@ -797,11 +797,11 @@ normalSpriteScalingOffsetX              byte 0,0,-1,3,-1,3,0,5,5
 ; scalingIdx = [0; 6)                           normal sprite
 ; scalingIdx = {0, 1, 3, 5, 6, 7, 8}            stretched sprite
 ; objectSpriteCol = [-1; 1]
-stretchedSpriteScalingOffsetRayX_0      byte -4,0,4
+stretchedSpriteScalingOffsetRayX_0      ;byte -4,0,4
 stretchedSpriteScalingOffsetRayX_1      byte -4,0,4
 stretchedSpriteScalingOffsetRayX_2      byte -3,0,3
-stretchedSpriteScalingOffsetRayX_3      byte -2,0,2
-stretchedSpriteScalingOffsetRayX_4      byte -2,0,2
+stretchedSpriteScalingOffsetRayX_3      ;byte -2,0,2
+stretchedSpriteScalingOffsetRayX_4      ;byte -2,0,2
 stretchedSpriteScalingOffsetRayX_5      byte -2,0,2
 
 stretchedSpriteScalingOffsetRayXL
@@ -810,14 +810,14 @@ stretchedSpriteScalingOffsetRayXH
         byte >stretchedSpriteScalingOffsetRayX_0,>stretchedSpriteScalingOffsetRayX_1,>stretchedSpriteScalingOffsetRayX_2,>stretchedSpriteScalingOffsetRayX_3,>stretchedSpriteScalingOffsetRayX_4,>stretchedSpriteScalingOffsetRayX_5
 
 
-normalSpriteScalingOffsetRayX_0 byte -2,0,2
+normalSpriteScalingOffsetRayX_0 ;byte -2,0,2
 normalSpriteScalingOffsetRayX_1 byte -2,0,2
 normalSpriteScalingOffsetRayX_2
 normalSpriteScalingOffsetRayX_3 byte -1,0,1
 normalSpriteScalingOffsetRayX_4
-normalSpriteScalingOffsetRayX_5 byte -1,0,1
+normalSpriteScalingOffsetRayX_5 ;byte -1,0,1
 normalSpriteScalingOffsetRayX_6 byte -1,0,1
-normalSpriteScalingOffsetRayX_7 byte 0,0,0
+normalSpriteScalingOffsetRayX_7 ;byte 0,0,0
 normalSpriteScalingOffsetRayX_8 byte 0,0,0
 
 normalSpriteScalingOffsetRayXL
