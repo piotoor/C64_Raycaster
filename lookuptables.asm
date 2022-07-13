@@ -615,7 +615,6 @@ backBuffUpperH          byte $c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8,$c8
 ; absThetaDistX2[rayId]
 ; 
 ; Absolute distance between player's angle and ray angle
-absThetaDistX2          byte 40,38,36,34,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
 absThetaDist            byte 20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
 
 ; texColumnOffset[i]
