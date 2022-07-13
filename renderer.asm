@@ -309,7 +309,7 @@ calculate_sprites_pos_and_size
                         ;-------------------------- if slave
                         ldx objectId
                         ldy objectSpriteCol,x
-                        sty g_8
+                        ;sty g_8
                         cpy #SPRITE_COLUMN_L
                         beq @sprite_column_left
                         cpy #SPRITE_COLUMN_R
@@ -319,8 +319,8 @@ calculate_sprites_pos_and_size
                         lda objectPerpDistance,x
                         tay
                         ldx objectSpriteScaleFrameIdx,y
-                        ldy g_8
-                        normalSpriteScalingOffsetX
+                        ;ldy g_8
+                        lda normalSpriteScalingOffsetX,x
                         sta g_8
                         asl spriteDataOffset ;;??????????
                         ldy spriteDataOffset
@@ -335,8 +335,8 @@ calculate_sprites_pos_and_size
                         lda objectPerpDistance,x
                         tay
                         ldx objectSpriteScaleFrameIdx,y
-                        ldy g_8
-                        normalSpriteScalingOffsetX
+                        ;ldy g_8
+                        lda normalSpriteScalingOffsetX,x
                         sta g_8
                         asl spriteDataOffset ;;??????????
                         ldy spriteDataOffset
@@ -410,7 +410,7 @@ calculate_sprites_pos_and_size
                         ;-------------------------- if slave
                         ldx objectId
                         ldy objectSpriteCol,x
-                        sty g_8
+                        ;sty g_8
                         cpy #SPRITE_COLUMN_L
                         beq @sprite_column_left_s
                         cpy #SPRITE_COLUMN_R
@@ -420,8 +420,8 @@ calculate_sprites_pos_and_size
                         lda objectPerpDistance,x
                         tay
                         ldx objectSpriteScaleFrameIdx,y
-                        ldy g_8
-                        stretchedSpriteScalingOffsetX
+                        ;ldy g_8
+                        lda stretchedSpriteScalingOffsetX,x
                         sta g_8
                         asl spriteDataOffset ;;??????????
                         ldy spriteDataOffset
@@ -436,8 +436,8 @@ calculate_sprites_pos_and_size
                         lda objectPerpDistance,x
                         tay
                         ldx objectSpriteScaleFrameIdx,y
-                        ldy g_8
-                        stretchedSpriteScalingOffsetX
+                        ;ldy g_8
+                        lda stretchedSpriteScalingOffsetX,x
                         sta g_8
                         asl spriteDataOffset ;;??????????
                         ldy spriteDataOffset

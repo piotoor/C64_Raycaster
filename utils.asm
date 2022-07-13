@@ -231,41 +231,6 @@ defm stretchedSpriteScalingY
         lda (E_16),y
         endm
 
-
-;;---------------------------------------------
-;; stretchedSpriteScalingOffsetX[scalingIdx][level]
-;; scalingIdx in x
-;; level in y
-;;
-;; result in a
-;;--------------------------------------------- 
-defm stretchedSpriteScalingOffsetX 
-        lda stretchedSpriteScalingOffsetXL,x
-        sta E_16_L
-        lda stretchedSpriteScalingOffsetXH,x
-        sta E_16_H
-        
-        lda (E_16),y
-        endm
-
-
-;;---------------------------------------------
-;; normalSpriteScalingOffsetX[scalingIdx][level]
-;; scalingIdx in x
-;; level in y
-;;
-;; result in a
-;;--------------------------------------------- 
-defm normalSpriteScalingOffsetX 
-        lda normalSpriteScalingOffsetXL,x
-        sta E_16_L
-        lda normalSpriteScalingOffsetXH,x
-        sta E_16_H
-        
-        lda (E_16),y
-        endm
-
-
 ;;---------------------------------------------
 ;; stretchedSpriteScalingOffsetRayX[scalingIdx][level]
 ;; scalingIdx in x

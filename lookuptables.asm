@@ -784,41 +784,12 @@ stretchedSpriteScalingYVectH
 
 ;isSlaveObjectInFOV      byte 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1
 
-; lut[scalingIdx][objectSpriteCol]
+; lut[scalingIdx]
 ;
 ; scalingIdx = [0; 6)                           normal sprite
 ; scalingIdx = {0, 1, 3, 5, 6, 7, 8}            stretched sprite
-; objectSpriteCol = [-1; 1]
-
-stretchedSpriteScalingOffsetX_0      byte 0,0,0
-stretchedSpriteScalingOffsetX_1      byte 0,0,0
-stretchedSpriteScalingOffsetX_2      byte 3,0,3
-stretchedSpriteScalingOffsetX_3      byte 5,0,5
-stretchedSpriteScalingOffsetX_4      byte 5,0,5
-stretchedSpriteScalingOffsetX_5      byte 5,0,5
-
-stretchedSpriteScalingOffsetXL
-        byte <stretchedSpriteScalingOffsetX_0,<stretchedSpriteScalingOffsetX_1,<stretchedSpriteScalingOffsetX_2,<stretchedSpriteScalingOffsetX_3,<stretchedSpriteScalingOffsetX_4,<stretchedSpriteScalingOffsetX_5
-stretchedSpriteScalingOffsetXH
-        byte >stretchedSpriteScalingOffsetX_0,>stretchedSpriteScalingOffsetX_1,>stretchedSpriteScalingOffsetX_2,>stretchedSpriteScalingOffsetX_3,>stretchedSpriteScalingOffsetX_4,>stretchedSpriteScalingOffsetX_5
-
-
-normalSpriteScalingOffsetX_0    byte 0,0,0
-normalSpriteScalingOffsetX_1    byte 0,0,0
-normalSpriteScalingOffsetX_2
-normalSpriteScalingOffsetX_3    byte 3,0,3             ; regenerated after making idx=C smaller
-normalSpriteScalingOffsetX_4
-normalSpriteScalingOffsetX_5    byte 3,0,3
-normalSpriteScalingOffsetX_6    byte 0,0,0
-normalSpriteScalingOffsetX_7    byte 5,0,5
-normalSpriteScalingOffsetX_8    byte 5,0,5
-
-
-normalSpriteScalingOffsetXL
-        byte <normalSpriteScalingOffsetX_0,<normalSpriteScalingOffsetX_1,<normalSpriteScalingOffsetX_2,<normalSpriteScalingOffsetX_3,<normalSpriteScalingOffsetX_4,<normalSpriteScalingOffsetX_5,<normalSpriteScalingOffsetX_6,<normalSpriteScalingOffsetX_7,<normalSpriteScalingOffsetX_8
-normalSpriteScalingOffsetXH
-        byte >normalSpriteScalingOffsetX_0,>normalSpriteScalingOffsetX_1,>normalSpriteScalingOffsetX_2,>normalSpriteScalingOffsetX_3,>normalSpriteScalingOffsetX_4,>normalSpriteScalingOffsetX_5,>normalSpriteScalingOffsetX_6,>normalSpriteScalingOffsetX_7,>normalSpriteScalingOffsetX_8
-
+stretchedSpriteScalingOffsetX           byte 0,0,3,5,5,5
+normalSpriteScalingOffsetX              byte 0,0,-1,3,-1,3,0,5,5
 
 ; lut[scalingIdx][objectSpriteCol]
 ;
