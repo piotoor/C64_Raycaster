@@ -82,32 +82,35 @@ init_object_ray_params
 @endif_y
 
 
-                lda objectPlyPosDeltaY           ; if dx and dy >= 64
+                lda objectPlyPosDeltaY          ; if dx and dy >= 64
                 tay                             ;       rescale
-                ora objectPlyPosDeltaX           ; else
+                ora objectPlyPosDeltaX          ; else
                 and #$C0                        ;       use original values
                 beq @lt_64                      ;
 
                 lda lsr_lsr,y                   ;
-                ldy objectPlyPosDeltaX           ;
-                ldx lsr_lsr,y                ;
+                ldy objectPlyPosDeltaX          ;
+                ldx lsr_lsr,y                   ;
                 tay                             ;
                 jmp @endif_atan                 ;
 
 @lt_64                                          ;
-                lda objectPlyPosDeltaX           ;
-                                             ;
-                tax                             ;
+                ldx objectPlyPosDeltaX          ;
+                                                ;
+                ;tax                             ;
                 
 @endif_atan     
-                                
+                              
+                stx $420
+                sty $421
+  
                 atan                            ; reduced enemyRayTheta in [0; 64]
                 
                 ;sta enemyRayTheta              ; no need to save now
-                sta objectRayThetaRed            ;
-                
+                sta objectRayThetaRed           ;
+                sta $422
 
-                ldx objectRayThetaQuadrant       ; full enemyRayTheta in [0; 256)
+                ldx objectRayThetaQuadrant      ; full enemyRayTheta in [0; 256)
                 ;lda enemyRayTheta;             ; already in a after atan
                 fullObjectRayTheta              ;
                 sta objectRayTheta              ;                
