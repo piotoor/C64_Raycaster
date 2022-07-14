@@ -82,22 +82,33 @@ init_object_ray_params
 @endif_y
 
 
-                lda objectPlyPosDeltaY          ; if dx and dy >= 64
-                tay                             ;       rescale
-                ora objectPlyPosDeltaX          ; else
-                and #$C0                        ;       use original values
-                beq @lt_64                      ;
-
-                lda lsr_lsr,y                   ;
-                ldy objectPlyPosDeltaX          ;
-                ldx lsr_lsr,y                   ;
+                lda objectPlyPosDeltaY          ;
                 tay                             ;
-                jmp @endif_atan                 ;
+                ora objectPlyPosDeltaX          ;
+                and #$80                        ;
+                beq @lt_128
+@ge_128
+                lda lsr_lsr,y
+                ldy objectPlyPosDeltaX
+                ldx lsr_lsr,y
+                tay
+                jmp @endif_atan
+@lt_128
 
+                lda objectPlyPosDeltaY          ;
+                tay                             ;
+                ora objectPlyPosDeltaX          ;
+                and #$40
+                beq @lt_64
+@ge_64          tya
+                lsr
+                tay
+                lda objectPlyPosDeltaX
+                lsr
+                tax
+                jmp @endif_atan
 @lt_64                                          ;
-                ldx objectPlyPosDeltaX          ;
-                                                ;
-                ;tax                             ;
+                ldx objectPlyPosDeltaX
                 
 @endif_atan     
                               
