@@ -23,7 +23,7 @@ objects_setup
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
-                lda #2
+                lda #0
                 sta objectSpriteColor,y
                 lda #OBJECT_MASTER_ID
                 sta objectMasterId,y
@@ -64,7 +64,7 @@ objects_setup
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
-                lda #6
+                lda #13
                 sta objectSpriteColor,y
                 lda #2
                 sta objectMasterId,y
@@ -134,14 +134,14 @@ objects_sprites_setup
                 ldy #0
                 ;lda #OBJECT_SPRITE_3_COLOR
                 ;lda #WEAPON_SPRITE_COLOR
-                lda #1
-                sta objectSpriteColor,y
-                iny
-                lda #OBJECT_SPRITE_5_COLOR
-                sta objectSpriteColor,y
-                iny
-                lda #OBJECT_SPRITE_7_COLOR
-                sta objectSpriteColor,y
+;                lda #1
+;                sta objectSpriteColor,y
+;                iny
+;                lda #OBJECT_SPRITE_5_COLOR
+;                sta objectSpriteColor,y
+;                iny
+;                lda #OBJECT_SPRITE_7_COLOR
+;                sta objectSpriteColor,y
 ;                lda #OBJECT_SPRITE_3_COLOR
 ;                sta SPRITE_3_COLOR_ADDRESS
 ;                lda #OBJECT_SPRITE_5_COLOR
