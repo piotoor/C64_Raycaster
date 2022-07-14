@@ -3,10 +3,9 @@ prb=$dc01       ; CIA#1 (Port Register B)
 ddra=$dc02      ; CIA#1 (Data Direction Register A)
 ddrb=$dc03      ; CIA#1 (Data Direction Register B)
 
-;ROTATION_SPEED=#4
-ROTATION_SPEED=#1
+ROTATION_SPEED=#4
+;ROTATION_SPEED=#1
 ROTATION_SPEED_RUNNING=#6
-
 
 ;;---------------------------------------------
 ;; check_keyboard
@@ -133,11 +132,53 @@ toggle_red_key
                 
                 and #%00000010
                 sta $427
+                
+                ldy #2
+                ldx $8a
+                lda demo_master,x
+                sta objectSpriteRow,y
+                inx
+                lda demo_master,x
+                sta objectSpriteCol,y
+                inx
+                lda demo_master,x
+                sta objectAlive,y
 
-                ldx #0
-                lda objectAlive,x
-                eor #1
-                sta objectAlive,x
+
+                dey
+                ldx $8a
+                lda demo_slave1,x
+                sta objectSpriteRow,y
+                inx
+                lda demo_slave1,x
+                sta objectSpriteCol,y
+                inx
+                lda demo_slave1,x
+                sta objectAlive,y
+
+
+                dey
+                ldx $8a
+                lda demo_slave2,x
+                sta objectSpriteRow,y
+                inx
+                lda demo_slave2,x
+                sta objectSpriteCol,y
+                inx
+                lda demo_slave2,x
+                sta objectAlive,y
+
+
+
+                inc $8a
+                inc $8a
+                inc $8a
+                lda $8a
+                cmp #NUM_OF_DEMO_ENEMIES
+                bne @less_
+                lda #0
+                sta $8a
+@less_
                 rts
 
 ;;---------------------------------------------

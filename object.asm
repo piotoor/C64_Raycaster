@@ -13,7 +13,8 @@ OBJECT_MASTER_ID=#-1
 ;; Loads objects' initial positions
 ;;---------------------------------------------    
 objects_setup
-                
+                lda #0
+                sta $8a
                 ldy #2
 
                 lda #24
@@ -26,7 +27,7 @@ objects_setup
                 sta objectSpriteColor,y
                 lda #OBJECT_MASTER_ID
                 sta objectMasterId,y
-                lda #0
+                lda #2
                 sta objectSpriteRow,y
                 lda #SPRITE_COLUMN_C
                 sta objectSpriteCol,y
@@ -47,7 +48,7 @@ objects_setup
                 sta objectSpriteColor,y
                 lda #2
                 sta objectMasterId,y
-                lda #1
+                lda #3
                 sta objectSpriteRow,y
                 lda #SPRITE_COLUMN_L
                 sta objectSpriteCol,y    
@@ -67,9 +68,9 @@ objects_setup
                 sta objectSpriteColor,y
                 lda #2
                 sta objectMasterId,y
-                lda #1
+                lda #4
                 sta objectSpriteRow,y
-                lda #SPRITE_COLUMN_R
+                lda #SPRITE_COLUMN_C
                 sta objectSpriteCol,y
                 lda #0
                 sta objectInFOV,y

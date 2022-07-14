@@ -824,3 +824,8 @@ normalSpriteScalingOffsetRayXL
         byte <normalSpriteScalingOffsetRayX_0,<normalSpriteScalingOffsetRayX_1,<normalSpriteScalingOffsetRayX_2,<normalSpriteScalingOffsetRayX_3,<normalSpriteScalingOffsetRayX_4,<normalSpriteScalingOffsetRayX_5,<normalSpriteScalingOffsetRayX_6,<normalSpriteScalingOffsetRayX_7,<normalSpriteScalingOffsetRayX_8
 normalSpriteScalingOffsetRayXH
         byte >normalSpriteScalingOffsetRayX_0,>normalSpriteScalingOffsetRayX_1,>normalSpriteScalingOffsetRayX_2,>normalSpriteScalingOffsetRayX_3,>normalSpriteScalingOffsetRayX_4,>normalSpriteScalingOffsetRayX_5,>normalSpriteScalingOffsetRayX_6,>normalSpriteScalingOffsetRayX_7,>normalSpriteScalingOffsetRayX_8
+
+NUM_OF_DEMO_ENEMIES=#36
+demo_master     byte    0,1,1,  0,1,1,  0,1,1,  0,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  0,1,1
+demo_slave1     byte    0,0,0,  1,0,1,  0,0,0,  1,0,1,  0,0,0,  3,0,1,  0,0,0,  3,0,1,  4,1,1,  3,0,1,  3,2,1,  2,1,1
+demo_slave2     byte    0,0,0,  0,0,0,  1,2,1,  1,2,1,  0,0,0,  0,0,0,  3,2,1,  3,2,1,  0,0,0,  4,1,1,  4,1,1,  4,1,1
