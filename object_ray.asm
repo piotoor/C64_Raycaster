@@ -23,6 +23,9 @@ objectPosY=$c709
 objectAlive=$c70c
 objectSpriteColor=$c70f
 objectInFOV=$c712
+objectSpritePtr=$c715
+objectSpriteNumOfAnimFrameSets=$c718
+; FREEc71b
 
 maxPerpDist=$6b 
 minPerpDist=$6c

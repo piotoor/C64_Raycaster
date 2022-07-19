@@ -314,6 +314,24 @@ calculate_sprites_pos_and_size
                         beq @sprite_column_left
                         cpy #SPRITE_COLUMN_R
                         beq @sprite_column_right
+
+                        ;ldx objectId
+;                        ldy objectSpriteRow,x
+;                        iny
+;                        iny
+
+;                        ; if column_c(master) and requests reusing
+;                        lda sprite y
+;                        sta REG_RASTERLINE
+;                        lda #<reuse_enemy_sprites
+;                        ldx #>reuse_enemy_sprites
+;                        sta $0314
+;                        stx $0315
+                        
+                        ; new y
+                        ; maskingSpriteDataOffset
+                        ; 
+
                         rts
 @sprite_column_left
                         lda objectPerpDistance,x
@@ -515,7 +533,8 @@ draw_objects
                         lda objectSpriteScaleFrameIdx,y
                         sta currObjectSpriteScaleFrameIdx
                         
-                        lda #OBJECT_SPRITE_PTR
+                        ldx objectId
+                        lda objectSpritePtr,x
                         clc
                         adc objectFrameOffset
                         adc objectSpriteScaleFrameIdx,y

@@ -1,12 +1,12 @@
 ; doors arrays (8 doors at one map)
-doorThresholds=$c715
+
 doorStates=$c71d
 doorTimers=$c725
 doorMapOffsets=$c72d
 doorRequiredKeyMasks=$c735
 doorRequiredTriggers=$c73d
 doorMapIds=$c745
-
+doorThresholds=$c74d
 ; what door player's looking at
 doorInSight=$2d
 

@@ -35,6 +35,8 @@ objects_setup
                 sta objectInFOV,y
                 lda #100                                ; workaround to the bug with slave sprites appearing on the screen at start
                 sta objectRayId,y
+                lda #ALIENHEAD_SPRITE_PTR
+                sta objectSpritePtr,y
                 
                 dey
                 lda #24
@@ -53,37 +55,45 @@ objects_setup
                 lda #SPRITE_COLUMN_L
                 sta objectSpriteCol,y    
                 lda #0
-                sta objectInFOV,y            
+                sta objectInFOV,y       
+                lda #LASERGUN_SPRITE_PTR
+                sta objectSpritePtr,y     
 
                 dey
-                ;lda #96
-                lda #24
+                lda #96
+                ;lda #24
                 sta objectPosX,y
-                ;lda #128
-                lda #56
+                lda #128
+                ;lda #56
                 sta objectPosY,y
                 lda #1
                 sta objectAlive,y
                 lda #13
                 sta objectSpriteColor,y
-                lda #2
+                ;lda #2
+                lda OBJECT_MASTER_ID
                 sta objectMasterId,y
                 lda #4
                 sta objectSpriteRow,y
                 lda #SPRITE_COLUMN_C
+                ;lda SPRITE_COLUMN_C
                 sta objectSpriteCol,y
                 lda #0
                 sta objectInFOV,y
+                ;lda #LASERGUN_SPRITE_PTR
+                lda #ALIENHEAD_SPRITE_PTR
+                sta objectSpritePtr,y  
                                
                 rts
 
 
 MASKING_SPRITE_COLOR=#0
 MASKING_SPRITE_ANIM_FRAMES=#22
-;OBJECT_SPRITE_ANIM_FRAMES=#6
+ALIENHEAD_SPRITE_ANIM_FRAMES=#9
 
 MASKING_SPRITE_PTR=#WEAPON_SPRITE_PTR+#WEAPON_SPRITE_ANIM_FRAMES
-OBJECT_SPRITE_PTR=#MASKING_SPRITE_PTR+#MASKING_SPRITE_ANIM_FRAMES
+ALIENHEAD_SPRITE_PTR=#MASKING_SPRITE_PTR+#MASKING_SPRITE_ANIM_FRAMES
+LASERGUN_SPRITE_PTR=#ALIENHEAD_SPRITE_PTR+#ALIENHEAD_SPRITE_ANIM_FRAMES
 
 OBJECT_SPRITE_3_COLOR=#1
 OBJECT_SPRITE_5_COLOR=#3
@@ -113,13 +123,14 @@ objects_sprites_setup
                 sta SPRITE_4_PTR_ADDRESS
                 sta SPRITE_6_PTR_ADDRESS
 
-                lda #OBJECT_SPRITE_PTR
+                lda #ALIENHEAD_SPRITE_PTR
                 sta SPRITE_3_PTR_ADDRESS
                 sta SPRITE_5_PTR_ADDRESS
                 sta SPRITE_7_PTR_ADDRESS
 
                 lda SPRITES_COLOR_MODE_ADDRESS 
                 ora #%10101000
+                ;ora #%00000000
                 sta SPRITES_COLOR_MODE_ADDRESS
 
                 lda SPRITES_PRIORITY_ADDRESS

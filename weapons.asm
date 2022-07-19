@@ -1,6 +1,6 @@
 WEAPON_SPRITE_COLOR=#11
 
-WEAPON_FRAMES=#2
+WEAPON_NUM_OF_ANIM_FRAME_SETS=#2
 WEAPON_SPRITE_ANIM_FRAMES=#4
 
 WEAPON_SPRITE_PTR=$80
@@ -56,7 +56,7 @@ weapons_sprites_setup
 update_weapon  
                 ldx weaponCurrentFrame
                 inx
-                cpx #WEAPON_FRAMES
+                cpx #WEAPON_NUM_OF_ANIM_FRAME_SETS
                 bne @endif
                         lda #WEAPON_LEFT_SPRITE_PTR
                         sta SPRITE_0_PTR_ADDRESS

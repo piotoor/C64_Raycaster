@@ -191,6 +191,9 @@ toggle_blue_key
                 
                 and #%00000100
                 sta $426
+
+                ldx #1
+                inc objectSpriteColor,x
                 rts
 
 ;;---------------------------------------------

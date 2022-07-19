@@ -89,7 +89,25 @@ frame_not_ready
 ;                ldx #>draw_status_bar
 ;                sta $0314
 ;                stx $0315
+
                 jmp $ea31               ; kernel irq routine
+
+
+;;---------------------------------------------
+;; draw_status_bar
+;;---------------------------------------------    
+reuse_enemy_sprites
+                dec $d019
+
+                lda #252
+                sta REG_RASTERLINE
+                lda #<irq
+                ldx #>irq
+                sta $0314
+                stx $0315
+
+                jmp $ea31
+
 
 ;;;---------------------------------------------
 ;;; draw_status_bar
@@ -130,11 +148,9 @@ irq_setup
 
                 lda #249  
                 sta REG_RASTERLINE
-
                 lda REG_SCREENCTL_1
                 and #$7f
                 sta REG_SCREENCTL_1
-
                 cli
                 rts
 
@@ -221,7 +237,10 @@ incasm  gameMap.asm
 incbin  chaingun_hd.spd,3
 incbin  masking_sprite_xtd.spd,3
 ;incbin  enemytest.spd,3
-incbin  greyalienhead.spd,3
+;incbin  greyalienhead.spd,3
+incbin greyalienhead.spd,3
+incbin enemy_lance.spd,3
+
 incasm  assets.asm
 
 incasm  player.asm
