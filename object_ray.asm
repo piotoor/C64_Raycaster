@@ -12,7 +12,7 @@ objectPlyPosDeltaY=$88
 
 objectId=$26
 ; object arrays (3 object at a given time)
-
+objectNumOfAdditionalSprites=$c6f4
 objectMasterId=$c6f7
 objectSpriteRow=$c6fa
 objectSpriteCol=$c6fd
@@ -31,7 +31,7 @@ maxPerpDist=$6b
 minPerpDist=$6c
 maxPerpId=$81
 minPerpId=$82
-
+;$8b
 
 ;;---------------------------------------------
 ;; init_object_ray_params

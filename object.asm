@@ -17,6 +17,8 @@ objects_setup
                 sta $8a
                 ldy #2
 
+                lda #0
+                sta objectNumOfAdditionalSprites,y
                 lda #24
                 sta objectPosX,y
                 lda #56

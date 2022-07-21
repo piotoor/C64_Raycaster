@@ -831,3 +831,11 @@ NUM_OF_DEMO_ENEMIES=#36
 demo_master     byte    0,1,1,  0,1,1,  0,1,1,  0,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  2,1,1,  0,1,1
 demo_slave1     byte    0,0,0,  1,0,1,  0,0,0,  1,0,1,  0,0,0,  3,0,1,  0,0,0,  3,0,1,  4,1,1,  3,0,1,  3,2,1,  2,1,1
 demo_slave2     byte    0,0,0,  0,0,0,  1,2,1,  1,2,1,  0,0,0,  0,0,0,  3,2,1,  3,2,1,  0,0,0,  4,1,1,  4,1,1,  4,1,1
+
+
+
+enableMaxSpritesMask                    byte %11000000,%11100000,%11110000
+maxSpriteDataBitMask                    byte %00111111,%00011111,%00001111
+maxSpriteMaskingSpriteDataOffset        byte 6,5,4
+enableMinSpritesMask                    byte %00001100,%00011100,%00111100
+minSpriteDataBitMask                    byte %11110011,%11100011,%11000011 

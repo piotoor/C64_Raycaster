@@ -90,7 +90,8 @@ compute_objects
 ;; calculated during object casting
 ;;-----------------------------
 assign_sprites
-
+                        ldy objectNumOfAdditionalSprites,x
+                
                         lda objectPerpDistance,x
                         sta currObjectPerpDist
                         
@@ -108,18 +109,26 @@ assign_sprites
 
 @obj_is_max
                         lda SPRITES_ENABLE_ADDRESS
-                        ora #%11000000
+                        ;ora #%11000000
+                        ora enableMaxSpritesMask,y
                         sta SPRITES_ENABLE_ADDRESS
                         inc maxPerpDist
-                        lda #%00111111
-                        ldy #6
+                        ;lda #%00111111
+                        lda maxSpriteDataBitMask,y
+                        ;ldy #6
+                        sta f_8
+                        lda maxSpriteMaskingSpriteDataOffset,y
+                        tay
+                        lda f_8
                         jmp @endif
 @obj_is_min
                         lda SPRITES_ENABLE_ADDRESS
-                        ora #%00001100
+                        ;ora #%00001100
+                        ora enableMinSpritesMask,y
                         sta SPRITES_ENABLE_ADDRESS
                         dec minPerpDist
-                        lda #%11110011
+                        ;lda #%11110011
+                        lda minSpriteDataBitMask,y
                         ldy #2
 @endif
                         sty maskingSpriteDataOffset
@@ -163,9 +172,7 @@ prepare_masking_sprite
                 clc
                 tax
                 lda regularSpriteMaskIdx,x
-                ;sta $4c8
                 ldx objectId
-                ;sta $430,x
                 adc #MASKING_SPRITE_PTR
                 ldy maskingSpriteDataOffset
                 sta SPRITES_PTR_ADDRESS_START,y
@@ -177,30 +184,18 @@ prepare_masking_sprite
                 dex
                 dex
                 ldy rayPerpDistance,x
-;                pha
-;                tya
-;                sta $4a0,x
-;                pla
                 cpy currObjectPerpDist
                 bcs @second_ray_
                 ora #%00100000                  ; ray dist < enemy dist
 @second_ray_
                 inx
                 ldy rayPerpDistance,x
-;                pha
-;                tya
-;                sta $4a0,x
-;                pla
                 cpy currObjectPerpDist
                 bcs @third_ray_
                 ora #%00010000                  ; ray dist < enemy dist
 @third_ray_
                 inx
                 ldy rayPerpDistance,x
-;                pha
-;                tya
-;                sta $4a0,x
-;                pla
                 cpy currObjectPerpDist
                 bcs @fourth_ray_
                 ora #%00001000                  ; ray dist < enemy dist  
@@ -208,30 +203,18 @@ prepare_masking_sprite
 @fourth_ray_               
                 inx
                 ldy rayPerpDistance,x
-;                pha
-;                tya
-;                sta $4a0,x
-;                pla
                 cpy currObjectPerpDist
                 bcs @fifth_ray_
                 ora #%00000100                  ; ray dist < enemy dist
 @fifth_ray_
                 inx
                 ldy rayPerpDistance,x
-;                pha
-;                tya
-;                sta $4a0,x
-;                pla
                 cpy currObjectPerpDist
                 bcs @sixth_ray_
                 ora #%00000010                  ; ray dist < enemy dist
 @sixth_ray_
                 inx
                 ldy rayPerpDistance,x
-;                pha
-;                tya
-;                sta $4a0,x
-;                pla
                 cpy currObjectPerpDist
                 bcs @end_
                 ora #%00000001                  ; ray dist < enemy dist    
@@ -242,7 +225,6 @@ prepare_masking_sprite
                 tax
 
                 lda stretchedSpriteMaskIdx,x
-                ;sta $4c8
                 adc #MASKING_SPRITE_PTR
                 ldy maskingSpriteDataOffset
                 sta SPRITES_PTR_ADDRESS_START,y
@@ -314,24 +296,6 @@ calculate_sprites_pos_and_size
                         beq @sprite_column_left
                         cpy #SPRITE_COLUMN_R
                         beq @sprite_column_right
-
-                        ;ldx objectId
-;                        ldy objectSpriteRow,x
-;                        iny
-;                        iny
-
-;                        ; if column_c(master) and requests reusing
-;                        lda sprite y
-;                        sta REG_RASTERLINE
-;                        lda #<reuse_enemy_sprites
-;                        ldx #>reuse_enemy_sprites
-;                        sta $0314
-;                        stx $0315
-                        
-                        ; new y
-                        ; maskingSpriteDataOffset
-                        ; 
-
                         rts
 @sprite_column_left
                         lda objectPerpDistance,x
