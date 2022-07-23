@@ -101,6 +101,12 @@ assign_sprites
                         cmp minPerpDist
                         beq @obj_is_min
 @obj_is_mid             
+                        lda SPRITES_COLOR_MODE_ADDRESS
+                        ora #%00100000
+                        sta SPRITES_COLOR_MODE_ADDRESS
+                        lda SPRITES_PRIORITY_ADDRESS
+                        ora #%00010000
+                        sta SPRITES_PRIORITY_ADDRESS
                         lda SPRITES_ENABLE_ADDRESS
                         ora #%00110000
                         sta SPRITES_ENABLE_ADDRESS
@@ -109,6 +115,12 @@ assign_sprites
                         jmp @endif
 
 @obj_is_max
+                        lda SPRITES_COLOR_MODE_ADDRESS
+                        ora colorModeMaxSpritesMask,y
+                        sta SPRITES_COLOR_MODE_ADDRESS
+                        lda SPRITES_PRIORITY_ADDRESS
+                        ora priorityMaxSpritesMask,y
+                        sta SPRITES_PRIORITY_ADDRESS
                         lda SPRITES_ENABLE_ADDRESS
                         ;ora #%11000000
                         ora enableMaxSpritesMask,y
@@ -123,6 +135,12 @@ assign_sprites
                         lda f_8
                         jmp @endif
 @obj_is_min
+                        lda SPRITES_COLOR_MODE_ADDRESS
+                        ora colorModeMinSpritesMask,y
+                        sta SPRITES_COLOR_MODE_ADDRESS
+                        lda SPRITES_PRIORITY_ADDRESS
+                        ora priorityMinSpritesMask,y
+                        sta SPRITES_PRIORITY_ADDRESS
                         lda SPRITES_ENABLE_ADDRESS
                         ;ora #%00001100
                         ora enableMinSpritesMask,y
@@ -278,6 +296,7 @@ calculate_sprites_pos_and_size
                         sta SPRITES_COORD_X_ADDRESS_START,y 
                         iny
                         iny
+                        sta $4a8,x
                         dex
                         bpl @loop_sprite_x_coords
                         
@@ -290,18 +309,20 @@ calculate_sprites_pos_and_size
                         sty g_8
                         ldx objectId
                         lda objectSpriteRow,x
-;                        clc
-;                        ldx f_8
-;                        adc additionalSpriteRowIncrement,x      ; reorder addition
+                        clc
+                        ldx f_8
+                        adc additionalSpriteRowIncrement,x      ; reorder addition
                         tay
                         ldx currObjectSpriteScaleFrameIdx
                         stx $428             
                         normalSpriteScalingY
                         ldy g_8
-                        sta SPRITES_COORD_Y_ADDRESS_START,y        
+                        sta SPRITES_COORD_Y_ADDRESS_START,y 
+                        
                         iny
                         iny
                         ldx f_8
+                        sta $480,x
                         inx
                         cpx currObjectNumOfAdditionalSprites
                         bcc @loop_sprite_y_coords
@@ -314,13 +335,20 @@ calculate_sprites_pos_and_size
                         ;sta $430
                         objectSpriteXd010
 
+; must be 2 additional sprites
                         ldx objectId
                         ldy objectNumOfAdditionalSprites,x
                         beq @no_additional_sprites
                         
                         cmp #12
                         beq @d010_12
-@d010_192
+                        cmp #48
+                        beq @d010_48
+                        jmp @end_d010
+;@d010_192
+;                        lda #240
+;                        jmp @end_d010
+@d010_48
                         lda #240
                         jmp @end_d010
 @d010_12
@@ -408,6 +436,7 @@ calculate_sprites_pos_and_size
                         sta SPRITES_COORD_X_ADDRESS_START,y 
                         iny
                         iny
+                        sta $4a8,x
                         dex
                         bpl @loop_sprite_x_coords_s
                         
@@ -420,9 +449,9 @@ calculate_sprites_pos_and_size
                         sty g_8
                         ldx objectId
                         lda objectSpriteRow,x
-;                        clc
-;                        ldx f_8
-;                        adc additionalSpriteRowIncrement,x      ; reorder addition
+                        clc
+                        ldx f_8
+                        adc additionalSpriteRowIncrement,x      ; reorder addition
                         tay
                         ldx currObjectSpriteScaleFrameIdx
                         stx $428             
@@ -432,6 +461,7 @@ calculate_sprites_pos_and_size
                         iny
                         iny
                         ldx f_8
+                        sta $480,x
                         inx
                         cpx currObjectNumOfAdditionalSprites
                         bcc @loop_sprite_y_coords_s
@@ -443,14 +473,20 @@ calculate_sprites_pos_and_size
                         ;sta $430
                         stretchedObjectSpriteXd010
 
-
+; must be 2 additional sprites
                         ldx objectId
                         ldy objectNumOfAdditionalSprites,x
                         beq @no_additional_sprites_st
                         
                         cmp #12
                         beq @d010_12_st
-@d010_192_st
+                        cmp #48
+                        beq @d010_48_st
+                        jmp @end_d010_st
+;@d010_192_st
+;                        lda #240
+;                        jmp @end_d010_st
+@d010_48_st
                         lda #240
                         jmp @end_d010_st
 @d010_12_st
@@ -549,6 +585,12 @@ calculate_sprites_pos_and_size
 draw_objects       
                 lda #%00000011
                 sta SPRITES_ENABLE_ADDRESS
+
+                ;lda #%00000011
+                sta SPRITES_COLOR_MODE_ADDRESS
+
+                lda #$00000000
+                sta SPRITES_PRIORITY_ADDRESS
 
                 ldx #MAX_NUM_OF_OBJECTS-1
                 stx objectId

@@ -133,52 +133,61 @@ toggle_red_key
                 and #%00000010
                 sta $427
                 
-                ldy #2
-                ldx $8a
-                lda demo_master,x
-                sta objectSpriteRow,y
-                inx
-                lda demo_master,x
-                sta objectSpriteCol,y
-                inx
-                lda demo_master,x
-                sta objectAlive,y
+;                ldy #2
+;                ldx $8a
+;                lda demo_master,x
+;                sta objectSpriteRow,y
+;                inx
+;                lda demo_master,x
+;                sta objectSpriteCol,y
+;                inx
+;                lda demo_master,x
+;                sta objectAlive,y
 
 
-                dey
-                ldx $8a
-                lda demo_slave1,x
-                sta objectSpriteRow,y
-                inx
-                lda demo_slave1,x
-                sta objectSpriteCol,y
-                inx
-                lda demo_slave1,x
-                sta objectAlive,y
+;                dey
+;                ldx $8a
+;                lda demo_slave1,x
+;                sta objectSpriteRow,y
+;                inx
+;                lda demo_slave1,x
+;                sta objectSpriteCol,y
+;                inx
+;                lda demo_slave1,x
+;                sta objectAlive,y
 
 
-                dey
-                ldx $8a
-                lda demo_slave2,x
-                sta objectSpriteRow,y
-                inx
-                lda demo_slave2,x
-                sta objectSpriteCol,y
-                inx
-                lda demo_slave2,x
-                sta objectAlive,y
+;                dey
+;                ldx $8a
+;                lda demo_slave2,x
+;                sta objectSpriteRow,y
+;                inx
+;                lda demo_slave2,x
+;                sta objectSpriteCol,y
+;                inx
+;                lda demo_slave2,x
+;                sta objectAlive,y
 
 
 
-                inc $8a
-                inc $8a
-                inc $8a
-                lda $8a
-                cmp #NUM_OF_DEMO_ENEMIES
-                bne @less_
-                lda #0
-                sta $8a
-@less_
+;                inc $8a
+;                inc $8a
+;                inc $8a
+;                lda $8a
+;                cmp #NUM_OF_DEMO_ENEMIES
+;                bne @less_
+;                lda #0
+;                sta $8a
+;@less_
+                ldx #2
+                dec objectNumOfAdditionalSprites,x
+                bpl @end
+                lda #2
+                sta objectNumOfAdditionalSprites,x
+                
+@end
+                lda objectNumOfAdditionalSprites,x
+                sta $484
                 rts
 
 ;;---------------------------------------------

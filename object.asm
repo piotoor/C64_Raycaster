@@ -17,7 +17,7 @@ objects_setup
                 sta $8a
                 ldy #2
 
-                lda #0
+                lda #2
                 sta objectNumOfAdditionalSprites,y
                 lda #24
                 sta objectPosX,y
@@ -72,7 +72,7 @@ objects_setup
                 lda #128
                 ;lda #56
                 sta objectPosY,y
-                lda #1
+                lda #0
                 sta objectAlive,y
                 lda #13
                 sta objectSpriteColor,y
