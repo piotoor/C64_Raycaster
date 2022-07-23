@@ -25,13 +25,13 @@ objectSpriteColor=$c70f
 objectInFOV=$c712
 objectSpritePtr=$c715
 objectSpriteNumOfAnimFrameSets=$c718
-; FREEc71b
+;FREEc71b
 
 maxPerpDist=$6b 
 minPerpDist=$6c
 maxPerpId=$81
 minPerpId=$82
-;$8b
+currObjectNumOfAdditionalSprites=$8b
 
 ;;---------------------------------------------
 ;; init_object_ray_params

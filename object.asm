@@ -29,7 +29,7 @@ objects_setup
                 sta objectSpriteColor,y
                 lda #OBJECT_MASTER_ID
                 sta objectMasterId,y
-                lda #2
+                lda #0
                 sta objectSpriteRow,y
                 lda #SPRITE_COLUMN_C
                 sta objectSpriteCol,y
@@ -41,6 +41,8 @@ objects_setup
                 sta objectSpritePtr,y
                 
                 dey
+                lda #0
+                sta objectNumOfAdditionalSprites,y
                 lda #24
                 sta objectPosX,y
                 ;lda #112
@@ -52,7 +54,7 @@ objects_setup
                 sta objectSpriteColor,y
                 lda #2
                 sta objectMasterId,y
-                lda #3
+                lda #1
                 sta objectSpriteRow,y
                 lda #SPRITE_COLUMN_L
                 sta objectSpriteCol,y    
@@ -62,6 +64,8 @@ objects_setup
                 sta objectSpritePtr,y     
 
                 dey
+                lda #0
+                sta objectNumOfAdditionalSprites,y
                 lda #96
                 ;lda #24
                 sta objectPosX,y
@@ -75,7 +79,7 @@ objects_setup
                 ;lda #2
                 lda OBJECT_MASTER_ID
                 sta objectMasterId,y
-                lda #4
+                lda #2
                 sta objectSpriteRow,y
                 lda #SPRITE_COLUMN_C
                 ;lda SPRITE_COLUMN_C

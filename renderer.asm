@@ -58,7 +58,7 @@ compute_objects
 @loop                   
                         ldx objectId
                         lda objectRayId,x
-                        sta $478,x
+                        ;sta $478,x
                         lda objectAlive,x
                         beq @skip_object
 
@@ -90,6 +90,7 @@ compute_objects
 ;; calculated during object casting
 ;;-----------------------------
 assign_sprites
+                        ldx objectId
                         ldy objectNumOfAdditionalSprites,x
                 
                         lda objectPerpDistance,x
@@ -135,8 +136,14 @@ assign_sprites
                         iny
                         sty spriteDataOffset
                         sta spriteDataBitMask
+                        sta $450,x
                         eor #$ff
                         sta spriteDataBitMaskNeg
+
+                        ;debug
+                        lda maskingSpriteDataOffset
+                        sta $478,x
+                        ;debug
 
                 rts
 
@@ -237,6 +244,12 @@ prepare_masking_sprite
 ;;---------------------------------------------
 calculate_sprites_pos_and_size
                 ldx objectId
+                lda objectNumOfAdditionalSprites,x
+                sta f_8
+                clc
+                adc #2
+                sta currObjectNumOfAdditionalSprites
+
                 lda currObjectPerpDist
                 sta $4a0,x
                 ldx currObjectRayId
@@ -256,31 +269,64 @@ calculate_sprites_pos_and_size
                         lda maskingSpriteDataOffset
                         asl
                         tay
-                        
+                        sta g_8
                         lda objectSpriteX,x
-                        ;ldx #140
-                        sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
+                        
+                        ldx f_8
+                        inx                                     ; to cover masking sprite
+@loop_sprite_x_coords                        
+                        sta SPRITES_COORD_X_ADDRESS_START,y 
                         iny
                         iny
-                        sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
-                        ;txa 
-                        sty f_8
+                        dex
+                        bpl @loop_sprite_x_coords
+                        
+
+                        ldy g_8
+                        ldx #0
+                        
+@loop_sprite_y_coords                    
+                        stx f_8
+                        sty g_8
                         ldx objectId
-                        
-                        ldy objectSpriteRow,x
+                        lda objectSpriteRow,x
+;                        clc
+;                        ldx f_8
+;                        adc additionalSpriteRowIncrement,x      ; reorder addition
+                        tay
                         ldx currObjectSpriteScaleFrameIdx
-                        stx $428
+                        stx $428             
                         normalSpriteScalingY
-                        ldy f_8
-                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; sprite
-                        dey
-                        dey 
-                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; masking
-                        
+                        ldy g_8
+                        sta SPRITES_COORD_Y_ADDRESS_START,y        
+                        iny
+                        iny
+                        ldx f_8
+                        inx
+                        cpx currObjectNumOfAdditionalSprites
+                        bcc @loop_sprite_y_coords
+
+@end_loop_y_coords
+
+
                         ldy maskingSpriteDataOffset
                         lda currObjectRayId
                         ;sta $430
                         objectSpriteXd010
+
+                        ldx objectId
+                        ldy objectNumOfAdditionalSprites,x
+                        beq @no_additional_sprites
+                        
+                        cmp #12
+                        beq @d010_12
+@d010_192
+                        lda #240
+                        jmp @end_d010
+@d010_12
+                        lda #60
+@end_d010
+@no_additional_sprites
                         sta objectSpriteXd10bitsCurr
                         lda SPRITES_X_COORD_BIT_8_ADDRESS
                         and spriteDataBitMask
@@ -353,34 +399,65 @@ calculate_sprites_pos_and_size
                         lda maskingSpriteDataOffset
                         asl
                         tay
-
+                        sta g_8
                         lda stretchedObjectSpriteX,x
-                        ;ldx #130
-                        ;sta $402
-                        sta SPRITES_COORD_X_ADDRESS_START,y     ; masking
-                        iny
-                        iny
-                        sta SPRITES_COORD_X_ADDRESS_START,y     ; sprite
-                        ;txa 
-
-                        sty f_8
-
-                        ldx objectId
                         
-                        ldy objectSpriteRow,x
+                        ldx f_8
+                        inx                                     ; to cover masking sprite
+@loop_sprite_x_coords_s                        
+                        sta SPRITES_COORD_X_ADDRESS_START,y 
+                        iny
+                        iny
+                        dex
+                        bpl @loop_sprite_x_coords_s
+                        
+
+                        ldy g_8
+                        ldx #0
+                        
+@loop_sprite_y_coords_s
+                        stx f_8
+                        sty g_8
+                        ldx objectId
+                        lda objectSpriteRow,x
+;                        clc
+;                        ldx f_8
+;                        adc additionalSpriteRowIncrement,x      ; reorder addition
+                        tay
                         ldx currObjectSpriteScaleFrameIdx
-                        stx $428
+                        stx $428             
                         stretchedSpriteScalingY
-                        ldy f_8
-                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; sprite
-                        dey
-                        dey 
-                        sta SPRITES_COORD_Y_ADDRESS_START,y     ; masking
+                        ldy g_8
+                        sta SPRITES_COORD_Y_ADDRESS_START,y        
+                        iny
+                        iny
+                        ldx f_8
+                        inx
+                        cpx currObjectNumOfAdditionalSprites
+                        bcc @loop_sprite_y_coords_s
+
+@end_loop_y_coords_s
 
                         ldy maskingSpriteDataOffset
                         lda currObjectRayId
                         ;sta $430
                         stretchedObjectSpriteXd010
+
+
+                        ldx objectId
+                        ldy objectNumOfAdditionalSprites,x
+                        beq @no_additional_sprites_st
+                        
+                        cmp #12
+                        beq @d010_12_st
+@d010_192_st
+                        lda #240
+                        jmp @end_d010_st
+@d010_12_st
+                        lda #60
+@end_d010_st
+@no_additional_sprites_st
+
                         sta objectSpriteXd10bitsCurr
                         lda SPRITES_X_COORD_BIT_8_ADDRESS
                         and spriteDataBitMask
@@ -480,17 +557,14 @@ draw_objects
                         lda objectAlive,x
                         beq @skip_object
                         lda objectInFOV,x
-                        sta $450,x
+                        ;sta $450,x
                         beq @skip_object
 
                         lda objectRayId,x
                         sta currObjectRayId
                         
                         jsr assign_sprites
-                        ldx objectId
-                        lda objectSpriteColor,x
-                        ldy spriteDataOffset
-                        sta SPRITES_COLOR_ADDRESS_START,y
+
                         jsr prepare_masking_sprite                        
 
                         ldy currObjectPerpDist
@@ -498,19 +572,26 @@ draw_objects
                         sta currObjectSpriteScaleFrameIdx
                         
                         ldx objectId
+                        ldy spriteDataOffset
+                        lda objectNumOfAdditionalSprites,x
+                        tax
+@additional_sprites_loop
+                        stx f_8
+                        ldx objectId
                         lda objectSpritePtr,x
                         clc
                         adc objectFrameOffset
-                        adc objectSpriteScaleFrameIdx,y
-                        ldy spriteDataOffset
-                        sta SPRITES_PTR_ADDRESS_START,y
-;                        ldx objectId
-;                        sta $478,x
-                        ;lda objectRayId,x
-                        ;sta $450,x
+                        adc currObjectSpriteScaleFrameIdx
 
-                        jsr calculate_sprites_pos_and_size
-                                
+                        sta SPRITES_PTR_ADDRESS_START,y
+                        lda objectSpriteColor,x
+                        sta SPRITES_COLOR_ADDRESS_START,y
+                        iny
+                        ldx f_8
+                        dex
+                        bpl @additional_sprites_loop
+
+                        jsr calculate_sprites_pos_and_size                          
 @skip_object        
                 
                 dec objectId 

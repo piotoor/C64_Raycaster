@@ -839,3 +839,5 @@ maxSpriteDataBitMask                    byte %00111111,%00011111,%00001111
 maxSpriteMaskingSpriteDataOffset        byte 6,5,4
 enableMinSpritesMask                    byte %00001100,%00011100,%00111100
 minSpriteDataBitMask                    byte %11110011,%11100011,%11000011 
+
+additionalSpriteRowIncrement            byte 0,0,2,4

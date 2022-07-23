@@ -232,7 +232,6 @@ screen_setup
 
 incasm  utils.asm
 incasm  renderer.asm
-incasm  gameMap.asm
 *=SPRITES_MEMORY_START
 incbin  chaingun_hd.spd,3
 incbin  masking_sprite_xtd.spd,3
@@ -242,7 +241,7 @@ incbin greyalienhead.spd,3
 incbin enemy_lance.spd,3
 
 incasm  assets.asm
-
+incasm  gameMap.asm
 incasm  player.asm
 incasm  weapons.asm
 incasm  inputhandling.asm
